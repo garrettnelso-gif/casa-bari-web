@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa Bari — Península San Pedro, Patagonia</title>
+<meta name="description" content="A black tower in the coihue forest. Direct views to Cerro López and Nahuel Huapi. 2 bed · 2 bath · 8m ceilings · heated floors · Starlink.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:    #E5E0D5;
+  --cream-dk: #D4CEBC;
+  --blue:     #7A9FAB;
+  --terra:    #A07860;
+  --terra-dk: #7A5940;
+  --ink:      #1A1714;
+  --ink-mid:  #4A4540;
+  --ink-lt:   #8A857E;
+  --white:    #FAF8F5;
+  --f: 'Space Grotesk', system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--f); background: var(--white); color: var(--ink); }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 48px; height: 56px;
+  background: rgba(250,248,245,0.96); backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--ink);
+}
+.nav-logo { font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: var(--ink); }
+.nav-links { display: flex; gap: 36px; }
+.nav-links a { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-lt); text-decoration: none; transition: color 0.15s; }
+.nav-links a:hover { color: var(--ink); }
+.btn-nav { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 8px 22px; background: var(--ink); color: var(--white); text-decoration: none; transition: background 0.15s; }
+.btn-nav:hover { background: var(--terra); }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); }
+.mob { display: none; position: fixed; top: 56px; left: 0; right: 0; background: var(--white); border-bottom: 2px solid var(--ink); z-index: 99; }
+.mob.open { display: block; }
+.mob a { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 32px; text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--cream); }
+@media (max-width: 768px) { nav { padding: 0 24px; } .nav-links { display: none; } .hamburger { display: flex; } .btn-nav { display: none; } }
+
+/* ── SECTION 1: EXTERIOR IMAGE + BLANK ── */
+.opener {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: calc(100vh - 56px);
+  min-height: 560px;
+}
+.opener-img { overflow: hidden; }
+.opener-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.opener-blank {
+  background: var(--white);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 56px 64px;
+}
+.opener-blank h1 {
+  font-size: clamp(80px, 11vw, 176px);
+  font-weight: 700;
+  line-height: 0.84;
+  letter-spacing: -0.05em;
+  color: var(--ink);
+}
+.opener-blank .loc {
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 3px solid var(--ink);
+  font-size: 10px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: var(--ink-lt);
+  line-height: 1.8;
+}
+@media (max-width: 860px) {
+  .opener { grid-template-columns: 1fr; grid-template-rows: 60vw auto; height: auto; }
+  .opener-blank { padding: 40px 24px 48px; }
+  .opener-blank h1 { font-size: clamp(72px, 18vw, 130px); }
+}
+
+/* ── SECTION 2: DECK IMAGE + DESCRIPTION ── */
+.desc-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 3px solid var(--ink);
+}
+.desc-img { overflow: hidden; }
+.desc-img img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 560px; }
+.desc-text {
+  padding: 72px 64px;
+  background: var(--cream);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.desc-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-lt); margin-bottom: 28px; }
+.desc-title { font-size: clamp(32px, 4vw, 52px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.0; margin-bottom: 36px; }
+.desc-title em { font-style: normal; color: var(--terra); }
+.desc-body { font-size: 16px; font-weight: 300; line-height: 1.9; color: var(--ink-mid); }
+.desc-body p + p { margin-top: 20px; }
+.specs { margin-top: 48px; border-top: 2px solid var(--ink); }
+.spec-row { display: flex; justify-content: space-between; align-items: baseline; padding: 13px 0; border-bottom: 1px solid var(--cream-dk); gap: 12px; }
+.spec-label { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-lt); }
+.spec-val { font-size: 13px; font-weight: 600; }
+@media (max-width: 860px) {
+  .desc-row { grid-template-columns: 1fr; }
+  .desc-img img { min-height: 70vw; }
+  .desc-text { padding: 48px 24px; }
+}
+
+/* ── STATS BAR ── */
+.stats {
+  background: var(--ink); color: var(--white);
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  border-top: 3px solid var(--ink);
+}
+.stat {
+  padding: 32px 28px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.stat:last-child { border-right: none; }
+.stat-num { font-size: clamp(28px, 3vw, 44px); font-weight: 700; letter-spacing: -0.03em; line-height: 1; margin-bottom: 6px; }
+.stat-label { font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+@media (max-width: 960px) { .stats { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 540px) { .stats { grid-template-columns: repeat(2, 1fr); } .stat { padding: 24px 20px; } }
+
+/* ── THE SPACES ── */
+.spaces-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: end;
+  padding: 80px 48px 56px;
+  border-top: 3px solid var(--ink);
+}
+.spaces-header h2 { font-size: clamp(48px, 7vw, 96px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.88; }
+.spaces-header p { font-size: 14px; font-weight: 300; line-height: 1.8; color: var(--ink-mid); max-width: 380px; margin-left: auto; padding-bottom: 8px; }
+@media (max-width: 760px) { .spaces-header { grid-template-columns: 1fr; gap: 24px; padding: 56px 24px 40px; } .spaces-header p { margin-left: 0; } }
+
+.spaces-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  padding: 0 0 3px;
+}
+.spaces-grid img {
+  width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block;
+}
+@media (max-width: 640px) { .spaces-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 420px) { .spaces-grid { grid-template-columns: 1fr; } }
+
+/* ── AMENITIES ── */
+.amenities-header {
+  background: var(--blue);
+  padding: 80px 48px 64px;
+  border-top: 3px solid var(--ink);
+}
+.amenities-header h2 { font-size: clamp(48px, 7vw, 88px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.88; color: var(--white); }
+@media (max-width: 600px) { .amenities-header { padding: 56px 24px 40px; } }
+
+.amenities-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 3px solid var(--ink);
+}
+.amenity {
+  padding: 36px 32px;
+  border-right: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+  background: var(--white);
+}
+.amenity:nth-child(4n) { border-right: none; }
+.amenity-num { font-size: 48px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; color: var(--cream-dk); margin-bottom: 20px; }
+.amenity-name { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; }
+.amenity-desc { font-size: 12px; font-weight: 300; color: var(--ink-mid); line-height: 1.6; }
+.amenity.blue-bg { background: var(--blue); }
+.amenity.blue-bg .amenity-num { color: rgba(255,255,255,0.2); }
+.amenity.blue-bg .amenity-name { color: var(--white); }
+.amenity.blue-bg .amenity-desc { color: rgba(255,255,255,0.7); }
+.amenity.terra-bg { background: var(--terra); }
+.amenity.terra-bg .amenity-num { color: rgba(255,255,255,0.2); }
+.amenity.terra-bg .amenity-name { color: var(--white); }
+.amenity.terra-bg .amenity-desc { color: rgba(255,255,255,0.75); }
+.amenity.ink-bg { background: var(--ink); }
+.amenity.ink-bg .amenity-num { color: rgba(255,255,255,0.1); }
+.amenity.ink-bg .amenity-name { color: var(--white); }
+.amenity.ink-bg .amenity-desc { color: rgba(255,255,255,0.55); }
+@media (max-width: 960px) { .amenities-grid { grid-template-columns: repeat(2, 1fr); } .amenity:nth-child(4n) { border-right: 3px solid var(--ink); } .amenity:nth-child(2n) { border-right: none; } }
+@media (max-width: 520px) { .amenities-grid { grid-template-columns: 1fr; } .amenity { border-right: none !important; } .amenity-num { font-size: 36px; } }
+
+/* ── FULL BLEED ── */
+.full-bleed { width: 100%; overflow: hidden; border-top: 3px solid var(--ink); }
+.full-bleed img { width: 100%; aspect-ratio: 16/8; object-fit: cover; display: block; }
+@media (max-width: 600px) { .full-bleed img { aspect-ratio: 4/3; } }
+
+/* ── FOREST ── */
+.forest-header {
+  background: var(--cream);
+  padding: 96px 48px 56px;
+  border-top: 3px solid var(--ink);
+  display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 48px;
+}
+.forest-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-lt); margin-bottom: 28px; }
+.forest-title { font-size: clamp(52px, 8vw, 112px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.86; color: var(--ink); }
+.forest-title span { color: var(--terra); }
+.forest-header-sub { font-size: 15px; font-weight: 300; line-height: 1.85; color: var(--ink-mid); max-width: 440px; margin-left: auto; padding-bottom: 8px; }
+@media (max-width: 760px) { .forest-header { grid-template-columns: 1fr; padding: 64px 24px 40px; } .forest-header-sub { margin-left: 0; } }
+
+.forest-canopy { width: 100%; overflow: hidden; border-top: 3px solid var(--ink); }
+.forest-canopy img { width: 100%; aspect-ratio: 21/9; object-fit: cover; display: block; }
+@media (max-width: 600px) { .forest-canopy img { aspect-ratio: 16/9; } }
+
+/* forest entries: alternating cream / blue / terra / cream */
+.forest-entries { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 3px solid var(--ink); }
+.forest-entry {
+  padding: 56px 48px;
+  border-right: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+  display: flex; flex-direction: column;
+}
+.forest-entry:nth-child(2n) { border-right: none; }
+.forest-entry:nth-child(3), .forest-entry:nth-child(4) { border-bottom: none; }
+.fe-1 { background: var(--white); }
+.fe-2 { background: var(--blue); }
+.fe-3 { background: var(--terra); }
+.fe-4 { background: var(--cream); }
+
+/* leaf images */
+.entry-leaf {
+  width: 140px; height: 140px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+.leaf-coihue { background-image: url('coihue.png'); }
+.leaf-radal  { background-image: url('radal.png'); }
+.leaf-lenga  { background-image: url('legna.png'); }
+.leaf-cipres { background-image: url('cipres.png'); }
+
+.entry-num { font-size: 9px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 12px; }
+.fe-1 .entry-num, .fe-4 .entry-num { color: var(--ink-lt); }
+.fe-2 .entry-num, .fe-3 .entry-num { color: rgba(255,255,255,0.5); }
+
+.entry-name { font-size: clamp(22px, 2.8vw, 34px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.0; margin-bottom: 8px; }
+.fe-1 .entry-name, .fe-4 .entry-name { color: var(--ink); }
+.fe-2 .entry-name, .fe-3 .entry-name { color: var(--white); }
+
+.entry-latin { font-size: 12px; font-weight: 300; font-style: italic; letter-spacing: 0.04em; margin-bottom: 24px; }
+.fe-1 .entry-latin, .fe-4 .entry-latin { color: var(--terra); }
+.fe-2 .entry-latin { color: rgba(255,255,255,0.6); }
+.fe-3 .entry-latin { color: rgba(255,255,255,0.7); }
+
+.entry-body { font-size: 14px; font-weight: 300; line-height: 1.85; }
+.fe-1 .entry-body, .fe-4 .entry-body { color: var(--ink-mid); }
+.fe-2 .entry-body, .fe-3 .entry-body { color: rgba(255,255,255,0.72); }
+
+@media (max-width: 640px) {
+  .forest-entries { grid-template-columns: 1fr; }
+  .forest-entry { border-right: none !important; border-bottom: 3px solid var(--ink) !important; }
+  .forest-entry { padding: 40px 24px; }
+}
+
+/* ── ETYMOLOGY ── */
+.etymology { background: var(--blue); padding: 96px 48px; border-top: 3px solid var(--ink); }
+.etymology-inner { max-width: 960px; margin: 0 auto; }
+.ety-word { font-size: clamp(60px, 10vw, 128px); font-weight: 700; letter-spacing: -0.05em; line-height: 0.84; margin-bottom: 48px; color: var(--white); }
+.ety-label { display: block; font-size: 9px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.35); font-size: 0.12em; letter-spacing: 0.3em; margin-bottom: 10px; font-size: 11px; }
+.ety-body { font-size: 17px; font-weight: 300; line-height: 1.9; color: rgba(255,255,255,0.78); }
+.ety-body p + p { margin-top: 22px; }
+@media (max-width: 600px) { .etymology { padding: 64px 24px; } }
+
+/* ── RATES ── */
+.rates-wrap { border-top: 3px solid var(--ink); }
+.rates-header { padding: 80px 48px 56px; }
+.rates-header h2 { font-size: clamp(48px, 7vw, 96px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.88; }
+@media (max-width: 600px) { .rates-header { padding: 56px 24px 40px; } }
+.rates-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 3px solid var(--ink); }
+.rate-card { padding: 48px 40px; border-right: 3px solid var(--ink); }
+.rate-card:last-child { border-right: none; }
+.rate-label { font-size: 9px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ink-lt); margin-bottom: 28px; }
+.rate-price { font-size: clamp(52px, 6vw, 80px); font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+.rate-unit { font-size: 12px; font-weight: 400; color: var(--ink-lt); margin-top: 8px; margin-bottom: 28px; }
+.rate-detail { font-size: 13px; font-weight: 300; color: var(--ink-mid); line-height: 1.75; }
+.rate-card.terra { background: var(--terra); border-color: var(--terra); }
+.rate-card.terra .rate-label { color: rgba(255,255,255,0.55); }
+.rate-card.terra .rate-price { color: var(--white); }
+.rate-card.terra .rate-unit { color: rgba(255,255,255,0.55); }
+.rate-card.terra .rate-detail { color: rgba(255,255,255,0.8); }
+.rate-note { padding: 28px 48px; font-size: 12px; font-weight: 400; color: var(--ink-lt); border-top: 1px solid var(--cream-dk); }
+@media (max-width: 760px) { .rates-grid { grid-template-columns: 1fr; } .rate-card { border-right: none; border-bottom: 3px solid var(--ink); } .rate-card:last-child { border-bottom: none; } .rate-note { padding: 24px; } }
+
+/* ── CTA ── */
+.cta {
+  background: var(--ink); color: var(--white);
+  padding: 112px 48px; text-align: center;
+  border-top: 3px solid var(--ink);
+}
+.cta h2 { font-size: clamp(48px, 8vw, 112px); font-weight: 700; letter-spacing: -0.05em; line-height: 0.86; margin-bottom: 48px; }
+.cta p { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.6); margin-bottom: 52px; }
+.btn-cta { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; padding: 20px 56px; background: var(--white); color: var(--ink); text-decoration: none; transition: all 0.15s; }
+.btn-cta:hover { background: var(--terra); color: var(--white); }
+@media (max-width: 600px) { .cta { padding: 72px 24px; } }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); color: rgba(255,255,255,0.4);
+  padding: 40px 48px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.footer-logo { font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--white); }
+.footer-copy { font-size: 11px; }
+@media (max-width: 600px) { footer { padding: 32px 24px; flex-direction: column; align-items: flex-start; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Casa Bari</a>
+  <div class="nav-links">
+    <a href="#house">The House</a>
+    <a href="#spaces">The Spaces</a>
+    <a href="#forest">The Forest</a>
+    <a href="#rates">Rates</a>
+  </div>
+  <a href="mailto:garrettnelso@gmail.com" class="btn-nav">Book Now</a>
+  <button class="hamburger" onclick="document.querySelector('.mob').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mob">
+  <a href="#house" onclick="document.querySelector('.mob').classList.remove('open')">The House</a>
+  <a href="#spaces" onclick="document.querySelector('.mob').classList.remove('open')">The Spaces</a>
+  <a href="#forest" onclick="document.querySelector('.mob').classList.remove('open')">The Forest</a>
+  <a href="#rates" onclick="document.querySelector('.mob').classList.remove('open')">Rates</a>
+  <a href="mailto:garrettnelso@gmail.com" onclick="document.querySelector('.mob').classList.remove('open')">Book Now</a>
+</div>
+
+<!-- 1. EXTERIOR + BLANK -->
+<section class="opener" id="house">
+  <div class="opener-img">
+    <img src="IMG-20250326-WA0018.jpg" alt="Casa Bari — black tower rising through coihue forest at golden hour">
+  </div>
+  <div class="opener-blank">
+    <h1>Casa<br>Bari</h1>
+    <div class="loc">
+      Península San Pedro<br>
+      Bariloche · Patagonia
+    </div>
+  </div>
+</section>
+
+<!-- 2. DECK + DESCRIPTION -->
+<div class="desc-row">
+  <div class="desc-text">
+    <div>
+      <div class="desc-eyebrow">The House</div>
+      <h2 class="desc-title">A tower in<br>the <em>coihue</em><br>forest.</h2>
+      <div class="desc-body">
+        <p>Casa Bari stands on the forested hillside of Península San Pedro, a private peninsula that juts into the eastern arm of Lago Nahuel Huapi. The house rises as a dark vertical form through native coihue — black corrugated steel against ancient trunks — with a glass front that frames unobstructed views of Cerro López and the lake below.</p>
+        <p>Eight-meter ceilings open the interior into the canopy. Heated concrete floors run the full ground floor. The kitchen is fully equipped; the leather sofa sits on a black sheepskin rug. Two king-sized bedrooms — one on each level — sleep in total quiet, with only the wind in the trees and the occasional Austral parakeet.</p>
+        <p>The lake is 10 minutes by car. Cerro Catedral ski resort is 20.</p>
+      </div>
+    </div>
+    <div class="specs">
+      <div class="spec-row"><span class="spec-label">Location</span><span class="spec-val">Península San Pedro, Bariloche</span></div>
+      <div class="spec-row"><span class="spec-label">Bedrooms</span><span class="spec-val">2 · King beds</span></div>
+      <div class="spec-row"><span class="spec-label">Bathrooms</span><span class="spec-val">2 · Full</span></div>
+      <div class="spec-row"><span class="spec-label">Ceilings</span><span class="spec-val">8 m</span></div>
+      <div class="spec-row"><span class="spec-label">Heating</span><span class="spec-val">Radiant floor · wood stove</span></div>
+      <div class="spec-row"><span class="spec-label">Glass front</span><span class="spec-val">Floor-to-ceiling</span></div>
+      <div class="spec-row"><span class="spec-label">Internet</span><span class="spec-val">Starlink</span></div>
+      <div class="spec-row"><span class="spec-label">Views</span><span class="spec-val">Cerro López · Nahuel Huapi</span></div>
+      <div class="spec-row"><span class="spec-label">Ski</span><span class="spec-val">Cerro Catedral — 20 min</span></div>
+      <div class="spec-row"><span class="spec-label">Min. stay</span><span class="spec-val">2 nights</span></div>
+    </div>
+  </div>
+  <div class="desc-img">
+    <img src="IMG-20250326-WA0017.jpg" alt="Deck at sunset — Cerro López and Nahuel Huapi beyond the coihue">
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">2</div><div class="stat-label">Bedrooms</div></div>
+  <div class="stat"><div class="stat-num">2</div><div class="stat-label">Bathrooms</div></div>
+  <div class="stat"><div class="stat-num">8m</div><div class="stat-label">Ceilings</div></div>
+  <div class="stat"><div class="stat-num">King</div><div class="stat-label">Size beds</div></div>
+  <div class="stat"><div class="stat-num">↗</div><div class="stat-label">Starlink</div></div>
+  <div class="stat"><div class="stat-num">⬛</div><div class="stat-label">Heated floors</div></div>
+</div>
+
+<!-- 3. THE SPACES -->
+<section id="spaces">
+  <div class="spaces-header">
+    <h2>The<br>Spaces</h2>
+    <p>Every room is oriented to the forest and the view. Glass on three sides. The mountain is always present.</p>
+  </div>
+  <div class="spaces-grid">
+    <img src="mountain-view.jpg" alt="Glass front — Cerro López through the steel frame">
+    <img src="living-room.jpg" alt="Living room — leather sofa, black sheepskin, open to the deck">
+    <img src="bedroom-window.jpg" alt="Bedroom — king bed, exposed beams, Cerro López at dusk">
+    <img src="PXL_20250905_022610977.jpg" alt="Interior at night — kitchen, loft bedroom visible above">
+    <img src="PXL_20260110_175925931.jpg" alt="Deck view — lake and mountain through the coihue canopy">
+    <img src="PXL_20260104_200129676.jpg" alt="Exterior — black tower, corrugated steel, Cerro López behind">
+  </div>
+</section>
+
+<!-- FULL BLEED NIGHT -->
+<div class="full-bleed">
+  <img src="night-exterior.jpg" alt="Casa Bari at night — black tower lit against the dark forest">
+</div>
+
+<!-- AMENITIES -->
+<div class="amenities-header">
+  <h2>What's<br>included.</h2>
+</div>
+<div class="amenities-grid">
+  <div class="amenity blue-bg">
+    <div class="amenity-num">01</div>
+    <div class="amenity-name">King beds</div>
+    <div class="amenity-desc">Premium mattresses, full linen service, both bedrooms</div>
+  </div>
+  <div class="amenity">
+    <div class="amenity-num">02</div>
+    <div class="amenity-name">Heated floors</div>
+    <div class="amenity-desc">Radiant concrete throughout the ground floor</div>
+  </div>
+  <div class="amenity">
+    <div class="amenity-num">03</div>
+    <div class="amenity-name">Starlink</div>
+    <div class="amenity-desc">High-speed satellite internet — work from the forest</div>
+  </div>
+  <div class="amenity terra-bg">
+    <div class="amenity-num">04</div>
+    <div class="amenity-name">Full kitchen</div>
+    <div class="amenity-desc">Fully equipped for long stays — oven, fridge, cookware</div>
+  </div>
+  <div class="amenity">
+    <div class="amenity-num">05</div>
+    <div class="amenity-name">Wood stove</div>
+    <div class="amenity-desc">Cast iron stove. The fire makes the room.</div>
+  </div>
+  <div class="amenity ink-bg">
+    <div class="amenity-num">06</div>
+    <div class="amenity-name">Lake views</div>
+    <div class="amenity-desc">Nahuel Huapi and Cerro López visible from every level</div>
+  </div>
+  <div class="amenity">
+    <div class="amenity-num">07</div>
+    <div class="amenity-name">Ski access</div>
+    <div class="amenity-desc">Cerro Catedral 20 min · lake beach 10 min</div>
+  </div>
+  <div class="amenity blue-bg">
+    <div class="amenity-num">08</div>
+    <div class="amenity-name">8m ceilings</div>
+    <div class="amenity-desc">The interior opens into the canopy. Glass on three sides.</div>
+  </div>
+</div>
+
+<!-- FOREST -->
+<section id="forest">
+  <div class="forest-header">
+    <div>
+      <div class="forest-eyebrow">The Forest</div>
+      <div class="forest-title">Native<br><span>Patagonian</span><br>species.</div>
+    </div>
+    <p class="forest-header-sub">Casa Bari stands inside one of the last intact native forests of the Andean-Patagonian range. Four species define this landscape — each with its own character, history, and name.</p>
+  </div>
+
+  <div class="forest-canopy">
+    <img src="forest-canopy.jpg" alt="Looking up through the coihue and cypress canopy">
+  </div>
+
+  <div class="forest-entries">
+    <div class="forest-entry fe-1">
+      <div class="entry-leaf leaf-coihue"></div>
+      <div class="entry-num">01</div>
+      <div class="entry-name">Coihue</div>
+      <div class="entry-latin">Nothofagus dombeyi</div>
+      <div class="entry-body">The dominant tree of the Andean-Patagonian forest and the one that surrounds Casa Bari on every side. Coihue is a southern beech — evergreen, long-lived, reaching 40 meters. Its smooth grey bark lightens with age; its small leathery leaves filter the Patagonian light into something green and diffuse. The name comes from the Mapudungun word <em>koihue</em>: simply, the tree. It is the forest itself.</div>
+    </div>
+    <div class="forest-entry fe-2">
+      <div class="entry-leaf leaf-radal"></div>
+      <div class="entry-num">02</div>
+      <div class="entry-name">Radal</div>
+      <div class="entry-latin">Lomatia hirsuta</div>
+      <div class="entry-body">A small tree of the forest understory — in clearings and stream margins where more light reaches the ground. In summer it flowers in clusters of small cream-white blooms; in autumn its serrated leaves turn warm gold before falling. Its wood was used for tool handles and fire-starting. The radal is a quiet presence: not the first tree you notice, but the one you return to.</div>
+    </div>
+    <div class="forest-entry fe-3">
+      <div class="entry-leaf leaf-lenga"></div>
+      <div class="entry-num">03</div>
+      <div class="entry-name">Lenga</div>
+      <div class="entry-latin">Nothofagus pumilio</div>
+      <div class="entry-body">Lenga is the tree that turns Patagonia red. A deciduous southern beech, it climbs higher than any other Andean tree — right to the treeline — and each autumn its small round leaves transform entire mountainsides into fire. Up close, lenga is modest: low-branching, gnarled at altitude, twisted by decades of snow. From a distance, it is spectacular. It burns before it sleeps.</div>
+    </div>
+    <div class="forest-entry fe-4">
+      <div class="entry-leaf leaf-cipres"></div>
+      <div class="entry-num">04</div>
+      <div class="entry-name">Ciprés de la Cordillera</div>
+      <div class="entry-latin">Austrocedrus chilensis</div>
+      <div class="entry-body">One of Patagonia's most ancient survivors — individual trees can live more than 1,500 years. It grows on rocky slopes and well-drained hillsides, its aromatic reddish-brown wood long prized by Mapuche craftspeople for canoes and homes. The cypress marks thresholds: where forest opens onto steppe or lake. It marks time in ways humans cannot fully comprehend.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ETYMOLOGY -->
+<section class="etymology">
+  <div class="etymology-inner">
+    <div class="ety-word">
+      <span class="ety-label">Etymology</span>
+      Patagonia.
+    </div>
+    <div class="ety-body">
+      <p>The name first appeared in writing in 1520, recorded by Antonio Pigafetta, the Italian scholar who sailed with Magellan on the first circumnavigation of the Earth. Near the Strait that now bears Magellan's name, the expedition encountered the indigenous Tehuelche people — known for their height and for the large guanaco-skin boots they wrapped around their feet against the cold.</p>
+      <p>Pigafetta called them <em>patagones</em> — from the Spanish <em>pata</em>, foot, and possibly from the fictional giant Pathagon who appeared in the popular romance <em>Primaléon</em> (1512). The word carried the full weight of European mythology: giants at the edge of the world, where the map ran out and the imagination took over.</p>
+      <p>Mapuche traditions hold a different understanding. For them it is simply <em>Wallmapu</em> — the surrounding territory — the earth that has always been there, long before it needed a name invented by those arriving by sea. The giants were never giants. They were people who knew the cold, who wore what the land gave them, and who had been here long enough to know that the mountains were not the edge of anything. They were the center.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RATES -->
+<section id="rates">
+  <div class="rates-wrap">
+    <div class="rates-header">
+      <h2>Rates.</h2>
+    </div>
+    <div class="rates-grid">
+      <div class="rate-card">
+        <div class="rate-label">Low Season</div>
+        <div class="rate-price">$220</div>
+        <div class="rate-unit">USD · per night</div>
+        <div class="rate-detail">Shoulder months — spring and autumn. The forest is quietest. Lenga turns red in May.</div>
+      </div>
+      <div class="rate-card terra">
+        <div class="rate-label">High Season</div>
+        <div class="rate-price">$330</div>
+        <div class="rate-unit">USD · per night</div>
+        <div class="rate-detail">Summer (January) and winter ski season (July–August). Cerro Catedral 20 min. Nahuel Huapi for swimming and kayak.</div>
+      </div>
+      <div class="rate-card">
+        <div class="rate-label">Cleaning</div>
+        <div class="rate-price">$70</div>
+        <div class="rate-unit">USD · per stay</div>
+        <div class="rate-detail">One flat fee per reservation, regardless of length. No additional service charges.</div>
+      </div>
+    </div>
+    <div class="rate-note">All rates USD · Minimum 2 nights · Cleaning fee added once per booking</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="book">
+  <h2>Reserve<br>your dates.</h2>
+  <p>Write us to check availability. We respond within 24 hours.</p>
+  <a href="mailto:garrettnelso@gmail.com?subject=Casa Bari — Reservation Inquiry" class="btn-cta">Send an Inquiry</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Casa Bari</div>
+  <div class="footer-copy">Península San Pedro · Bariloche · Patagonia, Argentina</div>
+  <div class="footer-copy">© 2026</div>
+</footer>
+
+<script>
+document.addEventListener('click', function(e) {
+  const mob = document.querySelector('.mob');
+  const ham = document.querySelector('.hamburger');
+  if (mob.classList.contains('open') && !mob.contains(e.target) && !ham.contains(e.target)) {
+    mob.classList.remove('open');
+  }
+});
+</script>
+</body>
+</html>
