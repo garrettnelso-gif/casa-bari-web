@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Casa Bari — Península San Pedro, Patagonia</title>
+<title>Posta Bariloche — Península San Pedro, Patagonia</title>
 <meta name="description" content="A black tower in the coihue forest inside Nahuel Huapi National Park. Direct views to Cerro López and Nahuel Huapi. 2 bed · 2 bath · heated floors · Starlink.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
   --cream:    #E5E0D5;
@@ -209,7 +209,7 @@ nav {
 @media (max-width: 600px) { .forest-canopy img { aspect-ratio: 16/9; } }
 
 .forest-entries { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 3px solid var(--ink); }
-.forest-entry { padding: 52px 44px; border-right: 3px solid var(--ink); border-bottom: 3px solid var(--ink); display: flex; flex-direction: column; position: relative; overflow: hidden; }
+.forest-entry { padding: 52px 44px; border-right: 3px solid var(--ink); border-bottom: 3px solid var(--ink); display: flex; flex-direction: column; }
 .forest-entry:nth-child(2n) { border-right: none; }
 .forest-entry:nth-child(3), .forest-entry:nth-child(4) { border-bottom: none; }
 .fe-1 { background: var(--white); }
@@ -217,36 +217,6 @@ nav {
 .fe-3 { background: var(--terra); }
 .fe-4 { background: var(--cream); }
 
-/* pulsing tree background */
-@keyframes treePulse {
-  0%   { opacity: 0.04; }
-  50%  { opacity: 0.22; }
-  100% { opacity: 0.04; }
-}
-.fe-tree-bg {
-  position: absolute;
-  inset: 0;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  animation: treePulse 9s ease-in-out infinite;
-  pointer-events: none;
-  mix-blend-mode: multiply;
-}
-.fe-2 .fe-tree-bg, .fe-3 .fe-tree-bg { mix-blend-mode: luminosity; }
-.fe-1 .fe-tree-bg { background-image: url('coihue-bg.png'); }
-.fe-2 .fe-tree-bg { background-image: url('radal-bg.png'); }
-.fe-3 .fe-tree-bg { background-image: url('lenga-bg.jpg'); }
-.fe-4 .fe-tree-bg { background-image: url('cipres-bg.jpg'); }
-
-/* stagger the animations */
-.fe-1 .fe-tree-bg { animation-delay: 0s; }
-.fe-2 .fe-tree-bg { animation-delay: 2.25s; }
-.fe-3 .fe-tree-bg { animation-delay: 4.5s; }
-.fe-4 .fe-tree-bg { animation-delay: 6.75s; }
-
-/* keep text above */
-.forest-entry > *:not(.fe-tree-bg) { position: relative; z-index: 1; }
 
 .entry-leaf { width: 120px; height: 120px; background-size: contain; background-repeat: no-repeat; background-position: center; margin-bottom: 28px; flex-shrink: 0; }
 .leaf-coihue { background-image: url('coihue.png'); }
@@ -383,7 +353,7 @@ span[data-lang="en"] { display: inline; }
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">Casa Bari</a>
+  <a href="#" class="nav-logo">Posta Bariloche</a>
   <div class="nav-center">
     <a href="#house" data-i18n-nav="nav-house">The House</a>
     <a href="#spaces" data-i18n-nav="nav-spaces">The Spaces</a>
@@ -422,10 +392,10 @@ span[data-lang="en"] { display: inline; }
 <!-- 1. OPENER -->
 <section class="opener" id="house">
   <div class="opener-img">
-    <img src="IMG-20250326-WA0018.jpg" alt="Casa Bari — black tower rising through coihue forest at golden hour">
+    <img src="IMG-20250326-WA0018.jpg" alt="Posta Bariloche — black tower rising through coihue forest at golden hour">
   </div>
   <div class="opener-blank">
-    <h1>Casa<br>Bari</h1>
+    <h1>Posta<br>Bariloche</h1>
     <div class="loc">
       Península San Pedro<br>
       Bariloche · Patagonia
@@ -446,19 +416,19 @@ span[data-lang="en"] { display: inline; }
       </h2>
       <div class="desc-body">
         <div data-lang="en">
-          <p>Casa Bari stands on the forested hillside of Península San Pedro, an exclusive peninsula inside Nahuel Huapi National Park. The house rises as a dark vertical form through native coihue — black corrugated steel against ancient trunks — with a glass front on two sides that frames unobstructed views of Cerro López and the lake below.</p>
+          <p>Posta Bariloche stands on the forested hillside of Península San Pedro, an exclusive peninsula inside Nahuel Huapi National Park. The house rises as a dark vertical form through native coihue — black corrugated steel against ancient trunks — with a glass front on two sides that frames unobstructed views of Cerro López and the lake below.</p>
           <p>Eight-meter ceilings open the interior into the canopy. Heated concrete floors run the full ground floor. The kitchen is fully equipped; the leather sofa sits on a black sheepskin rug. Two king-sized bedrooms — one upstairs and one downstairs, en suite with its own private deck — sleep in total quiet, with only the wind in the trees and the occasional Austral parakeet. The upper bedroom has a dedicated workspace and a fourth-floor balcony where the lake appears through the treetops.</p>
         </div>
         <div data-lang="es">
-          <p>Casa Bari se encuentra en la ladera boscosa de la Península San Pedro, una península exclusiva dentro del Parque Nacional Nahuel Huapi. La casa se eleva como una forma vertical oscura a través del coihue nativo — acero corrugado negro contra troncos ancestrales — con frente de vidrio en dos lados que enmarca vistas despejadas al Cerro López y al lago.</p>
+          <p>Posta Bariloche se encuentra en la ladera boscosa de la Península San Pedro, una península exclusiva dentro del Parque Nacional Nahuel Huapi. La casa se eleva como una forma vertical oscura a través del coihue nativo — acero corrugado negro contra troncos ancestrales — con frente de vidrio en dos lados que enmarca vistas despejadas al Cerro López y al lago.</p>
           <p>Techos de ocho metros abren el interior hacia el dosel. Pisos de concreto radiante en toda la planta baja. Cocina equipada; sillón de cuero sobre alfombra de piel negra. Dos dormitorios king — uno arriba y uno abajo, en suite con deck privado propio — duermen en silencio total. El dormitorio superior tiene escritorio de trabajo y balcón en el cuarto piso con vistas al lago entre las copas.</p>
         </div>
         <div data-lang="de">
-          <p>Casa Bari liegt am bewaldeten Hang der Península San Pedro, einer exklusiven Halbinsel im Nationalpark Nahuel Huapi. Das Haus erhebt sich als dunkle Vertikalform durch den nativen Coihue-Wald — schwarzes Wellblech gegen uralte Stämme — mit einer Glasfront auf zwei Seiten und unverstellten Blicken auf den Cerro López und den See.</p>
+          <p>Posta Bariloche liegt am bewaldeten Hang der Península San Pedro, einer exklusiven Halbinsel im Nationalpark Nahuel Huapi. Das Haus erhebt sich als dunkle Vertikalform durch den nativen Coihue-Wald — schwarzes Wellblech gegen uralte Stämme — mit einer Glasfront auf zwei Seiten und unverstellten Blicken auf den Cerro López und den See.</p>
           <p>Acht Meter hohe Decken öffnen das Innere zum Blätterdach. Beheizter Betonboden im gesamten Erdgeschoss. Voll ausgestattete Küche; Ledersofa auf schwarzem Schaffell. Zwei King-Schlafzimmer — eines oben, eines unten mit eigenem Privat-Deck — schlafen in völliger Stille. Das obere Zimmer verfügt über einen dedizierten Arbeitsplatz und einen Balkon im vierten Stock mit Seeblick durch die Baumkronen.</p>
         </div>
         <div data-lang="fr">
-          <p>Casa Bari est situé sur le flanc boisé de la Península San Pedro, une péninsule exclusive à l'intérieur du Parc National Nahuel Huapi. La maison s'élève comme une forme verticale sombre à travers le coihue natif — acier ondulé noir contre des troncs ancestraux — avec une façade vitrée sur deux côtés offrant des vues dégagées sur le Cerro López et le lac.</p>
+          <p>Posta Bariloche est situé sur le flanc boisé de la Península San Pedro, une péninsule exclusive à l'intérieur du Parc National Nahuel Huapi. La maison s'élève comme une forme verticale sombre à travers le coihue natif — acier ondulé noir contre des troncs ancestraux — avec une façade vitrée sur deux côtés offrant des vues dégagées sur le Cerro López et le lac.</p>
           <p>Des plafonds de huit mètres ouvrent l'intérieur sur la canopée. Planchers chauffants en béton sur tout le rez-de-chaussée. Cuisine entièrement équipée ; canapé en cuir sur tapis en peau noire. Deux chambres king — l'une à l'étage et l'autre au rez-de-chaussée en suite avec sa propre terrasse privée — dorment dans un silence total. La chambre supérieure dispose d'un espace de travail dédié et d'un balcon au quatrième étage avec vue sur le lac entre les cimes.</p>
         </div>
       </div>
@@ -517,7 +487,7 @@ span[data-lang="en"] { display: inline; }
 
 <!-- FULL BLEED NIGHT -->
 <div class="full-bleed">
-  <img src="night-exterior.jpg" alt="Casa Bari at night — black tower lit against the dark forest">
+  <img src="night-exterior.jpg" alt="Posta Bariloche at night — black tower lit against the dark forest">
 </div>
 
 <!-- AMENITIES -->
@@ -574,22 +544,22 @@ span[data-lang="en"] { display: inline; }
       <div class="forest-eyebrow" data-i18n="forest-eyebrow">The Forest</div>
       <div class="forest-title" data-i18n="forest-title">Native<br><span>Patagonian</span><br>species.</div>
     </div>
-    <p class="forest-header-sub" data-i18n="forest-sub">Casa Bari stands inside one of the last intact native forests of the Andean-Patagonian range. Four species define this landscape — each with its own character, history, and name.</p>
+    <p class="forest-header-sub" data-i18n="forest-sub">Posta Bariloche stands inside one of the last intact native forests of the Andean-Patagonian range. Four species define this landscape — each with its own character, history, and name.</p>
   </div>
   <div class="forest-canopy">
     <img src="forest-canopy.jpg" alt="Looking up through the coihue and cypress canopy">
   </div>
   <div class="forest-entries">
     <div class="forest-entry fe-1">
-      <div class="fe-tree-bg"></div>
+
       <div class="entry-leaf leaf-coihue"></div>
       <div class="entry-num">01</div>
       <div class="entry-name">Coihue</div>
       <div class="entry-latin">Nothofagus dombeyi</div>
-      <div class="entry-body" data-i18n="tree1">The dominant tree of the Andean-Patagonian forest and the one that surrounds Casa Bari on every side. Coihue is a southern beech — evergreen, long-lived, reaching 40 meters. Its smooth grey bark lightens with age; its small leathery leaves filter the Patagonian light into something green and diffuse. The name comes from the Mapudungun word <em>koihue</em>: simply, the tree. It is the forest itself.</div>
+      <div class="entry-body" data-i18n="tree1">The dominant tree of the Andean-Patagonian forest and the one that surrounds Posta Bariloche on every side. Coihue is a southern beech — evergreen, long-lived, reaching 40 meters. Its smooth grey bark lightens with age; its small leathery leaves filter the Patagonian light into something green and diffuse. The name comes from the Mapudungun word <em>koihue</em>: simply, the tree. It is the forest itself.</div>
     </div>
     <div class="forest-entry fe-2">
-      <div class="fe-tree-bg"></div>
+
       <div class="entry-leaf leaf-radal"></div>
       <div class="entry-num">02</div>
       <div class="entry-name">Radal</div>
@@ -597,7 +567,7 @@ span[data-lang="en"] { display: inline; }
       <div class="entry-body" data-i18n="tree2">A small tree of the forest understory — in clearings and stream margins where more light reaches the ground. In summer it flowers in clusters of small cream-white blooms; in autumn its serrated leaves turn warm gold before falling. Its wood was used for tool handles and fire-starting. The radal is a quiet presence: not the first tree you notice, but the one you return to.</div>
     </div>
     <div class="forest-entry fe-3">
-      <div class="fe-tree-bg"></div>
+
       <div class="entry-leaf leaf-lenga"></div>
       <div class="entry-num">03</div>
       <div class="entry-name">Lenga</div>
@@ -605,7 +575,7 @@ span[data-lang="en"] { display: inline; }
       <div class="entry-body" data-i18n="tree3">Lenga is the tree that turns Patagonia red. A deciduous southern beech, it climbs higher than any other Andean tree — right to the treeline — and each autumn its small round leaves transform entire mountainsides into fire. Up close, lenga is modest: low-branching, gnarled at altitude, twisted by decades of snow. From a distance, it is spectacular. It burns before it sleeps.</div>
     </div>
     <div class="forest-entry fe-4">
-      <div class="fe-tree-bg"></div>
+
       <div class="entry-leaf leaf-cipres"></div>
       <div class="entry-num">04</div>
       <div class="entry-name">Ciprés de la Cordillera</div>
@@ -714,7 +684,7 @@ span[data-lang="en"] { display: inline; }
         <div class="place-num">08</div>
         <div class="place-name" data-i18n="p8-name">Ánima · Restaurante</div>
         <div class="place-sub"><a href="https://www.instagram.com/animarestaurante/" target="_blank" class="place-link">@animarestaurante</a></div>
-        <div class="place-desc" data-i18n="p8-desc">Minutes from Casa Bari, Ánima brings refined Patagonian cooking to the lake road. Wood fire, local produce, natural wines. One of the best tables in the region — reserve ahead.</div>
+        <div class="place-desc" data-i18n="p8-desc">Minutes from Posta Bariloche, Ánima brings refined Patagonian cooking to the lake road. Wood fire, local produce, natural wines. One of the best tables in the region — reserve ahead.</div>
       </div>
     </div>
 
@@ -723,7 +693,7 @@ span[data-lang="en"] { display: inline; }
         <div class="place-num">09</div>
         <div class="place-name" data-i18n="p9-name">Cerro López</div>
         <div class="place-sub" data-i18n="p9-sub">10 min · Hiking</div>
-        <div class="place-desc" data-i18n="p9-desc">The mountain you see from every window at Casa Bari. The trailhead is ten minutes by car. Full-day hikes reach the refuge at 1,650 m with sweeping views of the entire lake district. One of the great day hikes of Patagonia.</div>
+        <div class="place-desc" data-i18n="p9-desc">The mountain you see from every window at Posta Bariloche. The trailhead is ten minutes by car. Full-day hikes reach the refuge at 1,650 m with sweeping views of the entire lake district. One of the great day hikes of Patagonia.</div>
       </div>
     </div>
 
@@ -764,13 +734,14 @@ span[data-lang="en"] { display: inline; }
 <section class="cta" id="book">
   <h2 data-i18n="cta-title">Reserve<br>your dates.</h2>
   <p data-i18n="cta-sub">Write us to check availability. We respond within 24 hours.</p>
-  <a href="mailto:garrettnelso@gmail.com?subject=Casa Bari — Reservation Inquiry" class="btn-cta" data-i18n="cta-btn">Send an Inquiry</a>
+  <a href="mailto:garrettnelso@gmail.com?subject=Posta Bariloche — Reservation Inquiry" class="btn-cta" data-i18n="cta-btn">Send an Inquiry</a>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Casa Bari</div>
+  <div class="footer-logo">Posta Bariloche</div>
   <div class="footer-copy">Península San Pedro · Nahuel Huapi N.P. · Patagonia, Argentina</div>
+  <div class="footer-copy">Another unique stay &rarr; <a href="https://www.quintasierras.com" target="_blank" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;font-weight:400;letter-spacing:0.04em;color:var(--white);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:1px;">Quinta <em style="font-style:italic;">Sierras</em></a></div>
   <div class="footer-copy">© 2026</div>
 </footer>
 
@@ -792,26 +763,26 @@ const translations = {
     "am6-name":"Lake views","am6-desc":"Nahuel Huapi and Cerro López from every level",
     "am7-name":"Workspace","am7-desc":"Dedicated desk upstairs with 4th floor balcony views",
     "am8-name":"Private decks","am8-desc":"Downstairs en suite opens to its own forest deck",
-    "forest-eyebrow":"The Forest","forest-title":"Native\nPatagonian\nspecies.","forest-sub":"Casa Bari stands inside one of the last intact native forests of the Andean-Patagonian range. Four species define this landscape — each with its own character, history, and name.",
+    "forest-eyebrow":"The Forest","forest-title":"Native\nPatagonian\nspecies.","forest-sub":"Posta Bariloche stands inside one of the last intact native forests of the Andean-Patagonian range. Four species define this landscape — each with its own character, history, and name.",
     "ety-label":"Etymology",
     "ety-1":"The name first appeared in writing in 1520, recorded by Antonio Pigafetta, the Italian scholar who sailed with Magellan on the first circumnavigation of the Earth. Near the Strait that now bears Magellan's name, the expedition encountered the indigenous Tehuelche people — known for their height and for the large guanaco-skin boots they wrapped around their feet against the cold.",
     "ety-2":"Pigafetta called them <em>patagones</em> — from the Spanish <em>pata</em>, foot, and possibly from the fictional giant Pathagon who appeared in the popular romance <em>Primaléon</em> (1512). The word carried the full weight of European mythology: giants at the edge of the world, where the map ran out and the imagination took over.",
     "ety-3":"Mapuche traditions hold a different understanding. For them it is simply <em>Wallmapu</em> — the surrounding territory — the earth that has always been there, long before it needed a name invented by those arriving by sea. The giants were never giants. They were people who knew the cold, who wore what the land gave them, and who had been here long enough to know that the mountains were not the edge of anything. They were the center.",
     "places-title":"Around\nBariloche.","places-sub":"The peninsula puts you minutes from some of the most extraordinary corners of the Patagonian lake district. Here is where to go.",
-    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Peninsula San Pedro","p1-desc":"One of the world's largest arrayán myrtle forests, ten minutes from Casa Bari. Twisted cinnamon-colored trunks rise over a mossy floor that inspired Disney's Bambi. Walk it in the morning when the bark glows orange. Or take the ferry from Puerto Llao Llao — ten minutes away — to Isla Victoria for a fully immersive old-growth forest experience on the island.",
+    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Peninsula San Pedro","p1-desc":"One of the world's largest arrayán myrtle forests, ten minutes from Posta Bariloche. Twisted cinnamon-colored trunks rise over a mossy floor that inspired Disney's Bambi. Walk it in the morning when the bark glows orange. Or take the ferry from Puerto Llao Llao — ten minutes away — to Isla Victoria for a fully immersive old-growth forest experience on the island.",
     "p2-name":"Golf Llao Llao","p2-sub":"10 min · Lago Moreno","p2-desc":"Eighteen holes set between two lakes with Cerro López and Cerro Catedral as backdrop. One of the most scenic golf courses in South America. The hotel itself is worth visiting for a drink on the terrace alone.",
     "p3-name":"Cerro Campanario","p3-sub":"20 min · Chairlift","p3-desc":"Ranked among the world's best views — a short chairlift ride to a summit that looks out over five lakes. At the top: vintage alpine vibes, apple strudel, and a panorama that takes time to absorb.",
     "p4-name":"Playa sin Viento","p4-sub":"10 min · Lago Nahuel Huapi","p4-desc":"A sheltered beach on the lake named for its stillness. Glacial water, impossibly clear. Kayak rentals on site. Come early for the stillness; stay for the afternoon light on the water.",
     "p5-name":"Cerro Catedral","p5-sub":"30 min · Ski · Hike · Bike","p5-desc":"The largest ski resort in South America — 120 km of runs, 1,000 m vertical drop, season June–October. In summer: trekking and mountain biking with views across the entire lake district.",
     "p6-name":"Fly Fishing","p6-sub":"Lakes · Rivers · Guided","p6-desc":"Patagonia's rivers and lakes are legendary among fly fishers. Wild brown and rainbow trout, crystal-clear water. Fish the Limay, the Traful, or Nahuel Huapi itself. Guides and licenses easily arranged.",
-    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurante","p8-sub":"Just off the peninsula","p8-desc":"Minutes from Casa Bari, Ánima brings refined Patagonian cooking to the lake road. Wood fire, local produce, natural wines. Reserve ahead.",
+    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurante","p8-sub":"Just off the peninsula","p8-desc":"Minutes from Posta Bariloche, Ánima brings refined Patagonian cooking to the lake road. Wood fire, local produce, natural wines. Reserve ahead.",
     "p9-name":"Cerro López","p9-sub":"10 min · Hiking","p9-desc":"The mountain you see from every window. Trailhead ten minutes by car. Full-day hikes reach the refuge at 1,650 m with sweeping views of the entire lake district.",
     "rates-title":"Rates.","rate1-label":"Low Season","rate1-detail":"Shoulder months — spring and autumn. The forest is quietest. Lenga turns red in May.",
     "rate2-label":"High Season","rate2-detail":"Summer (January) and ski season (July–August). Cerro Catedral 30 min. Nahuel Huapi for swimming and kayak.",
     "rate3-label":"Cleaning","rate3-detail":"One flat fee per reservation, regardless of length. No additional service charges.",
     "per-night":"per night","per-stay":"per stay","rate-note":"All rates USD · Minimum 2 nights · Cleaning fee added once per booking · Rates subject to change",
     "cta-title":"Reserve\nyour dates.","cta-sub":"Write us to check availability. We respond within 24 hours.",
-    "tree1":"The dominant tree of the Andean-Patagonian forest and the one that surrounds Casa Bari on every side. Coihue is a southern beech — evergreen, long-lived, reaching 40 meters. Its smooth grey bark lightens with age; its small leathery leaves filter the Patagonian light into something green and diffuse. The name comes from the Mapudungun word <em>koihue</em>: simply, the tree. It is the forest itself.",
+    "tree1":"The dominant tree of the Andean-Patagonian forest and the one that surrounds Posta Bariloche on every side. Coihue is a southern beech — evergreen, long-lived, reaching 40 meters. Its smooth grey bark lightens with age; its small leathery leaves filter the Patagonian light into something green and diffuse. The name comes from the Mapudungun word <em>koihue</em>: simply, the tree. It is the forest itself.",
     "tree2":"A small tree of the forest understory — in clearings and stream margins where more light reaches the ground. In summer it flowers in clusters of small cream-white blooms; in autumn its serrated leaves turn warm gold before falling. The radal is a quiet presence: not the first tree you notice, but the one you return to.",
     "tree3":"Lenga is the tree that turns Patagonia red. A deciduous southern beech, it climbs higher than any other Andean tree — right to the treeline — and each autumn transforms entire mountainsides into fire. Up close, lenga is modest: low-branching, gnarled at altitude. From a distance, spectacular.",
     "tree4":"One of Patagonia's most ancient survivors — individual trees can live more than 1,500 years. It grows on rocky slopes, its aromatic wood long prized by Mapuche craftspeople. The cypress marks thresholds: where forest opens onto steppe or lake. It marks time in ways humans cannot fully comprehend."
@@ -829,26 +800,26 @@ const translations = {
     "am6-name":"Vistas al lago","am6-desc":"Nahuel Huapi y Cerro López desde cada nivel",
     "am7-name":"Espacio de trabajo","am7-desc":"Escritorio dedicado arriba con balcón en 4to piso",
     "am8-name":"Decks privados","am8-desc":"El dormitorio de abajo tiene su propio deck al bosque",
-    "forest-eyebrow":"El Bosque","forest-title":"Especies\n<span>Patagónicas</span>\nnativas.","forest-sub":"Casa Bari está dentro de uno de los últimos bosques nativos intactos de la cordillera andino-patagónica.",
+    "forest-eyebrow":"El Bosque","forest-title":"Especies\n<span>Patagónicas</span>\nnativas.","forest-sub":"Posta Bariloche está dentro de uno de los últimos bosques nativos intactos de la cordillera andino-patagónica.",
     "ety-label":"Etimología",
     "ety-1":"El nombre apareció por primera vez en 1520, registrado por Antonio Pigafetta, el estudioso italiano que navegó con Magallanes en la primera circunnavegación de la Tierra. Cerca del Estrecho que hoy lleva el nombre de Magallanes, la expedición encontró al pueblo indígena Tehuelche — conocido por su estatura y por las grandes botas de piel de guanaco que usaban contra el frío.",
     "ety-2":"Pigafetta los llamó <em>patagones</em> — del español <em>pata</em>, pie, y posiblemente del gigante ficticio Pathagon que aparecía en el romance popular <em>Primaléon</em> (1512). La palabra llevaba el peso completo de la mitología europea: gigantes al borde del mundo, donde el mapa terminaba y la imaginación tomaba el control.",
     "ety-3":"Las tradiciones mapuche tienen una comprensión diferente. Para ellos es simplemente <em>Wallmapu</em> — el territorio que rodea — la tierra que siempre estuvo ahí, mucho antes de necesitar un nombre inventado por quienes llegaban por mar.",
     "places-title":"Alrededor\nde Bariloche.","places-sub":"La península te pone a minutos de algunos de los rincones más extraordinarios del distrito de los lagos patagónicos.",
-    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Península San Pedro","p1-desc":"Uno de los mayores bosques de arrayán del mundo, a diez minutos de Casa Bari. Troncos retorcidos color canela sobre un suelo musgoso que inspiró el Bambi de Disney. O tomá el ferry desde Puerto Llao Llao — a diez minutos — hasta la Isla Victoria para una experiencia de bosque primario completamente inmersiva.",
+    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Península San Pedro","p1-desc":"Uno de los mayores bosques de arrayán del mundo, a diez minutos de Posta Bariloche. Troncos retorcidos color canela sobre un suelo musgoso que inspiró el Bambi de Disney. O tomá el ferry desde Puerto Llao Llao — a diez minutos — hasta la Isla Victoria para una experiencia de bosque primario completamente inmersiva.",
     "p2-name":"Golf Llao Llao","p2-sub":"10 min · Lago Moreno","p2-desc":"Dieciocho hoyos entre dos lagos con el Cerro López y el Cerro Catedral de fondo. Uno de los campos de golf más pintorescos de Sudamérica.",
     "p3-name":"Cerro Campanario","p3-sub":"20 min · Aerosilla","p3-desc":"Reconocida entre las mejores vistas del mundo. Desde la cima: ambiente alpino, strudel de manzana, y un panorama sobre cinco lagos.",
     "p4-name":"Playa sin Viento","p4-sub":"10 min · Lago Nahuel Huapi","p4-desc":"Una playa protegida en el lago. Agua glacial increíblemente clara. Alquiler de kayaks en el lugar.",
     "p5-name":"Cerro Catedral","p5-sub":"30 min · Ski · Senderismo","p5-desc":"El mayor centro de ski de Sudamérica — 120 km de pistas, temporada junio–octubre. En verano: trekking y mountain bike.",
     "p6-name":"Pesca con mosca","p6-sub":"Lagos · Ríos · Con guía","p6-desc":"Los ríos y lagos de la Patagonia son legendarios entre los pescadores con mosca. Truchas marrones y arco iris en aguas cristalinas.",
-    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurante","p8-sub":"A minutos de la península","p8-desc":"A minutos de Casa Bari, Ánima trae cocina patagónica refinada a la ruta del lago. Fuego de leña, productos locales, vinos naturales.",
+    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurante","p8-sub":"A minutos de la península","p8-desc":"A minutos de Posta Bariloche, Ánima trae cocina patagónica refinada a la ruta del lago. Fuego de leña, productos locales, vinos naturales.",
     "p9-name":"Cerro López","p9-sub":"10 min · Senderismo","p9-desc":"La montaña que ves desde cada ventana. El sendero empieza a diez minutos en auto. Excursiones de día completo hasta el refugio a 1.650 m.",
     "rates-title":"Tarifas.","rate1-label":"Temporada baja","rate1-detail":"Meses de hombro — primavera y otoño. El bosque está más tranquilo.",
     "rate2-label":"Temporada alta","rate2-detail":"Verano (enero) y temporada de ski (julio–agosto). Catedral a 30 min.",
     "rate3-label":"Limpieza","rate3-detail":"Un cargo único por reserva, sin importar la duración.",
     "per-night":"por noche","per-stay":"por estadía","rate-note":"Tarifas en USD · Mínimo 2 noches · Cargo de limpieza único · Tarifas sujetas a cambio",
     "cta-title":"Reservá\ntus fechas.","cta-sub":"Escribinos para consultar disponibilidad. Respondemos en 24 horas.",
-    "tree1":"El árbol dominante del bosque andino-patagónico y el que rodea Casa Bari por todos lados. El coihue es un haya austral — perenne, longevo, alcanza 40 metros. Su nombre proviene del mapudungun <em>koihue</em>: simplemente, el árbol.",
+    "tree1":"El árbol dominante del bosque andino-patagónico y el que rodea Posta Bariloche por todos lados. El coihue es un haya austral — perenne, longevo, alcanza 40 metros. Su nombre proviene del mapudungun <em>koihue</em>: simplemente, el árbol.",
     "tree2":"Un árbol pequeño del sotobosque — en claros y márgenes de arroyos donde llega más luz. En verano florece en racimos crema-blancos; en otoño sus hojas serradas se vuelven doradas. El radal es una presencia silenciosa.",
     "tree3":"La lenga es el árbol que tiñe la Patagonia de rojo. Un haya austral caducifolia que trepa más alto que cualquier otro árbol andino — hasta el límite del bosque — y cada otoño transforma montañas enteras en fuego.",
     "tree4":"Uno de los sobrevivientes más antiguos de la Patagonia — árboles individuales pueden vivir más de 1.500 años. Crece en laderas rocosas, su madera aromática largamente valorada por los artesanos mapuche.",
@@ -868,26 +839,26 @@ const translations = {
     "am6-name":"Seeblick","am6-desc":"Nahuel Huapi und Cerro López von jeder Ebene",
     "am7-name":"Arbeitsplatz","am7-desc":"Schreibtisch oben mit Balkon im 4. Stock",
     "am8-name":"Private Terrassen","am8-desc":"Das untere Zimmer öffnet zur eigenen Waldterrasse",
-    "forest-eyebrow":"Der Wald","forest-title":"Einheimische\n<span>patagonische</span>\nArten.","forest-sub":"Casa Bari steht in einem der letzten intakten nativen Wälder der andinen Patagoniens.",
+    "forest-eyebrow":"Der Wald","forest-title":"Einheimische\n<span>patagonische</span>\nArten.","forest-sub":"Posta Bariloche steht in einem der letzten intakten nativen Wälder der andinen Patagoniens.",
     "ety-label":"Etymologie",
     "ety-1":"Der Name erschien erstmals 1520 in einer Aufzeichnung von Antonio Pigafetta, dem italienischen Gelehrten, der mit Magellan auf der ersten Weltumsegelung segelte. In der Nähe der Meerenge, die heute Magellans Namen trägt, begegnete die Expedition dem indigenen Volk der Tehuelche.",
     "ety-2":"Pigafetta nannte sie <em>patagones</em> — vom spanischen <em>pata</em>, Fuß, und möglicherweise vom fiktiven Riesen Pathagon aus dem populären Roman <em>Primaléon</em> (1512).",
     "ety-3":"Die Mapuche-Traditionen haben ein anderes Verständnis. Für sie ist es einfach <em>Wallmapu</em> — das umgebende Territorium — die Erde, die schon immer da war, lange bevor sie einen Namen brauchte.",
     "places-title":"Rund um\nBariloche.","places-sub":"Die Halbinsel bringt Sie in wenigen Minuten zu einigen der außergewöhnlichsten Ecken des patagonischen Seengebiets.",
-    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Halbinsel San Pedro","p1-desc":"Einer der größten Arrayán-Myrtenwälder der Welt, zehn Minuten von Casa Bari entfernt. Oder nehmen Sie die Fähre von Puerto Llao Llao — zehn Minuten entfernt — zur Isla Victoria für ein vollständig immersives Urwalderlebnis.",
+    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Halbinsel San Pedro","p1-desc":"Einer der größten Arrayán-Myrtenwälder der Welt, zehn Minuten von Posta Bariloche entfernt. Oder nehmen Sie die Fähre von Puerto Llao Llao — zehn Minuten entfernt — zur Isla Victoria für ein vollständig immersives Urwalderlebnis.",
     "p2-name":"Golf Llao Llao","p2-sub":"10 min · Lago Moreno","p2-desc":"Achtzehn Löcher zwischen zwei Seen mit Cerro López und Cerro Catedral als Kulisse. Einer der landschaftlich reizvollsten Golfplätze Südamerikas.",
     "p3-name":"Cerro Campanario","p3-sub":"20 min · Sessellift","p3-desc":"Eine der besten Aussichten der Welt. Oben: alpines Flair, Apfelstrudel und ein Panorama über fünf Seen.",
     "p4-name":"Playa sin Viento","p4-sub":"10 min · Lago Nahuel Huapi","p4-desc":"Ein geschützter Strand am See. Gletscherklares Wasser. Kajakverleih vor Ort.",
     "p5-name":"Cerro Catedral","p5-sub":"30 min · Ski · Wandern","p5-desc":"Größtes Skigebiet Südamerikas — 120 km Pisten, Saison Juni–Oktober. Im Sommer: Wandern und Mountainbiken.",
     "p6-name":"Fliegenfischen","p6-sub":"Seen · Flüsse · Mit Guide","p6-desc":"Patagoniens Flüsse und Seen sind legendär unter Fliegenfischern. Wilde Bach- und Regenbogenforellen in kristallklarem Wasser.",
-    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurant","p8-sub":"Nahe der Halbinsel","p8-desc":"Minuten von Casa Bari entfernt bringt Ánima raffinierte patagonische Küche an die Seestraße. Holzfeuer, lokale Produkte, Naturweine.",
+    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurant","p8-sub":"Nahe der Halbinsel","p8-desc":"Minuten von Posta Bariloche entfernt bringt Ánima raffinierte patagonische Küche an die Seestraße. Holzfeuer, lokale Produkte, Naturweine.",
     "p9-name":"Cerro López","p9-sub":"10 min · Wandern","p9-desc":"Der Berg, den Sie aus jedem Fenster sehen. Tageswanderungen bis zur Hütte auf 1.650 m mit Blick über das gesamte Seengebiet.",
     "rates-title":"Preise.","rate1-label":"Nebensaison","rate1-detail":"Schultermonaten — Frühling und Herbst. Der Wald ist am ruhigsten.",
     "rate2-label":"Hochsaison","rate2-detail":"Sommer (Januar) und Ski-Saison (Juli–August). Catedral 30 Min.",
     "rate3-label":"Reinigung","rate3-detail":"Eine Pauschalgebühr pro Buchung, unabhängig von der Dauer.",
     "per-night":"pro Nacht","per-stay":"pro Aufenthalt","rate-note":"Alle Preise USD · Mindestaufenthalt 2 Nächte · Reinigungsgebühr einmalig · Preise können sich ändern",
     "cta-title":"Reservieren\nSie jetzt.","cta-sub":"Schreiben Sie uns zur Verfügbarkeit. Wir antworten innerhalb von 24 Stunden.",
-    "tree1":"Der dominierende Baum des andinen Waldes, der Casa Bari von allen Seiten umgibt. Coihue ist eine Südbuche — immergrün, langlebig, bis 40 Meter hoch.",
+    "tree1":"Der dominierende Baum des andinen Waldes, der Posta Bariloche von allen Seiten umgibt. Coihue ist eine Südbuche — immergrün, langlebig, bis 40 Meter hoch.",
     "tree2":"Ein kleiner Baum des Waldunterwuchses in Lichtungen und Bachrändern. Im Sommer blüht er creme-weiß; im Herbst werden seine Blätter warm-golden.",
     "tree3":"Die Lenga ist der Baum, der Patagonien rot färbt. Im Herbst verwandelt sie ganze Bergseiten in Feuer. Von Nahem bescheiden; aus der Ferne spektakulär.",
     "tree4":"Einer der ältesten Überlebenden Patagoniens — über 1.500 Jahre alt. Sein aromatisches Holz war bei den Mapuche für Kanus und Häuser geschätzt.",
@@ -907,26 +878,26 @@ const translations = {
     "am6-name":"Vue sur le lac","am6-desc":"Nahuel Huapi et Cerro López depuis chaque niveau",
     "am7-name":"Espace de travail","am7-desc":"Bureau dédié à l'étage avec balcon au 4ème",
     "am8-name":"Terrasses privées","am8-desc":"La chambre du bas ouvre sur sa propre terrasse forêt",
-    "forest-eyebrow":"La Forêt","forest-title":"Espèces\n<span>patagoniennes</span>\nnatives.","forest-sub":"Casa Bari se trouve dans l'une des dernières forêts natives intactes de la cordillère andine-patagone.",
+    "forest-eyebrow":"La Forêt","forest-title":"Espèces\n<span>patagoniennes</span>\nnatives.","forest-sub":"Posta Bariloche se trouve dans l'une des dernières forêts natives intactes de la cordillère andine-patagone.",
     "ety-label":"Étymologie",
     "ety-1":"Le nom est apparu pour la première fois en 1520, consigné par Antonio Pigafetta, l'érudit italien qui navigua avec Magellan lors du premier tour du monde. Près du Détroit qui porte aujourd'hui son nom, l'expédition rencontra le peuple indigène Tehuelche.",
     "ety-2":"Pigafetta les appela <em>patagones</em> — de l'espagnol <em>pata</em>, pied, et peut-être du géant fictif Pathagon qui apparaissait dans le roman populaire <em>Primaléon</em> (1512).",
     "ety-3":"Les traditions mapuche offrent une compréhension différente. Pour eux, c'est simplement <em>Wallmapu</em> — le territoire environnant — la terre qui a toujours été là, bien avant qu'elle ait besoin d'un nom.",
     "places-title":"Autour de\nBariloche.","places-sub":"La péninsule vous place à quelques minutes de certains des coins les plus extraordinaires du district des lacs patagoniens.",
-    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Péninsule San Pedro","p1-desc":"L'une des plus grandes forêts de myrte arrayán du monde, à dix minutes de Casa Bari. Ou prenez le ferry depuis Puerto Llao Llao — à dix minutes — jusqu'à l'Isla Victoria pour une expérience forestière ancienne et totalement immersive.",
+    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Péninsule San Pedro","p1-desc":"L'une des plus grandes forêts de myrte arrayán du monde, à dix minutes de Posta Bariloche. Ou prenez le ferry depuis Puerto Llao Llao — à dix minutes — jusqu'à l'Isla Victoria pour une expérience forestière ancienne et totalement immersive.",
     "p2-name":"Golf Llao Llao","p2-sub":"10 min · Lago Moreno","p2-desc":"Dix-huit trous entre deux lacs avec le Cerro López et le Cerro Catedral en toile de fond. L'un des golfs les plus pittoresques d'Amérique du Sud.",
     "p3-name":"Cerro Campanario","p3-sub":"20 min · Télésièges","p3-desc":"L'une des meilleures vues du monde. Au sommet : ambiance alpine vintage, strudel aux pommes et panorama sur cinq lacs.",
     "p4-name":"Playa sin Viento","p4-sub":"10 min · Lago Nahuel Huapi","p4-desc":"Une plage abritée sur le lac. Eau glaciaire d'une clarté impossible. Location de kayaks sur place.",
     "p5-name":"Cerro Catedral","p5-sub":"30 min · Ski · Randonnée","p5-desc":"La plus grande station de ski d'Amérique du Sud — 120 km de pistes, saison juin–octobre. En été : randonnée et VTT.",
     "p6-name":"Pêche à la mouche","p6-sub":"Lacs · Rivières · Guidé","p6-desc":"Les rivières et lacs de Patagonie sont légendaires parmi les pêcheurs à la mouche. Truites sauvages dans des eaux cristallines.",
-    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurant","p8-sub":"Juste hors de la péninsule","p8-desc":"À quelques minutes de Casa Bari, Ánima apporte une cuisine patagone raffinée sur la route du lac. Feu de bois, produits locaux, vins nature.",
+    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurant","p8-sub":"Juste hors de la péninsule","p8-desc":"À quelques minutes de Posta Bariloche, Ánima apporte une cuisine patagone raffinée sur la route du lac. Feu de bois, produits locaux, vins nature.",
     "p9-name":"Cerro López","p9-sub":"10 min · Randonnée","p9-desc":"La montagne que vous voyez depuis chaque fenêtre. Des randonnées d'une journée jusqu'au refuge à 1 650 m avec des vues sur tout le district des lacs.",
     "rates-title":"Tarifs.","rate1-label":"Basse saison","rate1-detail":"Mois de transition — printemps et automne. La forêt est la plus calme.",
     "rate2-label":"Haute saison","rate2-detail":"Été (janvier) et saison ski (juillet–août). Catedral à 30 min.",
     "rate3-label":"Nettoyage","rate3-detail":"Un forfait par réservation, quelle que soit la durée.",
     "per-night":"par nuit","per-stay":"par séjour","rate-note":"Tous les tarifs en USD · Minimum 2 nuits · Frais de nettoyage unique · Tarifs susceptibles de changer",
     "cta-title":"Réservez\nvos dates.","cta-sub":"Écrivez-nous pour vérifier les disponibilités. Nous répondons sous 24 heures.",
-    "tree1":"L'arbre dominant de la forêt andine-patagone qui entoure Casa Bari de tous côtés. Le coihue est un hêtre austral — toujours vert, longévif, atteignant 40 mètres.",
+    "tree1":"L'arbre dominant de la forêt andine-patagone qui entoure Posta Bariloche de tous côtés. Le coihue est un hêtre austral — toujours vert, longévif, atteignant 40 mètres.",
     "tree2":"Un petit arbre du sous-bois — dans les clairières où la lumière atteint le sol. En été il fleurit en crème-blanc ; en automne ses feuilles dentelées deviennent or.",
     "tree3":"La lenga est l'arbre qui teint la Patagonie en rouge. Chaque automne elle transforme des flancs de montagne entiers en feu. De près modeste ; de loin spectaculaire.",
     "tree4":"L'un des plus anciens survivants de Patagonie — jusqu'à 1 500 ans. Son bois aromatique était prisé par les artisans mapuche pour les pirogues et les maisons.",
