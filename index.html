@@ -335,6 +335,9 @@ nav {
 .cta p { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.6); margin-bottom: 48px; }
 .btn-cta { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; padding: 18px 52px; background: var(--white); color: var(--ink); text-decoration: none; transition: all 0.15s; }
 .btn-cta:hover { background: var(--terra); color: var(--white); }
+.btn-wa { background: #25D366; color: var(--white); margin-left: 16px; }
+.btn-wa:hover { background: #1DAB56; color: var(--white); }
+@media (max-width: 600px) { .btn-wa { margin-left: 0; margin-top: 16px; } }
 @media (max-width: 600px) { .cta { padding: 64px 24px; } }
 
 /* ── FOOTER ── */
@@ -369,7 +372,7 @@ span[data-lang="en"] { display: inline; }
       <button class="lang-btn" onclick="setLang('de')">DE</button>
       <button class="lang-btn" onclick="setLang('fr')">FR</button>
     </div>
-    <a href="mailto:garrettnelso@gmail.com" class="btn-nav" data-i18n="cta-btn">Book Now</a>
+    <a href="mailto:postabariloche56@gmail.com" class="btn-nav" data-i18n="cta-btn">Book Now</a>
   </div>
   <button class="hamburger" onclick="document.querySelector('.mob').classList.toggle('open')" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -381,7 +384,7 @@ span[data-lang="en"] { display: inline; }
   <a href="#forest" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="nav-forest">The Forest</a>
   <a href="#places" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="nav-places">Bariloche</a>
   <a href="#rates" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="nav-rates">Rates</a>
-  <a href="mailto:garrettnelso@gmail.com" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="cta-btn">Book Now</a>
+  <a href="mailto:postabariloche56@gmail.com" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="cta-btn">Book Now</a>
   <div class="mob-lang">
     <button class="lang-btn active" onclick="setLang('en');document.querySelector('.mob').classList.remove('open')">EN</button>
     <button class="lang-btn" onclick="setLang('es');document.querySelector('.mob').classList.remove('open')">ES</button>
@@ -735,7 +738,8 @@ span[data-lang="en"] { display: inline; }
 <section class="cta" id="book">
   <h2 data-i18n="cta-title">Reserve<br>your dates.</h2>
   <p data-i18n="cta-sub">Write us to check availability. We respond within 24 hours.</p>
-  <a href="mailto:garrettnelso@gmail.com?subject=Posta Bariloche — Reservation Inquiry" class="btn-cta" data-i18n="cta-btn">Send an Inquiry</a>
+  <a href="mailto:postabariloche56@gmail.com?subject=Posta Bariloche — Reservation Inquiry" class="btn-cta" data-i18n="cta-btn">Send an Inquiry</a>
+  <a href="https://wa.me/543518749830" target="_blank" class="btn-cta btn-wa">WhatsApp</a>
 </section>
 
 <!-- FOOTER -->
@@ -743,6 +747,7 @@ span[data-lang="en"] { display: inline; }
   <div class="footer-logo">Posta Bariloche</div>
   <div class="footer-copy">Península San Pedro · Nahuel Huapi N.P. · Patagonia, Argentina</div>
   <div class="footer-copy">Another unique stay &rarr; <a href="https://www.quintasierras.com" target="_blank" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;font-weight:400;letter-spacing:0.04em;color:var(--white);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:1px;">Quinta <em style="font-style:italic;">Sierras</em></a></div>
+  <div class="footer-copy"><a href="mailto:postabariloche56@gmail.com" style="color:rgba(255,255,255,0.6);text-decoration:none;">postabariloche56@gmail.com</a> &nbsp;·&nbsp; <a href="https://wa.me/543518749830" target="_blank" style="color:rgba(255,255,255,0.6);text-decoration:none;">WhatsApp</a></div>
   <div class="footer-copy">© 2026</div>
 </footer>
 
