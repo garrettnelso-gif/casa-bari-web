@@ -85,7 +85,7 @@ nav {
 .opener-blank .loc { margin-top: 32px; padding-top: 18px; border-top: 3px solid var(--ink); font-size: 10px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: var(--ink-lt); line-height: 1.9; }
 
 @media (max-width: 768px) {
-  .opener { grid-template-columns: 1fr; grid-template-rows: 55vw auto; height: auto; min-height: unset; }
+  .opener { grid-template-columns: 1fr; grid-template-rows: 75vw auto; height: auto; min-height: unset; }
   .opener-blank { padding: 36px 24px 44px; }
   .opener-blank h1 { font-size: clamp(64px, 16vw, 110px); }
 }
@@ -186,10 +186,10 @@ nav {
   .amenity:nth-child(7), .amenity:nth-child(8) { border-bottom: none; }
 }
 @media (max-width: 520px) {
-  .amenities-grid { grid-template-columns: 1fr; }
-  .amenity { border-right: none !important; border-bottom: 3px solid var(--ink) !important; }
-  .amenity:last-child { border-bottom: none !important; }
-  .amenity-num { font-size: 34px; }
+  .amenities-grid { grid-template-columns: repeat(2, 1fr); }
+  .amenity:nth-child(2n) { border-right: none; }
+  .amenity-num { font-size: 30px; }
+  .amenity { padding: 24px 20px; }
 }
 
 /* ── FOREST ── */
@@ -239,9 +239,10 @@ nav {
 .fe-2 .entry-body, .fe-3 .entry-body { color: rgba(255,255,255,0.75); }
 
 @media (max-width: 640px) {
-  .forest-entries { grid-template-columns: 1fr; }
-  .forest-entry { border-right: none !important; border-bottom: 3px solid var(--ink) !important; padding: 40px 24px; }
-  .forest-entry:last-child { border-bottom: none !important; }
+  .forest-entries { grid-template-columns: repeat(2, 1fr); }
+  .forest-entry { padding: 32px 20px; }
+  .entry-leaf { width: 80px; height: 80px; margin-bottom: 18px; }
+  .entry-body { font-size: 13px; }
 }
 
 /* ── ETYMOLOGY ── */
