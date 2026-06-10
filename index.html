@@ -348,6 +348,19 @@ nav {
 @media (max-width: 600px) { .btn-wa { margin-left: 0; margin-top: 16px; } }
 @media (max-width: 600px) { .cta { padding: 64px 24px; } }
 
+/* ── FLOATING WHATSAPP ── */
+.float-wa {
+  position: fixed; bottom: 24px; right: 24px; z-index: 200;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--ink); color: var(--white); border: 2px solid var(--white);
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  transition: background 0.15s, transform 0.15s;
+}
+.float-wa:hover { background: var(--terra); transform: scale(1.08); }
+.float-wa svg { width: 28px; height: 28px; fill: var(--white); }
+@media (max-width: 600px) { .float-wa { width: 50px; height: 50px; bottom: 16px; right: 16px; } .float-wa svg { width: 24px; height: 24px; } }
+
 /* ── FOOTER ── */
 footer { background: var(--ink); color: rgba(255,255,255,0.4); padding: 36px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; border-top: 1px solid rgba(255,255,255,0.1); }
 .footer-logo { font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--white); }
@@ -380,7 +393,7 @@ span[data-lang="en"] { display: inline; }
       <button class="lang-btn" onclick="setLang('de')">DE</button>
       <button class="lang-btn" onclick="setLang('fr')">FR</button>
     </div>
-    <a href="mailto:postabariloche56@gmail.com" class="btn-nav" data-i18n="cta-btn">Book Now</a>
+    <a href="#book" class="btn-nav" data-i18n="cta-btn">Book Now</a>
   </div>
   <button class="hamburger" onclick="document.querySelector('.mob').classList.toggle('open')" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -392,7 +405,7 @@ span[data-lang="en"] { display: inline; }
   <a href="#forest" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="nav-forest">The Forest</a>
   <a href="#places" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="nav-places">Bariloche</a>
   <a href="#rates" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="nav-rates">Rates</a>
-  <a href="mailto:postabariloche56@gmail.com" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="cta-btn">Book Now</a>
+  <a href="#book" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="cta-btn">Book Now</a>
   <div class="mob-lang">
     <button class="lang-btn active" onclick="setLang('en');document.querySelector('.mob').classList.remove('open')">EN</button>
     <button class="lang-btn" onclick="setLang('es');document.querySelector('.mob').classList.remove('open')">ES</button>
@@ -746,8 +759,8 @@ span[data-lang="en"] { display: inline; }
 <section class="cta" id="book">
   <h2 data-i18n="cta-title">Reserve<br>your dates.</h2>
   <p data-i18n="cta-sub">Write us to check availability. We respond within 24 hours.</p>
-  <a href="mailto:postabariloche56@gmail.com?subject=Posta Bariloche — Reservation Inquiry" class="btn-cta" data-i18n="cta-btn">Send an Inquiry</a>
-  <a href="https://wa.me/543518749830" target="_blank" class="btn-cta btn-wa">WhatsApp</a>
+  <a href="mailto:postabariloche56@gmail.com?subject=Posta%20Bariloche%20%E2%80%94%20Reservation%20Inquiry&body=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" class="btn-cta contact-mail" data-i18n="cta-btn">Send an Inquiry</a>
+  <a href="https://wa.me/543518749830?text=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" class="btn-cta btn-wa contact-wa">WhatsApp</a>
 </section>
 
 <!-- FOOTER -->
@@ -755,9 +768,14 @@ span[data-lang="en"] { display: inline; }
   <div class="footer-logo">Posta Bariloche</div>
   <div class="footer-copy">Península San Pedro · Nahuel Huapi N.P. · Patagonia, Argentina</div>
   <div class="footer-copy">Another unique stay &rarr; <a href="https://www.quintasierras.com" target="_blank" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;font-weight:400;letter-spacing:0.04em;color:var(--white);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:1px;">Quinta <em style="font-style:italic;">Sierras</em></a></div>
-  <div class="footer-copy"><a href="mailto:postabariloche56@gmail.com" style="color:rgba(255,255,255,0.6);text-decoration:none;">postabariloche56@gmail.com</a> &nbsp;·&nbsp; <a href="https://wa.me/543518749830" target="_blank" style="color:rgba(255,255,255,0.6);text-decoration:none;">WhatsApp</a></div>
+  <div class="footer-copy"><a href="mailto:postabariloche56@gmail.com?subject=Posta%20Bariloche%20%E2%80%94%20Reservation%20Inquiry&body=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" class="contact-mail" style="color:rgba(255,255,255,0.6);text-decoration:none;">postabariloche56@gmail.com</a> &nbsp;·&nbsp; <a href="https://wa.me/543518749830?text=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" class="contact-wa" style="color:rgba(255,255,255,0.6);text-decoration:none;">WhatsApp</a></div>
   <div class="footer-copy">© 2026</div>
 </footer>
+
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/543518749830?text=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" class="float-wa contact-wa" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.78 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0012.04 2zm0 18.07h-.01c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.07 8.07 0 01-1.24-4.29c0-4.46 3.63-8.09 8.1-8.09 2.16 0 4.19.84 5.72 2.37a8.04 8.04 0 012.37 5.72c0 4.46-3.63 8.09-8.09 8.09zm4.44-6.06c-.24-.12-1.43-.71-1.66-.79-.22-.08-.38-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.13 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28z"/></svg>
+</a>
 
 <script>
 // ── LANGUAGE SYSTEM ──
@@ -920,6 +938,27 @@ const translations = {
   }
 };
 
+// ── CONTACT LINKS (mailto / WhatsApp preloaded message) ──
+const contactMessages = {
+  en: "Hello! I'm interested in booking Posta Bariloche",
+  es: "¡Hola! Me interesa reservar Posta Bariloche"
+};
+const contactSubjects = {
+  en: "Posta Bariloche — Reservation Inquiry",
+  es: "Posta Bariloche — Consulta de Reserva"
+};
+const WA_NUMBER = "543518749830";
+const CONTACT_EMAIL = "postabariloche56@gmail.com";
+
+function updateContactLinks(lang) {
+  const msg = contactMessages[lang] || contactMessages.en;
+  const subject = contactSubjects[lang] || contactSubjects.en;
+  const mailHref = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(msg)}`;
+  const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  document.querySelectorAll('.contact-mail').forEach(a => a.href = mailHref);
+  document.querySelectorAll('.contact-wa').forEach(a => a.href = waHref);
+}
+
 function setLang(lang) {
   // Update active button
   document.querySelectorAll('.lang-btn').forEach(b => {
@@ -941,7 +980,11 @@ function setLang(lang) {
   });
 
   document.documentElement.lang = lang;
+  updateContactLinks(lang);
 }
+
+// Set initial contact links to match default language (EN)
+updateContactLinks('en');
 
 // Mobile menu close
 document.addEventListener('click', function(e) {
