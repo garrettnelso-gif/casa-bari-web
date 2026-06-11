@@ -555,7 +555,7 @@ section.block { position: relative; z-index: 3; padding: clamp(90px, 12vw, 180px
 
 <!-- CANOPY DIVIDER -->
 <div id="canopy">
-  <div class="frame" data-gl><img src="forest-canopy.jpg" alt="Looking up through the coihue and cypress canopy"></div>
+  <div class="frame"><img src="forest-canopy.jpg" alt="Looking up through the coihue and cypress canopy"></div>
   <div class="canopy-word display"><span data-split>The Forest</span></div>
 </div>
 
@@ -1001,13 +1001,13 @@ section.block { position: relative; z-index: 3; padding: clamp(90px, 12vw, 180px
         vec2 mUv = vec2(uv.x * aspect, uv.y);
         vec2 mM  = vec2(uMouse.x * aspect, uMouse.y);
         float d = distance(mUv, mM);
-        float ripple = sin(d * 22.0 - uTime * 4.0) * 0.014 * uHover * smoothstep(0.55, 0.0, d);
+        float ripple = sin(d * 22.0 - uTime * 4.0) * 0.005 * uHover * smoothstep(0.4, 0.0, d);
         uv += normalize(mUv - mM + 0.0001) * ripple;
 
         vec2 cuv = coverUv(uv);
 
         // velocity RGB shift
-        float shift = v * 0.010 * wave + uHover * 0.004;
+        float shift = v * 0.010 * wave + uHover * 0.0015;
         float r = texture2D(uTex, cuv + vec2(shift, 0.0)).r;
         float g = texture2D(uTex, cuv).g;
         float b = texture2D(uTex, cuv - vec2(shift, 0.0)).b;
