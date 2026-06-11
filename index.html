@@ -3,997 +3,1094 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PXEWW2K3CK"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-PXEWW2K3CK');
-</script>
-<title>Posta Bariloche — Península San Pedro, Patagonia</title>
-<meta name="description" content="A black tower in the coihue forest inside Nahuel Huapi National Park. Direct views to Cerro López and Nahuel Huapi. 2 bed · 2 bath · heated floors · Starlink.">
+<title>Posta Bariloche — A Black Tower in the Coihue Forest</title>
+<meta name="description" content="A black tower in the coihue forest inside Nahuel Huapi National Park, Península San Pedro, Patagonia. 2 bed · 2 bath · heated floors · Starlink.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* ════════════════════════════════════════════════════════
+   POSTA BARILOCHE — FABLEPOSTA
+   Swiss International Style · GSAP · three.js
+   ════════════════════════════════════════════════════════ */
 :root {
-  --cream:    #E5E0D5;
-  --cream-dk: #D4CEBC;
-  --blue:     #7A9FAB;
-  --terra:    #A07860;
-  --terra-dk: #7A5940;
-  --ink:      #1A1714;
-  --ink-mid:  #4A4540;
-  --ink-lt:   #8A857E;
-  --white:    #FAF8F5;
-  --f: 'Space Grotesk', system-ui, sans-serif;
+  --paper:   #F2EFE8;
+  --paper-2: #EAE6DC;
+  --ink:     #101010;
+  --ink-60:  rgba(16,16,16,.6);
+  --ink-30:  rgba(16,16,16,.28);
+  --ink-12:  rgba(16,16,16,.14);
+  --red:     #E2261C;          /* Swiss poster red */
+  --blue:    #2243B6;          /* Müller-Brockmann blue */
+  --sans: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono: 'IBM Plex Mono', 'SF Mono', monospace;
+  --gutter: clamp(20px, 3.4vw, 56px);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { font-family: var(--f); background: var(--white); color: var(--ink); }
-
-/* ── ANIMATED COLOR BG ── */
-@keyframes colorShift {
-  0%   { background-color: var(--blue); }
-  33%  { background-color: var(--terra); }
-  66%  { background-color: #6B8F6B; }
-  100% { background-color: var(--blue); }
+html { scroll-behavior: auto; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
-.anim-bg { animation: colorShift 12s ease-in-out infinite; }
+::selection { background: var(--red); color: var(--paper); }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+a { color: inherit; text-decoration: none; }
 
-/* ── NAV ── */
-nav {
+/* ── WebGL canvas ── */
+#gl {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Typographic primitives ── */
+.label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.label .idx { color: var(--red); margin-right: .9em; }
+.rule { width: 100%; height: 1px; background: var(--ink); transform-origin: left center; }
+.o-hide { overflow: hidden; display: block; }
+
+/* big display type */
+.display {
+  font-weight: 800;
+  letter-spacing: -.035em;
+  line-height: .88;
+  text-transform: uppercase;
+}
+
+/* ── Preloader ── */
+#loader {
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--ink); color: var(--paper);
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: var(--gutter);
+}
+#loader .label { color: rgba(242,239,232,.55); }
+#loader-count {
+  font-weight: 800; letter-spacing: -.04em; line-height: .8;
+  font-size: clamp(90px, 22vw, 320px);
+  align-self: flex-end;
+  font-variant-numeric: tabular-nums;
+}
+#loader-bar { position: absolute; left: 0; top: 0; height: 3px; width: 100%; background: var(--red); transform: scaleX(0); transform-origin: left; }
+
+/* ── Grid overlay (Swiss construction lines) ── */
+#grid-lines {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  padding: 0 var(--gutter);
+  opacity: .5;
+}
+#grid-lines i { border-left: 1px solid var(--ink-12); }
+#grid-lines i:last-child { border-right: 1px solid var(--ink-12); }
+
+/* ── Nav ── */
+#nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 0 48px; height: 56px;
-  background: rgba(250,248,245,0.96); backdrop-filter: blur(10px);
-  border-bottom: 2px solid var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px var(--gutter);
+  mix-blend-mode: difference; color: #EFEDE6;
 }
-.nav-logo { font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: var(--ink); }
-.nav-center { display: flex; gap: 32px; }
-.nav-center a { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-lt); text-decoration: none; transition: color 0.15s; }
-.nav-center a:hover { color: var(--ink); }
-.nav-right { display: flex; align-items: center; gap: 16px; }
-.lang-toggle { display: flex; gap: 0; }
-.lang-btn { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 9px; background: transparent; border: 1px solid var(--cream-dk); cursor: pointer; color: var(--ink-lt); transition: all 0.15s; font-family: var(--f); }
-.lang-btn:first-child { border-radius: 2px 0 0 2px; }
-.lang-btn:last-child { border-radius: 0 2px 2px 0; border-left: none; }
-.lang-btn + .lang-btn { border-left: none; }
-.lang-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
-.btn-nav { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 8px 22px; background: var(--ink); color: var(--white); text-decoration: none; transition: background 0.15s; white-space: nowrap; }
-.btn-nav:hover { background: var(--terra); }
-.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-.hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); }
-.mob { display: none; position: fixed; top: 56px; left: 0; right: 0; background: var(--white); border-bottom: 2px solid var(--ink); z-index: 99; }
-.mob.open { display: block; }
-.mob a { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 24px; text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--cream); }
-.mob-lang { display: flex; padding: 16px 24px; gap: 8px; }
-.mob-lang .lang-btn { border-radius: 2px; border: 1px solid var(--cream-dk); }
-
-@media (max-width: 900px) { .nav-center { display: none; } }
-@media (max-width: 680px) { nav { padding: 0 20px; } .lang-toggle { display: none; } .hamburger { display: flex; } .btn-nav { display: none; } }
-
-/* ── OPENER: EXTERIOR + TITLE ── */
-.opener {
-  margin-top: 56px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  height: calc(100vh - 56px);
-  min-height: 520px;
+#nav .label { color: inherit; }
+#nav .nav-links { display: flex; gap: clamp(14px, 2.2vw, 34px); }
+#nav .nav-links a { position: relative; padding: 4px 0; }
+#nav .nav-links a sup { color: var(--red); font-size: 8px; margin-right: 4px; }
+#nav .nav-links a::after {
+  content: ''; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
+  background: currentColor; transform: scaleX(0); transform-origin: right;
+  transition: transform .45s cubic-bezier(.77,0,.18,1);
 }
-.opener-img { overflow: hidden; }
-.opener-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.opener-blank {
-  background: var(--white);
+#nav .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+#nav-book { border: 1px solid currentColor; padding: 7px 16px !important; border-radius: 99px; transition: background .3s, color .3s; }
+#nav-book:hover { background: #EFEDE6; color: #101010; }
+#nav-book::after { display: none; }
+@media (max-width: 760px) { #nav .nav-links a:not(#nav-book) { display: none; } }
+
+/* ── Hero ── */
+#hero {
+  position: relative; z-index: 3;
+  min-height: 100svh;
   display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 48px 56px;
+  padding: 0 var(--gutter) 0;
 }
-.opener-blank h1 { font-size: clamp(72px, 10vw, 160px); font-weight: 700; line-height: 0.84; letter-spacing: -0.05em; color: var(--ink); }
-.opener-blank .loc { margin-top: 32px; padding-top: 18px; border-top: 3px solid var(--ink); font-size: 10px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: var(--ink-lt); line-height: 1.9; }
-
-@media (max-width: 768px) {
-  .opener { grid-template-columns: 1fr; grid-template-rows: 75vw auto; height: auto; min-height: unset; }
-  .opener-blank { padding: 36px 24px 44px; }
-  .opener-blank h1 { font-size: clamp(64px, 16vw, 110px); }
+#hero-title {
+  font-size: clamp(64px, 17.5vw, 290px);
+  position: relative; z-index: 4;
+}
+#hero-title .line { display: block; overflow: hidden; }
+#hero-title .line > span { display: block; will-change: transform; }
+#hero-title .line:nth-child(2) { text-indent: .8em; }
+#hero-title .accent { color: var(--red); }
+#hero-img {
+  position: absolute; z-index: 3;
+  right: var(--gutter); top: 6svh;
+  width: min(54vw, 760px); height: 84svh;
+  overflow: hidden;
+}
+.img-cover { position: absolute; inset: -1px; background: var(--paper); transform-origin: top; z-index: 5; }
+/* per-word masked reveal */
+.wm { display: inline-block; overflow: hidden; vertical-align: top; }
+.wm .w { display: inline-block; will-change: transform; }
+#hero-meta {
+  position: relative; z-index: 5;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  padding: 26px 0 22px; gap: 16px; flex-wrap: wrap;
+}
+#hero-meta .label { color: var(--ink-60); }
+#hero-rule { margin-top: 0; }
+@media (max-width: 760px) {
+  #hero-img { position: relative; right: auto; top: auto; width: 100%; height: 56svh; margin: 18vh 0 6vh; order: -1; }
+  #hero { justify-content: flex-start; padding-top: 0; }
 }
 
-/* ── DESC ROW: TEXT + IMAGE ── */
-.desc-row { display: grid; grid-template-columns: 1fr 1fr; border-top: 3px solid var(--ink); }
-.desc-img { overflow: hidden; order: 2; }
-.desc-img img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 500px; }
-.desc-text { padding: 64px 56px; background: var(--cream); display: flex; flex-direction: column; justify-content: space-between; order: 1; }
-.desc-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-lt); margin-bottom: 24px; }
-.desc-title { font-size: clamp(28px, 3.5vw, 48px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.0; margin-bottom: 32px; }
-.desc-title em { font-style: normal; color: var(--terra); }
-.desc-body { font-size: 15px; font-weight: 300; line-height: 1.9; color: var(--ink-mid); }
-.desc-body p + p { margin-top: 18px; }
-.specs { margin-top: 40px; border-top: 2px solid var(--ink); }
-.spec-row { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--cream-dk); gap: 12px; }
-.spec-label { font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-lt); white-space: nowrap; }
-.spec-val { font-size: 13px; font-weight: 600; text-align: right; }
+/* ── Marquee ── */
+#marquee {
+  position: relative; z-index: 3;
+  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+  overflow: hidden; white-space: nowrap;
+  padding: 14px 0; background: var(--paper);
+}
+#marquee .track { display: inline-flex; will-change: transform; }
+#marquee span {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .22em;
+  text-transform: uppercase; padding-right: 3.2em;
+}
+#marquee b { color: var(--red); font-weight: 500; }
 
-@media (max-width: 860px) {
-  .desc-row { grid-template-columns: 1fr; }
-  .desc-img { order: 1; }
-  .desc-img img { min-height: 65vw; }
-  .desc-text { order: 2; padding: 44px 24px; }
+/* ── Section scaffold ── */
+section.block { position: relative; z-index: 3; padding: clamp(90px, 12vw, 180px) var(--gutter); }
+.sec-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: clamp(36px, 5vw, 80px); }
+.sec-head .label:last-child { color: var(--ink-60); }
+
+/* ── 01 House ── */
+#house h2 {
+  font-size: clamp(40px, 7.2vw, 118px);
+  max-width: 13em;
+}
+#house h2 em { font-style: normal; color: var(--blue); }
+.house-cols {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: var(--gutter); margin-top: clamp(40px, 6vw, 90px);
+}
+.house-cols .col-a { grid-column: 1 / 4; }
+.house-cols .col-b { grid-column: 5 / 9; }
+.house-cols .col-c { grid-column: 9 / 13; }
+.house-cols p { font-size: 15px; line-height: 1.65; color: var(--ink-60); margin-bottom: 1.2em; }
+.house-cols p strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 900px) {
+  .house-cols { grid-template-columns: 1fr; gap: 8px; }
 }
 
-/* ── DISTANCES BAND ── */
-.distances {
-  background: var(--ink); color: var(--white);
+/* stats */
+#stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--ink); border-left: 1px solid var(--ink);
+  margin-top: clamp(60px, 8vw, 120px);
+}
+#stats .stat {
+  border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: clamp(18px, 2.4vw, 34px);
+  min-height: clamp(140px, 16vw, 230px);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+#stats .num {
+  font-weight: 800; letter-spacing: -.04em; line-height: .85;
+  font-size: clamp(44px, 6.5vw, 104px);
+  font-variant-numeric: tabular-nums;
+}
+#stats .num small { font-size: .35em; font-weight: 700; letter-spacing: 0; vertical-align: .35em; margin-left: .15em; }
+#stats .stat:nth-child(3) .num { color: var(--red); }
+@media (max-width: 760px) { #stats { grid-template-columns: repeat(2, 1fr); } }
+
+/* specs table */
+#specs { margin-top: clamp(60px, 8vw, 120px); }
+#specs .row {
+  display: grid; grid-template-columns: 60px 1fr 1.4fr;
+  gap: var(--gutter); align-items: baseline;
+  padding: 16px 0; border-bottom: 1px solid var(--ink-12);
+}
+#specs .row:first-child { border-top: 1px solid var(--ink); }
+#specs .k { font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: .02em; }
+#specs .v { font-family: var(--mono); font-size: 12px; color: var(--ink-60); letter-spacing: .04em; }
+#specs .n { font-family: var(--mono); font-size: 10px; color: var(--red); }
+
+/* ── 02 Spaces — horizontal ── */
+#spaces { padding: 0; }
+#spaces .pin-wrap { overflow: hidden; }
+#spaces .h-track {
+  display: flex; align-items: stretch;
+  height: 100svh; will-change: transform;
+}
+#spaces .panel {
+  flex: 0 0 auto;
+  width: max-content;
+  padding: 12svh var(--gutter) 10svh;
+  display: flex; flex-direction: column;
+}
+#spaces .panel.intro { width: clamp(300px, 42vw, 640px); justify-content: center; }
+#spaces .panel.intro h2 { font-size: clamp(48px, 6.4vw, 110px); }
+#spaces .panel.intro p { margin-top: 24px; font-size: 15px; line-height: 1.6; color: var(--ink-60); max-width: 34ch; }
+#spaces .frame {
+  flex: 1; overflow: hidden; position: relative;
+  width: auto; height: 100%;
+  aspect-ratio: 3 / 4;
+}
+#spaces .frame img { object-fit: contain; }
+#spaces .caption {
+  display: flex; justify-content: space-between;
+  padding-top: 14px;
+}
+#spaces .caption .label:last-child { color: var(--ink-60); }
+
+/* ── Full-bleed canopy divider ── */
+#canopy { position: relative; z-index: 3; height: 110svh; overflow: hidden; }
+#canopy .frame { position: absolute; inset: 0; }
+#canopy .canopy-word {
+  position: absolute; inset: 0; z-index: 4;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--paper);
+  font-size: clamp(54px, 12vw, 200px);
+  mix-blend-mode: difference;
+}
+
+/* ── 03 Forest ── */
+#forest .species { border-top: 1px solid var(--ink); }
+.sp-row {
+  display: grid; grid-template-columns: 70px 1fr 1fr 110px;
+  gap: var(--gutter); align-items: start;
+  padding: clamp(26px, 3.6vw, 52px) 0;
+  border-bottom: 1px solid var(--ink-12);
+  position: relative;
+}
+.sp-row .sp-num { font-family: var(--mono); font-size: 11px; color: var(--red); padding-top: .8em; }
+.sp-row h3 { font-size: clamp(34px, 5vw, 76px); font-weight: 800; letter-spacing: -.03em; line-height: .9; text-transform: uppercase; }
+.sp-row h3 span { display: block; font-family: var(--mono); font-weight: 400; font-size: 11px; letter-spacing: .12em; text-transform: none; font-style: italic; color: var(--ink-60); margin-top: 12px; }
+.sp-row p { font-size: 14px; line-height: 1.65; color: var(--ink-60); max-width: 46ch; }
+.sp-row .sp-tag { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-30); text-align: right; padding-top: .9em; }
+@media (max-width: 900px) {
+  .sp-row { grid-template-columns: 40px 1fr; }
+  .sp-row p { grid-column: 2; }
+  .sp-row .sp-tag { display: none; }
+}
+
+/* etymology strip */
+#etym {
+  margin-top: clamp(80px, 10vw, 150px);
+  background: var(--ink); color: var(--paper);
+  padding: clamp(70px, 9vw, 140px) var(--gutter);
+  position: relative; z-index: 3;
+}
+#etym .label { color: rgba(242,239,232,.5); }
+#etym .label .idx { color: var(--red); }
+#etym h2 { font-size: clamp(44px, 8vw, 140px); margin: clamp(28px,4vw,56px) 0; }
+#etym h2 em { font-style: normal; color: var(--red); }
+#etym .etym-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gutter); }
+#etym .etym-cols p { font-size: 14px; line-height: 1.7; color: rgba(242,239,232,.66); }
+#etym .etym-cols p strong { color: var(--paper); font-weight: 600; }
+@media (max-width: 900px) { #etym .etym-cols { grid-template-columns: 1fr; gap: 18px; } }
+
+/* ── 04 Around ── */
+#around .aitem { border-bottom: 1px solid var(--ink-12); }
+#around .aitem:first-child { border-top: 1px solid var(--ink); }
+#around .arow {
+  display: grid; grid-template-columns: 64px 1fr auto auto;
+  gap: var(--gutter); align-items: baseline;
+  padding: clamp(18px, 2.4vw, 30px) 0;
+  cursor: pointer; position: relative;
+}
+#around .arow .an { font-family: var(--mono); font-size: 11px; color: var(--red); }
+#around .arow h3 {
+  font-size: clamp(24px, 3.6vw, 54px); font-weight: 800;
+  letter-spacing: -.025em; text-transform: uppercase; line-height: 1;
+  transition: transform .5s cubic-bezier(.22,1,.36,1), color .3s;
+}
+#around .arow:hover h3, #around .aitem.open .arow h3 { transform: translateX(clamp(8px,1.4vw,24px)); color: var(--blue); }
+#around .arow .ad { font-family: var(--mono); font-size: 11px; color: var(--ink-60); letter-spacing: .08em; text-transform: uppercase; }
+#around .arow .aa { font-size: 18px; color: var(--ink-30); transition: color .3s, transform .5s cubic-bezier(.22,1,.36,1); }
+#around .arow:hover .aa { color: var(--red); transform: translate(4px,-4px); }
+#around .arow .aa[href] { position: relative; z-index: 2; }
+@media (max-width: 760px) { #around .arow .ad { display: none; } }
+
+/* expandable description */
+#around .adesc {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows .6s cubic-bezier(.22,1,.36,1);
+}
+#around .adesc > div { overflow: hidden; min-height: 0; }
+#around .adesc p {
+  font-size: 14px; line-height: 1.7; color: var(--ink-60);
+  max-width: 56ch;
+  padding: 0 0 clamp(20px, 2.6vw, 34px) calc(64px + var(--gutter));
+}
+#around .aitem.open .adesc { grid-template-rows: 1fr; }
+@media (max-width: 760px) {
+  #around .adesc p { padding-left: 0; max-width: none; }
+}
+#preview {
+  position: fixed; z-index: 90; pointer-events: none;
+  width: clamp(220px, 24vw, 360px); aspect-ratio: 4/3;
+  overflow: hidden; opacity: 0; transform: scale(.9);
+  top: 0; left: 0;
+}
+#preview img { position: absolute; inset: 0; opacity: 0; transition: opacity .35s; }
+#preview img.on { opacity: 1; }
+
+/* ── 05 Rates ── */
+#rates .rate-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  border-top: 3px solid var(--ink);
+  border-top: 1px solid var(--ink); border-left: 1px solid var(--ink);
 }
-.dist-item { padding: 32px 32px; border-right: 1px solid rgba(255,255,255,0.1); }
-.dist-item:last-child { border-right: none; }
-.dist-time { font-size: clamp(32px, 4vw, 52px); font-weight: 700; letter-spacing: -0.03em; line-height: 1; color: var(--blue); margin-bottom: 6px; }
-.dist-label { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); line-height: 1.5; }
-@media (max-width: 760px) { .distances { grid-template-columns: repeat(2, 1fr); } .dist-item:nth-child(2) { border-right: none; } }
-@media (max-width: 480px) { .distances { grid-template-columns: 1fr 1fr; } .dist-item { padding: 24px 20px; } }
-
-/* ── STATS BAR ── */
-.stats { background: var(--cream); display: grid; grid-template-columns: repeat(5, 1fr); border-top: 3px solid var(--ink); }
-.stat { padding: 28px 24px; border-right: 1px solid var(--cream-dk); }
-.stat:last-child { border-right: none; }
-.stat-num { font-size: clamp(22px, 2.5vw, 36px); font-weight: 700; letter-spacing: -0.03em; line-height: 1; margin-bottom: 5px; color: var(--ink); }
-.stat-label { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-lt); }
-@media (max-width: 760px) { .stats { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 480px) { .stats { grid-template-columns: repeat(2, 1fr); } .stat { padding: 20px 16px; } }
-
-/* ── THE SPACES ── */
-.spaces-header {
-  display: grid; grid-template-columns: 1fr 1fr; align-items: end;
-  padding: 72px 48px 48px; border-top: 3px solid var(--ink);
+#rates .rate {
+  border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: clamp(24px, 3vw, 44px);
+  min-height: clamp(240px, 30vw, 420px);
+  display: flex; flex-direction: column; justify-content: space-between;
 }
-.spaces-header h2 { font-size: clamp(44px, 7vw, 96px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.88; }
-.spaces-header p { font-size: 14px; font-weight: 300; line-height: 1.8; color: var(--ink-mid); max-width: 380px; margin-left: auto; padding-bottom: 6px; }
-@media (max-width: 760px) { .spaces-header { grid-template-columns: 1fr; gap: 20px; padding: 48px 24px 36px; } .spaces-header p { margin-left: 0; } }
+#rates .price { font-weight: 800; letter-spacing: -.045em; line-height: .82; font-size: clamp(56px, 9vw, 160px); font-variant-numeric: tabular-nums; }
+#rates .price sup { font-size: .28em; font-weight: 700; letter-spacing: 0; vertical-align: 1.6em; }
+#rates .rate:nth-child(2) .price { color: var(--red); }
+#rates .rate p { font-size: 13px; line-height: 1.6; color: var(--ink-60); max-width: 30ch; margin-top: 18px; }
+#rates .fine { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-60); padding: 16px 0; border-bottom: 1px solid var(--ink-12); display: block; }
+@media (max-width: 760px) { #rates .rate-grid { grid-template-columns: 1fr; } }
 
-.spaces-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
-.spaces-grid img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
-@media (max-width: 640px) { .spaces-grid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 400px) { .spaces-grid { grid-template-columns: 1fr; } .spaces-grid img { aspect-ratio: 4/3; } }
-
-/* ── FULL BLEED ── */
-.full-bleed { width: 100%; overflow: hidden; border-top: 3px solid var(--ink); }
-.full-bleed img { width: 100%; aspect-ratio: 16/8; object-fit: cover; display: block; }
-@media (max-width: 600px) { .full-bleed img { aspect-ratio: 4/3; } }
-
-/* ── AMENITIES ── */
-.amenities-header { padding: 72px 48px 56px; border-top: 3px solid var(--ink); }
-.amenities-header h2 { font-size: clamp(44px, 7vw, 88px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.88; }
-@media (max-width: 600px) { .amenities-header { padding: 48px 24px 36px; } }
-
-.amenities-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 3px solid var(--ink); }
-.amenity { padding: 36px 32px; border-right: 3px solid var(--ink); border-bottom: 3px solid var(--ink); background: var(--white); }
-.amenity:nth-child(4n) { border-right: none; }
-.amenity:nth-child(5), .amenity:nth-child(6), .amenity:nth-child(7), .amenity:nth-child(8) { border-bottom: none; }
-.amenity-num { font-size: 44px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; color: var(--cream-dk); margin-bottom: 18px; }
-.amenity-name { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 7px; }
-.amenity-desc { font-size: 12px; font-weight: 300; color: var(--ink-mid); line-height: 1.6; }
-.amenity.blue-bg { background: var(--blue); }
-.amenity.blue-bg .amenity-num { color: rgba(255,255,255,0.2); }
-.amenity.blue-bg .amenity-name { color: var(--white); }
-.amenity.blue-bg .amenity-desc { color: rgba(255,255,255,0.72); }
-.amenity.terra-bg { background: var(--terra); }
-.amenity.terra-bg .amenity-num { color: rgba(255,255,255,0.2); }
-.amenity.terra-bg .amenity-name { color: var(--white); }
-.amenity.terra-bg .amenity-desc { color: rgba(255,255,255,0.78); }
-.amenity.ink-bg { background: var(--ink); }
-.amenity.ink-bg .amenity-num { color: rgba(255,255,255,0.1); }
-.amenity.ink-bg .amenity-name { color: var(--white); }
-.amenity.ink-bg .amenity-desc { color: rgba(255,255,255,0.55); }
-
-@media (max-width: 960px) {
-  .amenities-grid { grid-template-columns: repeat(2, 1fr); }
-  .amenity:nth-child(4n) { border-right: 3px solid var(--ink); }
-  .amenity:nth-child(2n) { border-right: none; }
-  .amenity:nth-child(5), .amenity:nth-child(6), .amenity:nth-child(7), .amenity:nth-child(8) { border-bottom: 3px solid var(--ink); }
-  .amenity:nth-child(7), .amenity:nth-child(8) { border-bottom: none; }
+/* ── 06 Book ── */
+#book {
+  background: var(--ink); color: var(--paper);
+  padding: clamp(100px, 14vw, 220px) var(--gutter) 0;
+  position: relative; z-index: 3;
+  overflow: hidden;
 }
-@media (max-width: 520px) {
-  .amenities-grid { grid-template-columns: repeat(2, 1fr); }
-  .amenity:nth-child(2n) { border-right: none; }
-  .amenity-num { font-size: 30px; }
-  .amenity { padding: 24px 20px; }
-}
-
-/* ── FOREST ── */
-.forest-header {
-  background: var(--cream); padding: 80px 48px 56px;
-  border-top: 3px solid var(--ink);
-  display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 48px;
-}
-.forest-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-lt); margin-bottom: 24px; }
-.forest-title { font-size: clamp(44px, 7vw, 96px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.86; color: var(--ink); }
-.forest-title span { color: var(--terra); }
-.forest-header-sub { font-size: 14px; font-weight: 300; line-height: 1.85; color: var(--ink-mid); max-width: 420px; margin-left: auto; padding-bottom: 6px; }
-@media (max-width: 760px) { .forest-header { grid-template-columns: 1fr; padding: 56px 24px 40px; } .forest-header-sub { margin-left: 0; } }
-
-.forest-canopy { width: 100%; overflow: hidden; border-top: 3px solid var(--ink); }
-.forest-canopy img { width: 100%; aspect-ratio: 21/9; object-fit: cover; display: block; }
-@media (max-width: 600px) { .forest-canopy img { aspect-ratio: 16/9; } }
-
-.forest-entries { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 3px solid var(--ink); }
-.forest-entry { padding: 52px 44px; border-right: 3px solid var(--ink); border-bottom: 3px solid var(--ink); display: flex; flex-direction: column; }
-.forest-entry:nth-child(2n) { border-right: none; }
-.forest-entry:nth-child(3), .forest-entry:nth-child(4) { border-bottom: none; }
-.fe-1 { background: var(--white); }
-.fe-2 { background: var(--blue); }
-.fe-3 { background: var(--terra); }
-.fe-4 { background: var(--cream); }
-
-
-.entry-leaf { width: 120px; height: 120px; background-size: contain; background-repeat: no-repeat; background-position: center; margin-bottom: 28px; flex-shrink: 0; }
-.leaf-coihue { background-image: url('coihue.png'); }
-.leaf-radal  { background-image: url('radal.png'); }
-.leaf-lenga  { background-image: url('legna.png'); }
-.leaf-cipres { background-image: url('cipres.png'); }
-
-.entry-num { font-size: 9px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 10px; }
-.fe-1 .entry-num, .fe-4 .entry-num { color: var(--ink-lt); }
-.fe-2 .entry-num, .fe-3 .entry-num { color: rgba(255,255,255,0.5); }
-.entry-name { font-size: clamp(20px, 2.5vw, 30px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.0; margin-bottom: 8px; }
-.fe-1 .entry-name, .fe-4 .entry-name { color: var(--ink); }
-.fe-2 .entry-name, .fe-3 .entry-name { color: var(--white); }
-.entry-latin { font-size: 12px; font-weight: 300; font-style: italic; letter-spacing: 0.04em; margin-bottom: 20px; }
-.fe-1 .entry-latin, .fe-4 .entry-latin { color: var(--terra); }
-.fe-2 .entry-latin { color: rgba(255,255,255,0.65); }
-.fe-3 .entry-latin { color: rgba(255,255,255,0.75); }
-.entry-body { font-size: 14px; font-weight: 300; line-height: 1.85; }
-.fe-1 .entry-body, .fe-4 .entry-body { color: var(--ink-mid); }
-.fe-2 .entry-body, .fe-3 .entry-body { color: rgba(255,255,255,0.75); }
-
-@media (max-width: 640px) {
-  .forest-entries { grid-template-columns: repeat(2, 1fr); }
-  .forest-entry { padding: 32px 20px; }
-  .entry-leaf { width: 80px; height: 80px; margin-bottom: 18px; }
-  .entry-body { font-size: 13px; }
-}
-
-/* ── ETYMOLOGY ── */
-.etymology {
-  position: relative; overflow: hidden;
-  padding: 96px 48px; border-top: 3px solid var(--ink);
-}
-@keyframes mapPulse {
-  0%   { opacity: 0.08; }
-  50%  { opacity: 0.45; }
-  100% { opacity: 0.08; }
-}
-.etymology-bg {
-  position: absolute; inset: 0;
+#book .book-bg {
+  position: absolute; inset: 0; z-index: -1;
   background-image: url('patagonia-map-1562.webp');
   background-size: cover; background-position: center;
-  animation: mapPulse 8s ease-in-out infinite;
-  pointer-events: none;
-  mix-blend-mode: luminosity;
-}
-.etymology-color {
-  position: absolute; inset: 0;
-  animation: colorShift 12s ease-in-out infinite;
-  opacity: 0.82;
+  opacity: .14; mix-blend-mode: luminosity;
   pointer-events: none;
 }
-.etymology-inner { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; }
-.ety-word { font-size: clamp(60px, 10vw, 128px); font-weight: 700; letter-spacing: -0.05em; line-height: 0.84; margin-bottom: 48px; color: var(--white); }
-.ety-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
-.ety-body { font-size: 17px; font-weight: 300; line-height: 1.9; color: rgba(255,255,255,0.85); }
-.ety-body p + p { margin-top: 22px; }
-@media (max-width: 600px) { .etymology { padding: 64px 24px; } }
-
-/* ── PLACES ── */
-.places-header { padding: 80px 48px 56px; border-top: 3px solid var(--ink); display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 48px; }
-.places-header h2 { font-size: clamp(44px, 7vw, 96px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.88; }
-.places-header p { font-size: 14px; font-weight: 300; line-height: 1.85; color: var(--ink-mid); max-width: 420px; margin-left: auto; padding-bottom: 6px; }
-@media (max-width: 760px) { .places-header { grid-template-columns: 1fr; gap: 20px; padding: 56px 24px 40px; } .places-header p { margin-left: 0; } }
-
-.places-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 3px solid var(--ink); }
-.place-card { border-right: 3px solid var(--ink); border-bottom: 3px solid var(--ink); display: flex; flex-direction: column; }
-.place-card:nth-child(3n) { border-right: none; }
-.place-card:nth-child(7), .place-card:nth-child(8), .place-card:nth-child(9) { border-bottom: none; }
-.place-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
-.place-body { padding: 28px 28px 36px; flex: 1; }
-.place-num { font-size: 9px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ink-lt); margin-bottom: 10px; }
-.place-name { font-size: clamp(16px, 2vw, 22px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 6px; }
-.place-sub { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: var(--terra); margin-bottom: 14px; text-transform: uppercase; }
-.place-desc { font-size: 13px; font-weight: 300; line-height: 1.75; color: var(--ink-mid); }
-.place-link { display: inline-block; margin-top: 12px; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); text-decoration: none; border-bottom: 1px solid var(--blue); padding-bottom: 2px; }
-.place-link:hover { color: var(--terra); border-color: var(--terra); }
-
-@media (max-width: 900px) {
-  .places-grid { grid-template-columns: repeat(2, 1fr); }
-  .place-card:nth-child(3n) { border-right: 3px solid var(--ink); }
-  .place-card:nth-child(2n) { border-right: none; }
-  .place-card:nth-child(7), .place-card:nth-child(8), .place-card:nth-child(9) { border-bottom: 3px solid var(--ink); }
-  .place-card:last-child { border-bottom: none; }
+#book .label { color: rgba(242,239,232,.5); }
+#book-cta {
+  display: block; text-align: left;
+  font-size: clamp(52px, 13.5vw, 240px);
+  font-weight: 800; letter-spacing: -.04em; line-height: .85; text-transform: uppercase;
+  margin: clamp(30px,4vw,60px) 0;
+  color: var(--paper);
+  transition: color .4s;
 }
-@media (max-width: 540px) {
-  .places-grid { grid-template-columns: 1fr; }
-  .place-card { border-right: none !important; }
-  .place-card:last-child { border-bottom: none; }
-  .place-body { padding: 22px 20px 30px; }
+#book-cta:hover { color: var(--blue); }
+#book-cta .o-hide > span { display: block; white-space: nowrap; }
+.book-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: clamp(60px, 8vw, 120px); }
+.book-actions a {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  border: 1px solid rgba(242,239,232,.4); border-radius: 99px;
+  padding: 14px 28px;
+  transition: background .35s, color .35s, border-color .35s;
 }
+.book-actions a:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.book-actions a.red { background: var(--red); border-color: var(--red); }
+.book-actions a.red:hover { background: var(--paper); color: var(--red); border-color: var(--paper); }
+#footer {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+  border-top: 1px solid rgba(242,239,232,.2);
+  padding: 22px 0 26px;
+}
+#footer .label { color: rgba(242,239,232,.45); }
+#footer a:hover { color: var(--red); }
 
-/* ── RATES ── */
-.rates-wrap { border-top: 3px solid var(--ink); }
-.rates-header { padding: 72px 48px 48px; }
-.rates-header h2 { font-size: clamp(44px, 7vw, 96px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.88; }
-@media (max-width: 600px) { .rates-header { padding: 48px 24px 36px; } }
-.rates-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 3px solid var(--ink); }
-.rate-card { padding: 44px 36px; border-right: 3px solid var(--ink); }
-.rate-card:last-child { border-right: none; }
-.rate-label { font-size: 9px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ink-lt); margin-bottom: 24px; }
-.rate-price { font-size: clamp(48px, 6vw, 76px); font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
-.rate-unit { font-size: 12px; font-weight: 400; color: var(--ink-lt); margin-top: 8px; margin-bottom: 24px; }
-.rate-detail { font-size: 13px; font-weight: 300; color: var(--ink-mid); line-height: 1.75; }
-.rate-card.terra { background: var(--terra); }
-.rate-card.terra .rate-label { color: rgba(255,255,255,0.55); }
-.rate-card.terra .rate-price { color: var(--white); }
-.rate-card.terra .rate-unit { color: rgba(255,255,255,0.55); }
-.rate-card.terra .rate-detail { color: rgba(255,255,255,0.82); }
-.rate-note { padding: 22px 48px; font-size: 11px; font-weight: 400; color: var(--ink-lt); border-top: 1px solid var(--cream-dk); }
-@media (max-width: 760px) { .rates-grid { grid-template-columns: 1fr; } .rate-card { border-right: none; border-bottom: 3px solid var(--ink); } .rate-card:last-child { border-bottom: none; } .rate-note { padding: 20px 24px; } }
+/* reveal helpers */
+[data-reveal] { will-change: transform, opacity; }
+.line-mask { overflow: hidden; display: block; }
+.line-mask .line-in { display: block; will-change: transform; }
 
-/* ── CTA ── */
-.cta { background: var(--ink); color: var(--white); padding: 96px 48px; text-align: center; border-top: 3px solid var(--ink); }
-.cta h2 { font-size: clamp(44px, 8vw, 104px); font-weight: 700; letter-spacing: -0.05em; line-height: 0.86; margin-bottom: 40px; }
-.cta p { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.6); margin-bottom: 48px; }
-.btn-cta { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; padding: 18px 52px; background: var(--white); color: var(--ink); text-decoration: none; transition: all 0.15s; }
-.btn-cta:hover { background: var(--terra); color: var(--white); }
-.btn-wa { background: #25D366; color: var(--white); margin-left: 16px; }
-.btn-wa:hover { background: #1DAB56; color: var(--white); }
-@media (max-width: 600px) { .btn-wa { margin-left: 0; margin-top: 16px; } }
-@media (max-width: 600px) { .cta { padding: 64px 24px; } }
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
 
 /* ── FLOATING WHATSAPP ── */
-.float-wa {
-  position: fixed; bottom: 24px; right: 24px; z-index: 200;
+#float-wa {
+  position: fixed; bottom: 24px; right: 24px; z-index: 150;
   width: 56px; height: 56px; border-radius: 50%;
-  background: var(--ink); color: var(--white); border: 2px solid var(--white);
+  background: var(--ink); color: var(--paper); border: 1px solid var(--paper);
   display: flex; align-items: center; justify-content: center;
-  text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  transition: background 0.15s, transform 0.15s;
+  text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  transition: background .3s, transform .3s;
 }
-.float-wa:hover { background: var(--terra); transform: scale(1.08); }
-.float-wa svg { width: 28px; height: 28px; fill: var(--white); }
-@media (max-width: 600px) { .float-wa { width: 50px; height: 50px; bottom: 16px; right: 16px; } .float-wa svg { width: 24px; height: 24px; } }
-
-/* ── FOOTER ── */
-footer { background: var(--ink); color: rgba(255,255,255,0.4); padding: 36px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; border-top: 1px solid rgba(255,255,255,0.1); }
-.footer-logo { font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--white); }
-.footer-copy { font-size: 11px; }
-@media (max-width: 600px) { footer { padding: 28px 24px; flex-direction: column; align-items: flex-start; } }
-
-/* ── TRANSLATION HIDDEN ── */
-[data-lang] { display: none; }
-[data-lang="en"] { display: block; }
-span[data-lang] { display: none; }
-span[data-lang="en"] { display: inline; }
+#float-wa:hover { background: var(--blue); transform: scale(1.08); }
+#float-wa svg { width: 28px; height: 28px; fill: var(--paper); }
+@media (max-width: 760px) {
+  #float-wa { width: 50px; height: 50px; bottom: 16px; right: 16px; }
+  #float-wa svg { width: 24px; height: 24px; }
+}
 </style>
 </head>
 <body>
 
+<!-- PRELOADER -->
+<div id="loader">
+  <div id="loader-bar"></div>
+  <div class="label">Posta Bariloche — 41°06′S 71°23′W</div>
+  <div id="loader-count">000</div>
+</div>
+
+<!-- WEBGL -->
+<canvas id="gl"></canvas>
+<div id="grid-lines"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
 <!-- NAV -->
-<nav>
-  <a href="#" class="nav-logo">Posta Bariloche</a>
-  <div class="nav-center">
-    <a href="#house" data-i18n-nav="nav-house">The House</a>
-    <a href="#spaces" data-i18n-nav="nav-spaces">The Spaces</a>
-    <a href="#forest" data-i18n-nav="nav-forest">The Forest</a>
-    <a href="#places" data-i18n-nav="nav-places">Bariloche</a>
-    <a href="#rates" data-i18n-nav="nav-rates">Rates</a>
+<nav id="nav">
+  <a href="#hero" class="label">Posta&nbsp;Bariloche<sup style="color:var(--red)">®</sup></a>
+  <div class="nav-links label">
+    <a href="#house"><sup>01</sup>House</a>
+    <a href="#spaces"><sup>02</sup>Spaces</a>
+    <a href="#forest"><sup>03</sup>Forest</a>
+    <a href="#around"><sup>04</sup>Around</a>
+    <a href="#rates"><sup>05</sup>Rates</a>
+    <a href="#book" id="nav-book">Book</a>
   </div>
-  <div class="nav-right">
-    <div class="lang-toggle">
-      <button class="lang-btn active" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" onclick="setLang('es')">ES</button>
-      <button class="lang-btn" onclick="setLang('de')">DE</button>
-      <button class="lang-btn" onclick="setLang('fr')">FR</button>
-    </div>
-    <a href="#book" class="btn-nav" data-i18n="cta-btn">Book Now</a>
-  </div>
-  <button class="hamburger" onclick="document.querySelector('.mob').classList.toggle('open')" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
-<div class="mob">
-  <a href="#house" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="nav-house">The House</a>
-  <a href="#spaces" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="nav-spaces">The Spaces</a>
-  <a href="#forest" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="nav-forest">The Forest</a>
-  <a href="#places" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="nav-places">Bariloche</a>
-  <a href="#rates" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="nav-rates">Rates</a>
-  <a href="#book" onclick="document.querySelector('.mob').classList.remove('open')" data-i18n="cta-btn">Book Now</a>
-  <div class="mob-lang">
-    <button class="lang-btn active" onclick="setLang('en');document.querySelector('.mob').classList.remove('open')">EN</button>
-    <button class="lang-btn" onclick="setLang('es');document.querySelector('.mob').classList.remove('open')">ES</button>
-    <button class="lang-btn" onclick="setLang('de');document.querySelector('.mob').classList.remove('open')">DE</button>
-    <button class="lang-btn" onclick="setLang('fr');document.querySelector('.mob').classList.remove('open')">FR</button>
-  </div>
-</div>
 
-<!-- 1. OPENER -->
-<section class="opener" id="house">
-  <div class="opener-img">
+<!-- HERO -->
+<header id="hero">
+  <div id="hero-img" data-gl data-speed="1">
     <img src="IMG-20250326-WA0018.jpg" alt="Posta Bariloche — black tower rising through coihue forest at golden hour">
+    <div class="img-cover"></div>
   </div>
-  <div class="opener-blank">
-    <h1>Posta<br>Bariloche</h1>
-    <div class="loc">
-      Península San Pedro<br>
-      Bariloche · Patagonia
-    </div>
+  <h1 id="hero-title" class="display">
+    <span class="line"><span>Posta</span></span>
+    <span class="line"><span>Bari<span class="accent">—</span>loche</span></span>
+  </h1>
+  <div id="hero-meta">
+    <span class="label" data-reveal>Península San Pedro<br>Nahuel Huapi National Park</span>
+    <span class="label" data-reveal>A black tower<br>in the coihue forest</span>
+    <span class="label" data-reveal>Patagonia, Argentina<br>41°06′S — 71°23′W</span>
+    <span class="label" data-reveal style="color:var(--red)">Scroll ↓</span>
+  </div>
+  <div class="rule" id="hero-rule"></div>
+</header>
+
+<!-- MARQUEE -->
+<div id="marquee" aria-hidden="true">
+  <div class="track"></div>
+</div>
+
+<!-- 01 HOUSE -->
+<section id="house" class="block">
+  <div class="sec-head">
+    <span class="label"><span class="idx">01</span>The House</span>
+    <span class="label">Est. Península San Pedro</span>
+  </div>
+  <h2 class="display" data-split>A tower in the <em>coihue</em> forest.</h2>
+  <div class="house-cols">
+    <div class="col-a label" data-reveal style="color:var(--ink-60)">Black corrugated steel<br>against ancient trunks</div>
+    <p class="col-b" data-reveal>Posta Bariloche stands on the forested hillside of Península San Pedro, an exclusive peninsula inside Nahuel Huapi National Park. The house rises as a dark vertical form through native coihue — <strong>black corrugated steel against ancient trunks</strong> — with a glass front on two sides that frames unobstructed views of Cerro López and the lake below.</p>
+    <p class="col-c" data-reveal>Eight-meter ceilings open the interior into the canopy. Heated concrete floors run the full ground floor. Two king bedrooms — one upstairs, one downstairs en suite with its own private deck — sleep in total quiet, with only the wind in the trees and the occasional <strong>Austral parakeet</strong>. The upper bedroom has a dedicated workspace and a fourth-floor balcony where the lake appears through the treetops.</p>
+  </div>
+
+  <div id="stats">
+    <div class="stat"><span class="num"><span data-count="8">0</span><small>M</small></span><span class="label">Ceiling height</span></div>
+    <div class="stat"><span class="num"><span data-count="2">0</span></span><span class="label">King bedrooms</span></div>
+    <div class="stat"><span class="num"><span data-count="2">0</span></span><span class="label">Glass façades</span></div>
+    <div class="stat"><span class="num"><span data-count="2075">0</span><small>M</small></span><span class="label">Cerro López</span></div>
+  </div>
+
+  <div id="specs">
+    <div class="row" data-reveal><span class="n">A·01</span><span class="k">Location</span><span class="v">Península San Pedro · Nahuel Huapi N.P.</span></div>
+    <div class="row" data-reveal><span class="n">A·02</span><span class="k">Bedrooms</span><span class="v">2 · King · En suite</span></div>
+    <div class="row" data-reveal><span class="n">A·03</span><span class="k">Bathrooms</span><span class="v">2 · Full</span></div>
+    <div class="row" data-reveal><span class="n">A·04</span><span class="k">Heating</span><span class="v">Radiant concrete floor · cast-iron wood stove</span></div>
+    <div class="row" data-reveal><span class="n">A·05</span><span class="k">Glass front</span><span class="v">Two sides · floor-to-ceiling</span></div>
+    <div class="row" data-reveal><span class="n">A·06</span><span class="k">Internet</span><span class="v">Starlink — work from the forest</span></div>
+    <div class="row" data-reveal><span class="n">A·07</span><span class="k">Workspace</span><span class="v">Upstairs desk · 4th-floor balcony</span></div>
+    <div class="row" data-reveal><span class="n">A·08</span><span class="k">Views</span><span class="v">Cerro López · Lago Nahuel Huapi</span></div>
+    <div class="row" data-reveal><span class="n">A·09</span><span class="k">Minimum stay</span><span class="v">2 nights</span></div>
   </div>
 </section>
 
-<!-- 2. DECK + DESCRIPTION -->
-<div class="desc-row">
-  <div class="desc-text">
-    <div>
-      <div class="desc-eyebrow" data-i18n="eyebrow-house">The House</div>
-      <h2 class="desc-title">
-        <span data-lang="en">A tower in<br>the <em>coihue</em><br>forest.</span>
-        <span data-lang="es">Una torre en<br>el bosque de<br><em>coihue</em>.</span>
-        <span data-lang="de">Ein Turm im<br><em>Coihue</em>-<br>Wald.</span>
-        <span data-lang="fr">Une tour dans<br>la forêt de<br><em>coihue</em>.</span>
-      </h2>
-      <div class="desc-body">
-        <div data-lang="en">
-          <p>Posta Bariloche stands on the forested hillside of Península San Pedro, an exclusive peninsula inside Nahuel Huapi National Park. The house rises as a dark vertical form through native coihue — black corrugated steel against ancient trunks — with a glass front on two sides that frames unobstructed views of Cerro López and the lake below.</p>
-          <p>Eight-meter ceilings open the interior into the canopy. Heated concrete floors run the full ground floor. The kitchen is fully equipped; the leather sofa sits on a black sheepskin rug. Two king-sized bedrooms — one upstairs and one downstairs, en suite with its own private deck — sleep in total quiet, with only the wind in the trees and the occasional Austral parakeet. The upper bedroom has a dedicated workspace and a fourth-floor balcony where the lake appears through the treetops.</p>
-        </div>
-        <div data-lang="es">
-          <p>Posta Bariloche se encuentra en la ladera boscosa de la Península San Pedro, una península exclusiva dentro del Parque Nacional Nahuel Huapi. La casa se eleva como una forma vertical oscura a través del coihue nativo — acero corrugado negro contra troncos ancestrales — con frente de vidrio en dos lados que enmarca vistas despejadas al Cerro López y al lago.</p>
-          <p>Techos de ocho metros abren el interior hacia el dosel. Pisos de concreto radiante en toda la planta baja. Cocina equipada; sillón de cuero sobre alfombra de piel negra. Dos dormitorios king — uno arriba y uno abajo, en suite con deck privado propio — duermen en silencio total. El dormitorio superior tiene escritorio de trabajo y balcón en el cuarto piso con vistas al lago entre las copas.</p>
-        </div>
-        <div data-lang="de">
-          <p>Posta Bariloche liegt am bewaldeten Hang der Península San Pedro, einer exklusiven Halbinsel im Nationalpark Nahuel Huapi. Das Haus erhebt sich als dunkle Vertikalform durch den nativen Coihue-Wald — schwarzes Wellblech gegen uralte Stämme — mit einer Glasfront auf zwei Seiten und unverstellten Blicken auf den Cerro López und den See.</p>
-          <p>Acht Meter hohe Decken öffnen das Innere zum Blätterdach. Beheizter Betonboden im gesamten Erdgeschoss. Voll ausgestattete Küche; Ledersofa auf schwarzem Schaffell. Zwei King-Schlafzimmer — eines oben, eines unten mit eigenem Privat-Deck — schlafen in völliger Stille. Das obere Zimmer verfügt über einen dedizierten Arbeitsplatz und einen Balkon im vierten Stock mit Seeblick durch die Baumkronen.</p>
-        </div>
-        <div data-lang="fr">
-          <p>Posta Bariloche est situé sur le flanc boisé de la Península San Pedro, une péninsule exclusive à l'intérieur du Parc National Nahuel Huapi. La maison s'élève comme une forme verticale sombre à travers le coihue natif — acier ondulé noir contre des troncs ancestraux — avec une façade vitrée sur deux côtés offrant des vues dégagées sur le Cerro López et le lac.</p>
-          <p>Des plafonds de huit mètres ouvrent l'intérieur sur la canopée. Planchers chauffants en béton sur tout le rez-de-chaussée. Cuisine entièrement équipée ; canapé en cuir sur tapis en peau noire. Deux chambres king — l'une à l'étage et l'autre au rez-de-chaussée en suite avec sa propre terrasse privée — dorment dans un silence total. La chambre supérieure dispose d'un espace de travail dédié et d'un balcon au quatrième étage avec vue sur le lac entre les cimes.</p>
-        </div>
-      </div>
-    </div>
-    <div class="specs">
-      <div class="spec-row"><span class="spec-label" data-i18n="spec-loc">Location</span><span class="spec-val">Península San Pedro · Nahuel Huapi N.P.</span></div>
-      <div class="spec-row"><span class="spec-label" data-i18n="spec-bed">Bedrooms</span><span class="spec-val" data-i18n="spec-bed-val">2 · King · En suite</span></div>
-      <div class="spec-row"><span class="spec-label" data-i18n="spec-bath">Bathrooms</span><span class="spec-val">2 · Full</span></div>
-      <div class="spec-row"><span class="spec-label" data-i18n="spec-heat">Heating</span><span class="spec-val" data-i18n="spec-heat-val">Radiant floor · wood stove</span></div>
-      <div class="spec-row"><span class="spec-label" data-i18n="spec-glass">Glass front</span><span class="spec-val" data-i18n="spec-glass-val">Two sides · floor-to-ceiling</span></div>
-      <div class="spec-row"><span class="spec-label" data-i18n="spec-net">Internet</span><span class="spec-val">Starlink</span></div>
-      <div class="spec-row"><span class="spec-label" data-i18n="spec-work">Workspace</span><span class="spec-val" data-i18n="spec-work-val">Upstairs · 4th floor balcony</span></div>
-      <div class="spec-row"><span class="spec-label" data-i18n="spec-views">Views</span><span class="spec-val">Cerro López · Nahuel Huapi</span></div>
-      <div class="spec-row"><span class="spec-label" data-i18n="spec-min">Min. stay</span><span class="spec-val" data-i18n="spec-min-val">2 nights</span></div>
-    </div>
-  </div>
-  <div class="desc-img">
-    <img src="IMG-20250326-WA0017.jpg" alt="Deck at sunset — Cerro López and Nahuel Huapi beyond the coihue">
-  </div>
-</div>
-
-<!-- DISTANCES -->
-<div class="distances">
-  <div class="dist-item"><div class="dist-time">10'</div><div class="dist-label">Playa sin Viento</div></div>
-  <div class="dist-item"><div class="dist-time">10'</div><div class="dist-label">Cerro López<br>Hiking Trails</div></div>
-  <div class="dist-item"><div class="dist-time">10'</div><div class="dist-label">Hotel Llao Llao</div></div>
-  <div class="dist-item"><div class="dist-time">30'</div><div class="dist-label">Cerro Catedral<br>Ski Resort</div></div>
-  <div class="dist-item"><div class="dist-time">40'</div><div class="dist-label">Bariloche<br>Centro</div></div>
-  <div class="dist-item"><div class="dist-time">1h</div><div class="dist-label">Bariloche<br>Airport</div></div>
-</div>
-
-<!-- STATS -->
-<div class="stats">
-  <div class="stat"><div class="stat-num">2</div><div class="stat-label" data-i18n="stat-bed">Bedrooms</div></div>
-  <div class="stat"><div class="stat-num">2</div><div class="stat-label" data-i18n="stat-bath">Bathrooms</div></div>
-  <div class="stat"><div class="stat-num">King</div><div class="stat-label" data-i18n="stat-beds">Size Beds</div></div>
-  <div class="stat"><div class="stat-num">↗</div><div class="stat-label">Starlink</div></div>
-  <div class="stat"><div class="stat-num">NP</div><div class="stat-label" data-i18n="stat-park">National Park</div></div>
-</div>
-
-<!-- THE SPACES -->
+<!-- 02 SPACES — horizontal -->
 <section id="spaces">
-  <div class="spaces-header">
-    <h2 data-i18n="spaces-title">The<br>Spaces</h2>
-    <p data-i18n="spaces-sub">Every room faces the forest and the view. Glass on two sides. The mountain is always present.</p>
-  </div>
-  <div class="spaces-grid">
-    <img src="mountain-view.jpg" alt="Glass front — Cerro López through the steel frame">
-    <img src="living-room.jpg" alt="Living room — leather sofa, black sheepskin, open to the deck">
-    <img src="bedroom-window.jpg" alt="Bedroom — king bed, exposed beams, Cerro López at dusk">
-    <img src="PXL_20250905_022610977.jpg" alt="Interior at night — kitchen, loft bedroom visible above">
-    <img src="PXL_20260110_175925931.jpg" alt="Deck view — lake and mountain through the coihue canopy">
-    <img src="PXL_20260104_200129676.jpg" alt="Exterior — black tower, corrugated steel, Cerro López behind">
+  <div class="pin-wrap">
+    <div class="h-track">
+      <div class="panel intro">
+        <span class="label"><span class="idx">02</span>The Spaces</span>
+        <h2 class="display" data-split>Glass on two sides.</h2>
+        <p>Every room faces the forest and the view. The mountain is always present. Drag through the house — left to right, ground to canopy.</p>
+      </div>
+      <div class="panel">
+        <div class="frame" data-gl><img src="IMG-20250326-WA0017.jpg" alt="Deck at sunset — Cerro López and Nahuel Huapi beyond the coihue"></div>
+        <div class="caption"><span class="label"><span class="idx">B·01</span>The deck, sunset</span><span class="label">Cerro López beyond</span></div>
+      </div>
+      <div class="panel">
+        <div class="frame" data-gl><img src="IMG-20250326-WA0018.jpg" alt="Posta Bariloche — black tower rising through coihue forest at golden hour"></div>
+        <div class="caption"><span class="label"><span class="idx">B·02</span>Golden hour</span><span class="label">Tower in the coihue</span></div>
+      </div>
+      <div class="panel">
+        <div class="frame" data-gl><img src="mountain-view.jpg" alt="Glass front — Cerro López through the steel frame"></div>
+        <div class="caption"><span class="label"><span class="idx">B·03</span>Glass front</span><span class="label">Cerro López, framed</span></div>
+      </div>
+      <div class="panel">
+        <div class="frame" data-gl><img src="night-exterior.jpg" alt="Posta Bariloche at night — black tower lit against the dark forest"></div>
+        <div class="caption"><span class="label"><span class="idx">B·04</span>The tower, night</span><span class="label">Lit against the dark</span></div>
+      </div>
+      <div class="panel">
+        <div class="frame" data-gl><img src="PXL_20260104_200129676.jpg" alt="Exterior — black tower, corrugated steel, Cerro López behind"></div>
+        <div class="caption"><span class="label"><span class="idx">B·05</span>Exterior</span><span class="label">Corrugated steel</span></div>
+      </div>
+      <div class="panel">
+        <div class="frame" data-gl><img src="PXL_20250905_022610977.jpg" alt="Interior at night — kitchen, loft bedroom visible above"></div>
+        <div class="caption"><span class="label"><span class="idx">B·06</span>Interior, night</span><span class="label">Kitchen · loft above</span></div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- FULL BLEED NIGHT -->
-<div class="full-bleed">
-  <img src="night-exterior.jpg" alt="Posta Bariloche at night — black tower lit against the dark forest">
+<!-- CANOPY DIVIDER -->
+<div id="canopy">
+  <div class="frame" data-gl><img src="forest-canopy.jpg" alt="Looking up through the coihue and cypress canopy"></div>
+  <div class="canopy-word display"><span data-split>The Forest</span></div>
 </div>
 
-<!-- AMENITIES -->
-<div class="amenities-header">
-  <h2 data-i18n="amenities-title">What's<br>included.</h2>
-</div>
-<div class="amenities-grid">
-  <div class="amenity blue-bg">
-    <div class="amenity-num">01</div>
-    <div class="amenity-name" data-i18n="am1-name">King beds</div>
-    <div class="amenity-desc" data-i18n="am1-desc">Premium mattresses, full linen, both bedrooms</div>
+<!-- 03 FOREST -->
+<section id="forest" class="block">
+  <div class="sec-head">
+    <span class="label"><span class="idx">03</span>Native Patagonian species</span>
+    <span class="label">Andean-Patagonian range</span>
   </div>
-  <div class="amenity">
-    <div class="amenity-num">02</div>
-    <div class="amenity-name" data-i18n="am2-name">Heated floors</div>
-    <div class="amenity-desc" data-i18n="am2-desc">Radiant concrete throughout the ground floor</div>
-  </div>
-  <div class="amenity">
-    <div class="amenity-num">03</div>
-    <div class="amenity-name" data-i18n="am3-name">Starlink</div>
-    <div class="amenity-desc" data-i18n="am3-desc">High-speed satellite internet — work from the forest</div>
-  </div>
-  <div class="amenity terra-bg">
-    <div class="amenity-num">04</div>
-    <div class="amenity-name" data-i18n="am4-name">Full kitchen</div>
-    <div class="amenity-desc" data-i18n="am4-desc">Fully equipped for long stays — oven, fridge, cookware</div>
-  </div>
-  <div class="amenity">
-    <div class="amenity-num">05</div>
-    <div class="amenity-name" data-i18n="am5-name">Wood stove</div>
-    <div class="amenity-desc" data-i18n="am5-desc">Cast iron stove. The fire makes the room.</div>
-  </div>
-  <div class="amenity ink-bg">
-    <div class="amenity-num">06</div>
-    <div class="amenity-name" data-i18n="am6-name">Lake views</div>
-    <div class="amenity-desc" data-i18n="am6-desc">Nahuel Huapi and Cerro López from every level</div>
-  </div>
-  <div class="amenity">
-    <div class="amenity-num">07</div>
-    <div class="amenity-name" data-i18n="am7-name">Workspace</div>
-    <div class="amenity-desc" data-i18n="am7-desc">Dedicated desk upstairs with 4th floor balcony views</div>
-  </div>
-  <div class="amenity blue-bg">
-    <div class="amenity-num">08</div>
-    <div class="amenity-name" data-i18n="am8-name">Private decks</div>
-    <div class="amenity-desc" data-i18n="am8-desc">Downstairs en suite opens to its own forest deck</div>
-  </div>
-</div>
-
-<!-- FOREST -->
-<section id="forest">
-  <div class="forest-header">
-    <div>
-      <div class="forest-eyebrow" data-i18n="forest-eyebrow">The Forest</div>
-      <div class="forest-title" data-i18n="forest-title">Native<br><span>Patagonian</span><br>species.</div>
+  <div class="species">
+    <div class="sp-row" data-reveal>
+      <span class="sp-num">C·01</span>
+      <h3>Coihue<span>Nothofagus dombeyi</span></h3>
+      <p>The dominant tree of the Andean-Patagonian forest and the one that surrounds Posta Bariloche on every side. Evergreen, long-lived, reaching 40 meters. The name comes from the Mapudungun word <em>koihue</em>: simply, the tree. It is the forest itself.</p>
+      <span class="sp-tag">Evergreen · 40 m</span>
     </div>
-    <p class="forest-header-sub" data-i18n="forest-sub">Posta Bariloche stands inside one of the last intact native forests of the Andean-Patagonian range. Four species define this landscape — each with its own character, history, and name.</p>
+    <div class="sp-row" data-reveal>
+      <span class="sp-num">C·02</span>
+      <h3>Radal<span>Lomatia hirsuta</span></h3>
+      <p>A small tree of the forest understory, in clearings and stream margins where more light reaches the ground. In autumn its serrated leaves turn warm gold. Not the first tree you notice, but the one you return to.</p>
+      <span class="sp-tag">Understory · gold</span>
+    </div>
+    <div class="sp-row" data-reveal>
+      <span class="sp-num">C·03</span>
+      <h3>Lenga<span>Nothofagus pumilio</span></h3>
+      <p>The tree that turns Patagonia red. A deciduous southern beech, it climbs right to the treeline, and each autumn its small round leaves transform entire mountainsides into fire. It burns before it sleeps.</p>
+      <span class="sp-tag">Deciduous · treeline</span>
+    </div>
+    <div class="sp-row" data-reveal>
+      <span class="sp-num">C·04</span>
+      <h3>Ciprés<span>Austrocedrus chilensis</span></h3>
+      <p>One of Patagonia's most ancient survivors — individual trees live more than 1,500 years. The cypress marks thresholds: where forest opens onto steppe or lake. It marks time in ways humans cannot fully comprehend.</p>
+      <span class="sp-tag">1,500 yrs</span>
+    </div>
   </div>
-  <div class="forest-canopy">
-    <img src="forest-canopy.jpg" alt="Looking up through the coihue and cypress canopy">
-  </div>
-  <div class="forest-entries">
-    <div class="forest-entry fe-1">
 
-      <div class="entry-leaf leaf-coihue"></div>
-      <div class="entry-num">01</div>
-      <div class="entry-name">Coihue</div>
-      <div class="entry-latin">Nothofagus dombeyi</div>
-      <div class="entry-body" data-i18n="tree1">The dominant tree of the Andean-Patagonian forest and the one that surrounds Posta Bariloche on every side. Coihue is a southern beech — evergreen, long-lived, reaching 40 meters. Its smooth grey bark lightens with age; its small leathery leaves filter the Patagonian light into something green and diffuse. The name comes from the Mapudungun word <em>koihue</em>: simply, the tree. It is the forest itself.</div>
-    </div>
-    <div class="forest-entry fe-2">
-
-      <div class="entry-leaf leaf-radal"></div>
-      <div class="entry-num">02</div>
-      <div class="entry-name">Radal</div>
-      <div class="entry-latin">Lomatia hirsuta</div>
-      <div class="entry-body" data-i18n="tree2">A small tree of the forest understory — in clearings and stream margins where more light reaches the ground. In summer it flowers in clusters of small cream-white blooms; in autumn its serrated leaves turn warm gold before falling. Its wood was used for tool handles and fire-starting. The radal is a quiet presence: not the first tree you notice, but the one you return to.</div>
-    </div>
-    <div class="forest-entry fe-3">
-
-      <div class="entry-leaf leaf-lenga"></div>
-      <div class="entry-num">03</div>
-      <div class="entry-name">Lenga</div>
-      <div class="entry-latin">Nothofagus pumilio</div>
-      <div class="entry-body" data-i18n="tree3">Lenga is the tree that turns Patagonia red. A deciduous southern beech, it climbs higher than any other Andean tree — right to the treeline — and each autumn its small round leaves transform entire mountainsides into fire. Up close, lenga is modest: low-branching, gnarled at altitude, twisted by decades of snow. From a distance, it is spectacular. It burns before it sleeps.</div>
-    </div>
-    <div class="forest-entry fe-4">
-
-      <div class="entry-leaf leaf-cipres"></div>
-      <div class="entry-num">04</div>
-      <div class="entry-name">Ciprés de la Cordillera</div>
-      <div class="entry-latin">Austrocedrus chilensis</div>
-      <div class="entry-body" data-i18n="tree4">One of Patagonia's most ancient survivors — individual trees can live more than 1,500 years. It grows on rocky slopes and well-drained hillsides, its aromatic reddish-brown wood long prized by Mapuche craftspeople for canoes and homes. The cypress marks thresholds: where forest opens onto steppe or lake. It marks time in ways humans cannot fully comprehend.</div>
+  <div id="etym">
+    <span class="label"><span class="idx">†</span>Etymology</span>
+    <h2 class="display" data-split>Pata<em>—</em>gonia.</h2>
+    <div class="etym-cols">
+      <p data-reveal>The name first appeared in writing in <strong>1520</strong>, recorded by Antonio Pigafetta, the Italian scholar who sailed with Magellan on the first circumnavigation of the Earth. Near the Strait, the expedition encountered the indigenous Tehuelche people — known for their height and the guanaco-skin boots they wrapped against the cold.</p>
+      <p data-reveal>Pigafetta called them <strong>patagones</strong> — from the Spanish <em>pata</em>, foot, and possibly from the fictional giant Pathagon of the romance <em>Primaléon</em> (1512). The word carried the full weight of European mythology: giants at the edge of the world, where the map ran out and the imagination took over.</p>
+      <p data-reveal>Mapuche traditions hold a different understanding. For them it is simply <strong>Wallmapu</strong> — the surrounding territory — the earth that has always been there. The giants were never giants. They had been here long enough to know the mountains were not the edge of anything. They were the center.</p>
     </div>
   </div>
 </section>
 
-<!-- ETYMOLOGY / PATAGONIA -->
-<section class="etymology">
-  <div class="etymology-bg"></div>
-  <div class="etymology-color"></div>
-  <div class="etymology-inner">
-    <div class="ety-word">
-      <span class="ety-label" data-i18n="ety-label">Etymology</span>
-      Patagonia.
-    </div>
-    <div class="ety-body">
-      <p data-i18n="ety-1">The name first appeared in writing in 1520, recorded by Antonio Pigafetta, the Italian scholar who sailed with Magellan on the first circumnavigation of the Earth. Near the Strait that now bears Magellan's name, the expedition encountered the indigenous Tehuelche people — known for their height and for the large guanaco-skin boots they wrapped around their feet against the cold.</p>
-      <p data-i18n="ety-2">Pigafetta called them <em>patagones</em> — from the Spanish <em>pata</em>, foot, and possibly from the fictional giant Pathagon who appeared in the popular romance <em>Primaléon</em> (1512). The word carried the full weight of European mythology: giants at the edge of the world, where the map ran out and the imagination took over.</p>
-      <p data-i18n="ety-3">Mapuche traditions hold a different understanding. For them it is simply <em>Wallmapu</em> — the surrounding territory — the earth that has always been there, long before it needed a name invented by those arriving by sea. The giants were never giants. They were people who knew the cold, who wore what the land gave them, and who had been here long enough to know that the mountains were not the edge of anything. They were the center.</p>
-    </div>
+<!-- 04 AROUND -->
+<section id="around" class="block">
+  <div class="sec-head">
+    <span class="label"><span class="idx">04</span>Around Bariloche</span>
+    <span class="label">Minutes from the extraordinary</span>
+  </div>
+  <div class="aitem" data-reveal>
+    <div class="arow" data-img="bosque-arrayan.jpg"><span class="an">D·01</span><h3>Bosque de Arrayán</h3><span class="ad">10 min · Circuito Chico</span><span class="aa">↗</span></div>
+    <div class="adesc"><div><p>One of the world's largest arrayán myrtle forests, ten minutes from Posta Bariloche on the Circuito Chico near Llao Llao. Twisted cinnamon-colored trunks rise over a mossy floor that inspired Disney's Bambi. Walk it in the morning when the bark glows orange. Or take the ferry from Puerto Llao Llao — ten minutes away — to Isla Victoria for a fully immersive old-growth forest experience.</p></div></div>
+  </div>
+  <div class="aitem" data-reveal>
+    <div class="arow" data-img="golf-llaollao.jpg"><span class="an">D·02</span><h3>Golf Llao Llao</h3><span class="ad">10 min · Lago Moreno</span><span class="aa">↗</span></div>
+    <div class="adesc"><div><p>Eighteen holes set between two lakes with Cerro López and Cerro Catedral as backdrop. One of the most scenic golf courses in South America. The hotel itself — a landmark of Patagonian alpine architecture — is worth visiting for a drink on the terrace alone.</p></div></div>
+  </div>
+  <div class="aitem" data-reveal>
+    <div class="arow" data-img="cerro-campanario.jpg"><span class="an">D·03</span><h3>Cerro Campanario</h3><span class="ad">20 min · Chairlift</span><span class="aa">↗</span></div>
+    <div class="adesc"><div><p>Ranked among the world's best views — a short chairlift ride to a summit that looks out over five lakes, the Llao Llao peninsula, and every major peak of the Argentine Andes. At the top: vintage alpine vibes, apple strudel, and a panorama that takes time to absorb.</p></div></div>
+  </div>
+  <div class="aitem" data-reveal>
+    <div class="arow" data-img="kayak.jpg"><span class="an">D·04</span><h3>Playa sin Viento</h3><span class="ad">10 min · Nahuel Huapi</span><span class="aa">↗</span></div>
+    <div class="adesc"><div><p>A sheltered beach on the lake named for its stillness. The water is impossibly clear and cold — glacial runoff from the Andes, filtered through volcanic rock. Kayak rentals available on site. Come early for the stillness; stay for the light on the water in the afternoon.</p></div></div>
+  </div>
+  <div class="aitem" data-reveal>
+    <div class="arow" data-img="ski.jpg"><span class="an">D·05</span><h3>Cerro Catedral</h3><span class="ad">30 min · Ski · Hike · Bike</span><span class="aa">↗</span></div>
+    <div class="adesc"><div><p>The largest ski resort in South America with over 120 km of runs, a vertical drop of 1,000 m, and a season that runs June through October. In summer the same mountain opens for trekking and mountain biking. The views from the ridge take in the entire lake district.</p></div></div>
+  </div>
+  <div class="aitem" data-reveal>
+    <div class="arow" data-img="fly-fishing.jpg"><span class="an">D·06</span><h3>Fly Fishing</h3><span class="ad">Lakes · Rivers · Guided</span><span class="aa">↗</span></div>
+    <div class="adesc"><div><p>Patagonia's rivers and lakes are legendary among fly fishers — crystal-clear water, wild brown and rainbow trout, and almost no one else around. Fish the Limay, the Traful, or Nahuel Huapi itself. Local guides available; licenses required and easy to arrange.</p></div></div>
+  </div>
+  <div class="aitem" data-reveal>
+    <div class="arow" data-img="refugiolopez.jpg"><span class="an">D·07</span><h3>Refugio López</h3><span class="ad">10 min · Hiking</span><span class="aa">↗</span></div>
+    <div class="adesc"><div><p>The mountain you see from every window at Posta Bariloche. The trailhead is ten minutes by car. Full-day hikes reach the refuge at 1,650 m with sweeping views of the entire lake district. One of the great day hikes of Patagonia.</p></div></div>
+  </div>
+  <div class="aitem" data-reveal>
+    <div class="arow" data-img="solis.jpg"><span class="an">D·08</span><h3>Solís · Cocina</h3><span class="ad">On the peninsula</span><a class="aa" href="https://www.instagram.com/solis.cocina/" target="_blank" rel="noopener" aria-label="Solís Cocina on Instagram">↗</a></div>
+    <div class="adesc"><div><p>Our local, right here on Península San Pedro. Solís is a small, serious kitchen using Patagonian ingredients with care and imagination. The kind of place that makes you rearrange your plans to eat there twice.</p></div></div>
+  </div>
+  <div class="aitem" data-reveal>
+    <div class="arow" data-img="anima.jpg"><span class="an">D·09</span><h3>Ánima · Restaurante</h3><span class="ad">Minutes away · Wood fire</span><a class="aa" href="https://www.instagram.com/animarestaurante/" target="_blank" rel="noopener" aria-label="Ánima Restaurante on Instagram">↗</a></div>
+    <div class="adesc"><div><p>Minutes from Posta Bariloche, Ánima brings refined Patagonian cooking to the lake road. Wood fire, local produce, natural wines. One of the best tables in the region — reserve ahead.</p></div></div>
   </div>
 </section>
+<div id="preview"></div>
 
-<!-- PLACES TO VISIT -->
-<section id="places">
-  <div class="places-header">
-    <h2 data-i18n="places-title">Around<br>Bariloche.</h2>
-    <p data-i18n="places-sub">The peninsula puts you minutes from some of the most extraordinary corners of the Patagonian lake district. Here is where to go.</p>
+<!-- 05 RATES -->
+<section id="rates" class="block">
+  <div class="sec-head">
+    <span class="label"><span class="idx">05</span>Rates</span>
+    <span class="label">USD · per night · min 2 nights</span>
   </div>
-  <div class="places-grid">
-
-    <div class="place-card">
-      <img class="place-img" src="bosque-arrayan.jpg" alt="Bosque de Arrayán — ancient myrtle forest on the peninsula">
-      <div class="place-body">
-        <div class="place-num">01</div>
-        <div class="place-name" data-i18n="p1-name">Bosque de Arrayán</div>
-        <div class="place-sub" data-i18n="p1-sub">10 min · Circuito Chico, Llao Llao</div>
-        <div class="place-desc" data-i18n="p1-desc">One of the world's largest arrayán myrtle forests, ten minutes from Posta Bariloche on the Circuito Chico near Llao Llao. Twisted cinnamon-colored trunks rise over a mossy floor that inspired Disney's Bambi. Walk it in the morning when the bark glows orange. Or take the ferry from Puerto Llao Llao — ten minutes away — to Isla Victoria for a fully immersive old-growth forest experience.</div>
-      </div>
+  <div class="rate-grid">
+    <div class="rate">
+      <span class="label">Low season</span>
+      <div><span class="price"><sup>$</sup><span data-count="220">0</span></span>
+      <p>Shoulder months — spring and autumn. The forest is quietest. Lenga turns red in May.</p></div>
     </div>
-
-    <div class="place-card">
-      <img class="place-img" src="golf-llaollao.jpg" alt="Golf Llao Llao — alpine golf with lake and mountain views">
-      <div class="place-body">
-        <div class="place-num">02</div>
-        <div class="place-name" data-i18n="p2-name">Golf Llao Llao</div>
-        <div class="place-sub" data-i18n="p2-sub">10 min · Lago Moreno</div>
-        <div class="place-desc" data-i18n="p2-desc">Eighteen holes set between two lakes with Cerro López and Cerro Catedral as backdrop. One of the most scenic golf courses in South America. The hotel itself — a landmark of Patagonian alpine architecture — is worth visiting for a drink on the terrace alone.</div>
-      </div>
+    <div class="rate">
+      <span class="label">High season</span>
+      <div><span class="price"><sup>$</sup><span data-count="330">0</span></span>
+      <p>Summer and ski season. Cerro Catedral 30 min. Nahuel Huapi for swimming and kayak.</p></div>
     </div>
-
-    <div class="place-card">
-      <img class="place-img" src="cerro-campanario.jpg" alt="Cerro Campanario — panoramic views over Bariloche lakes">
-      <div class="place-body">
-        <div class="place-num">03</div>
-        <div class="place-name" data-i18n="p3-name">Cerro Campanario</div>
-        <div class="place-sub" data-i18n="p3-sub">20 min · Chairlift</div>
-        <div class="place-desc" data-i18n="p3-desc">Ranked among the world's best views — a short chairlift ride to a summit that looks out over five lakes, the Llao Llao peninsula, and every major peak of the Argentine Andes. At the top: vintage alpine vibes, apple strudel, and a panorama that takes time to absorb.</div>
-      </div>
+    <div class="rate">
+      <span class="label">Cleaning · per stay</span>
+      <div><span class="price"><sup>$</sup><span data-count="70">0</span></span>
+      <p>One flat fee per reservation, regardless of length. No additional service charges.</p></div>
     </div>
-
-    <div class="place-card">
-      <img class="place-img" src="kayak.jpg" alt="Kayak and swimming at Playa sin Viento">
-      <div class="place-body">
-        <div class="place-num">04</div>
-        <div class="place-name" data-i18n="p4-name">Playa sin Viento</div>
-        <div class="place-sub" data-i18n="p4-sub">10 min · Lago Nahuel Huapi</div>
-        <div class="place-desc" data-i18n="p4-desc">A sheltered beach on the lake named for its stillness. The water is impossibly clear and cold — glacial runoff from the Andes, filtered through volcanic rock. Kayak rentals available on site. Come early for the stillness; stay for the light on the water in the afternoon.</div>
-      </div>
-    </div>
-
-    <div class="place-card">
-      <img class="place-img" src="ski.jpg" alt="Ski Cerro Catedral — largest ski resort in South America">
-      <div class="place-body">
-        <div class="place-num">05</div>
-        <div class="place-name" data-i18n="p5-name">Cerro Catedral</div>
-        <div class="place-sub" data-i18n="p5-sub">30 min · Ski · Hike · Bike</div>
-        <div class="place-desc" data-i18n="p5-desc">The largest ski resort in South America with over 120 km of runs, a vertical drop of 1,000 m, and a season that runs June through October. In summer the same mountain opens for trekking and mountain biking. The views from the ridge take in the entire lake district.</div>
-      </div>
-    </div>
-
-    <div class="place-card">
-      <img class="place-img" src="fly-fishing.jpg" alt="Fly fishing the rivers and lakes of Patagonia">
-      <div class="place-body">
-        <div class="place-num">06</div>
-        <div class="place-name" data-i18n="p6-name">Fly Fishing</div>
-        <div class="place-sub" data-i18n="p6-sub">Lakes · Rivers · Guided</div>
-        <div class="place-desc" data-i18n="p6-desc">Patagonia's rivers and lakes are legendary among fly fishers — crystal-clear water, wild brown and rainbow trout, and almost no one else around. Fish the Limay, the Traful, or Nahuel Huapi itself. Local guides available; licenses required and easy to arrange.</div>
-      </div>
-    </div>
-
-    <div class="place-card" style="border-bottom:none;">
-      <div class="place-body" style="justify-content:center;display:flex;flex-direction:column;min-height:280px;">
-        <div class="place-num">07</div>
-        <div class="place-name" data-i18n="p7-name">Solís · Cocina</div>
-        <div class="place-sub"><a href="https://www.instagram.com/solis.cocina" target="_blank" class="place-link">@solis.cocina</a></div>
-        <div class="place-desc" data-i18n="p7-desc">Our local, right here on Península San Pedro. Solís is a small, serious kitchen using Patagonian ingredients with care and imagination. The kind of place that makes you rearrange your plans to eat there twice.</div>
-      </div>
-    </div>
-
-    <div class="place-card" style="border-bottom:none;">
-      <div class="place-body" style="justify-content:center;display:flex;flex-direction:column;min-height:280px;">
-        <div class="place-num">08</div>
-        <div class="place-name" data-i18n="p8-name">Ánima · Restaurante</div>
-        <div class="place-sub"><a href="https://www.instagram.com/animarestaurante/" target="_blank" class="place-link">@animarestaurante</a></div>
-        <div class="place-desc" data-i18n="p8-desc">Minutes from Posta Bariloche, Ánima brings refined Patagonian cooking to the lake road. Wood fire, local produce, natural wines. One of the best tables in the region — reserve ahead.</div>
-      </div>
-    </div>
-
-    <div class="place-card" style="border-bottom:none;">
-      <div class="place-body" style="justify-content:center;display:flex;flex-direction:column;min-height:280px;">
-        <div class="place-num">09</div>
-        <div class="place-name" data-i18n="p9-name">Cerro López</div>
-        <div class="place-sub" data-i18n="p9-sub">10 min · Hiking</div>
-        <div class="place-desc" data-i18n="p9-desc">The mountain you see from every window at Posta Bariloche. The trailhead is ten minutes by car. Full-day hikes reach the refuge at 1,650 m with sweeping views of the entire lake district. One of the great day hikes of Patagonia.</div>
-      </div>
-    </div>
-
   </div>
+  <span class="fine" data-reveal>All rates USD — minimum 2 nights — cleaning fee added once per booking — rates subject to change</span>
 </section>
 
-<!-- RATES -->
-<section id="rates">
-  <div class="rates-wrap">
-    <div class="rates-header">
-      <h2 data-i18n="rates-title">Rates.</h2>
-    </div>
-    <div class="rates-grid">
-      <div class="rate-card">
-        <div class="rate-label" data-i18n="rate1-label">Low Season</div>
-        <div class="rate-price">$220</div>
-        <div class="rate-unit">USD · <span data-i18n="per-night">per night</span></div>
-        <div class="rate-detail" data-i18n="rate1-detail">Shoulder months — spring and autumn. The forest is quietest. Lenga turns red in May.</div>
-      </div>
-      <div class="rate-card terra">
-        <div class="rate-label" data-i18n="rate2-label">High Season</div>
-        <div class="rate-price">$330</div>
-        <div class="rate-unit">USD · <span data-i18n="per-night">per night</span></div>
-        <div class="rate-detail" data-i18n="rate2-detail">Summer (January) and ski season (July–August). Cerro Catedral 30 min. Nahuel Huapi for swimming and kayak.</div>
-      </div>
-      <div class="rate-card">
-        <div class="rate-label" data-i18n="rate3-label">Cleaning</div>
-        <div class="rate-price">$70</div>
-        <div class="rate-unit">USD · <span data-i18n="per-stay">per stay</span></div>
-        <div class="rate-detail" data-i18n="rate3-detail">One flat fee per reservation, regardless of length. No additional service charges.</div>
-      </div>
-    </div>
-    <div class="rate-note" data-i18n="rate-note">All rates USD · Minimum 2 nights · Cleaning fee added once per booking · Rates subject to change</div>
+<!-- 06 BOOK -->
+<section id="book">
+  <div class="book-bg" aria-hidden="true"></div>
+  <span class="label"><span class="idx">06</span>Reserve your dates — we respond within 24 hours</span>
+  <a id="book-cta" href="mailto:postabariloche56@gmail.com?subject=Posta%20Bariloche%20%E2%80%94%20Reservation%20Inquiry&body=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche">
+    <span class="o-hide"><span>Reserve</span></span>
+    <span class="o-hide"><span>the tower<span style="color:var(--blue)">.</span></span></span>
+  </a>
+  <div class="book-actions">
+    <a class="red" href="mailto:postabariloche56@gmail.com?subject=Posta%20Bariloche%20%E2%80%94%20Reservation%20Inquiry&body=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche">Send an inquiry ↗</a>
+    <a href="https://wa.me/543518749830?text=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" rel="noopener">WhatsApp ↗</a>
+  </div>
+  <div id="footer">
+    <span class="label">Posta Bariloche — Península San Pedro · Patagonia, AR</span>
+    <span class="label">Another unique stay → <a href="https://www.quintasierras.com" target="_blank" rel="noopener">Quinta Sierras</a></span>
+    <span class="label">© 2026 — 41°06′S 71°23′W</span>
   </div>
 </section>
-
-<!-- CTA -->
-<section class="cta" id="book">
-  <h2 data-i18n="cta-title">Reserve<br>your dates.</h2>
-  <p data-i18n="cta-sub">Write us to check availability. We respond within 24 hours.</p>
-  <a href="mailto:postabariloche56@gmail.com?subject=Posta%20Bariloche%20%E2%80%94%20Reservation%20Inquiry&body=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" class="btn-cta contact-mail" data-i18n="cta-btn">Send an Inquiry</a>
-  <a href="https://wa.me/543518749830?text=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" class="btn-cta btn-wa contact-wa">WhatsApp</a>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">Posta Bariloche</div>
-  <div class="footer-copy">Península San Pedro · Nahuel Huapi N.P. · Patagonia, Argentina</div>
-  <div class="footer-copy">Another unique stay &rarr; <a href="https://www.quintasierras.com" target="_blank" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;font-weight:400;letter-spacing:0.04em;color:var(--white);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:1px;">Quinta <em style="font-style:italic;">Sierras</em></a></div>
-  <div class="footer-copy"><a href="mailto:postabariloche56@gmail.com?subject=Posta%20Bariloche%20%E2%80%94%20Reservation%20Inquiry&body=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" class="contact-mail" style="color:rgba(255,255,255,0.6);text-decoration:none;">postabariloche56@gmail.com</a> &nbsp;·&nbsp; <a href="https://wa.me/543518749830?text=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" class="contact-wa" style="color:rgba(255,255,255,0.6);text-decoration:none;">WhatsApp</a></div>
-  <div class="footer-copy">© 2026</div>
-</footer>
 
 <!-- FLOATING WHATSAPP -->
-<a href="https://wa.me/543518749830?text=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" class="float-wa contact-wa" aria-label="WhatsApp">
+<a href="https://wa.me/543518749830?text=Hello!%20I%27m%20interested%20in%20booking%20Posta%20Bariloche" target="_blank" rel="noopener" id="float-wa" aria-label="WhatsApp">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.78 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0012.04 2zm0 18.07h-.01c-1.5 0-2.97-.4-4.25-1.16l-.3-.18-3.12.82.83-3.04-.2-.31a8.07 8.07 0 01-1.24-4.29c0-4.46 3.63-8.09 8.1-8.09 2.16 0 4.19.84 5.72 2.37a8.04 8.04 0 012.37 5.72c0 4.46-3.63 8.09-8.09 8.09zm4.44-6.06c-.24-.12-1.43-.71-1.66-.79-.22-.08-.38-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.13 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.22-.16-.46-.28z"/></svg>
 </a>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 <script>
-// ── LANGUAGE SYSTEM ──
-const translations = {
-  en: {
-    "nav-house":"The House","nav-spaces":"The Spaces","nav-forest":"The Forest","nav-places":"Bariloche","nav-rates":"Rates","cta-btn":"Book Now",
-    "eyebrow-house":"The House",
-    "spec-loc":"Location","spec-bed":"Bedrooms","spec-bed-val":"2 · King · En suite","spec-bath":"Bathrooms","spec-heat":"Heating","spec-heat-val":"Radiant floor · wood stove","spec-glass":"Glass front","spec-glass-val":"Two sides · floor-to-ceiling","spec-net":"Internet","spec-work":"Workspace","spec-work-val":"Upstairs · 4th floor balcony","spec-views":"Views","spec-min":"Min. stay","spec-min-val":"2 nights",
-    "stat-bed":"Bedrooms","stat-bath":"Bathrooms","stat-beds":"Size Beds","stat-park":"National Park",
-    "spaces-title":"The\nSpaces","spaces-sub":"Every room faces the forest and the view. Glass on two sides. The mountain is always present.",
-    "amenities-title":"What's\nincluded.",
-    "am1-name":"King beds","am1-desc":"Premium mattresses, full linen, both bedrooms",
-    "am2-name":"Heated floors","am2-desc":"Radiant concrete throughout the ground floor",
-    "am3-name":"Starlink","am3-desc":"High-speed satellite internet — work from the forest",
-    "am4-name":"Full kitchen","am4-desc":"Fully equipped for long stays — oven, fridge, cookware",
-    "am5-name":"Wood stove","am5-desc":"Cast iron stove. The fire makes the room.",
-    "am6-name":"Lake views","am6-desc":"Nahuel Huapi and Cerro López from every level",
-    "am7-name":"Workspace","am7-desc":"Dedicated desk upstairs with 4th floor balcony views",
-    "am8-name":"Private decks","am8-desc":"Downstairs en suite opens to its own forest deck",
-    "forest-eyebrow":"The Forest","forest-title":"Native\nPatagonian\nspecies.","forest-sub":"Posta Bariloche stands inside one of the last intact native forests of the Andean-Patagonian range. Four species define this landscape — each with its own character, history, and name.",
-    "ety-label":"Etymology",
-    "ety-1":"The name first appeared in writing in 1520, recorded by Antonio Pigafetta, the Italian scholar who sailed with Magellan on the first circumnavigation of the Earth. Near the Strait that now bears Magellan's name, the expedition encountered the indigenous Tehuelche people — known for their height and for the large guanaco-skin boots they wrapped around their feet against the cold.",
-    "ety-2":"Pigafetta called them <em>patagones</em> — from the Spanish <em>pata</em>, foot, and possibly from the fictional giant Pathagon who appeared in the popular romance <em>Primaléon</em> (1512). The word carried the full weight of European mythology: giants at the edge of the world, where the map ran out and the imagination took over.",
-    "ety-3":"Mapuche traditions hold a different understanding. For them it is simply <em>Wallmapu</em> — the surrounding territory — the earth that has always been there, long before it needed a name invented by those arriving by sea. The giants were never giants. They were people who knew the cold, who wore what the land gave them, and who had been here long enough to know that the mountains were not the edge of anything. They were the center.",
-    "places-title":"Around\nBariloche.","places-sub":"The peninsula puts you minutes from some of the most extraordinary corners of the Patagonian lake district. Here is where to go.",
-    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Circuito Chico, Llao Llao","p1-desc":"One of the world's largest arrayán myrtle forests, ten minutes from Posta Bariloche on the Circuito Chico near Llao Llao. Twisted cinnamon-colored trunks rise over a mossy floor that inspired Disney's Bambi. Walk it in the morning when the bark glows orange. Or take the ferry from Puerto Llao Llao — ten minutes away — to Isla Victoria for a fully immersive old-growth forest experience on the island.",
-    "p2-name":"Golf Llao Llao","p2-sub":"10 min · Lago Moreno","p2-desc":"Eighteen holes set between two lakes with Cerro López and Cerro Catedral as backdrop. One of the most scenic golf courses in South America. The hotel itself is worth visiting for a drink on the terrace alone.",
-    "p3-name":"Cerro Campanario","p3-sub":"20 min · Chairlift","p3-desc":"Ranked among the world's best views — a short chairlift ride to a summit that looks out over five lakes. At the top: vintage alpine vibes, apple strudel, and a panorama that takes time to absorb.",
-    "p4-name":"Playa sin Viento","p4-sub":"10 min · Lago Nahuel Huapi","p4-desc":"A sheltered beach on the lake named for its stillness. Glacial water, impossibly clear. Kayak rentals on site. Come early for the stillness; stay for the afternoon light on the water.",
-    "p5-name":"Cerro Catedral","p5-sub":"30 min · Ski · Hike · Bike","p5-desc":"The largest ski resort in South America — 120 km of runs, 1,000 m vertical drop, season June–October. In summer: trekking and mountain biking with views across the entire lake district.",
-    "p6-name":"Fly Fishing","p6-sub":"Lakes · Rivers · Guided","p6-desc":"Patagonia's rivers and lakes are legendary among fly fishers. Wild brown and rainbow trout, crystal-clear water. Fish the Limay, the Traful, or Nahuel Huapi itself. Guides and licenses easily arranged.",
-    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurante","p8-sub":"Just off the peninsula","p8-desc":"Minutes from Posta Bariloche, Ánima brings refined Patagonian cooking to the lake road. Wood fire, local produce, natural wines. Reserve ahead.",
-    "p9-name":"Cerro López","p9-sub":"10 min · Hiking","p9-desc":"The mountain you see from every window. Trailhead ten minutes by car. Full-day hikes reach the refuge at 1,650 m with sweeping views of the entire lake district.",
-    "rates-title":"Rates.","rate1-label":"Low Season","rate1-detail":"Shoulder months — spring and autumn. The forest is quietest. Lenga turns red in May.",
-    "rate2-label":"High Season","rate2-detail":"Summer (January) and ski season (July–August). Cerro Catedral 30 min. Nahuel Huapi for swimming and kayak.",
-    "rate3-label":"Cleaning","rate3-detail":"One flat fee per reservation, regardless of length. No additional service charges.",
-    "per-night":"per night","per-stay":"per stay","rate-note":"All rates USD · Minimum 2 nights · Cleaning fee added once per booking · Rates subject to change",
-    "cta-title":"Reserve\nyour dates.","cta-sub":"Write us to check availability. We respond within 24 hours.",
-    "tree1":"The dominant tree of the Andean-Patagonian forest and the one that surrounds Posta Bariloche on every side. Coihue is a southern beech — evergreen, long-lived, reaching 40 meters. Its smooth grey bark lightens with age; its small leathery leaves filter the Patagonian light into something green and diffuse. The name comes from the Mapudungun word <em>koihue</em>: simply, the tree. It is the forest itself.",
-    "tree2":"A small tree of the forest understory — in clearings and stream margins where more light reaches the ground. In summer it flowers in clusters of small cream-white blooms; in autumn its serrated leaves turn warm gold before falling. The radal is a quiet presence: not the first tree you notice, but the one you return to.",
-    "tree3":"Lenga is the tree that turns Patagonia red. A deciduous southern beech, it climbs higher than any other Andean tree — right to the treeline — and each autumn transforms entire mountainsides into fire. Up close, lenga is modest: low-branching, gnarled at altitude. From a distance, spectacular.",
-    "tree4":"One of Patagonia's most ancient survivors — individual trees can live more than 1,500 years. It grows on rocky slopes, its aromatic wood long prized by Mapuche craftspeople. The cypress marks thresholds: where forest opens onto steppe or lake. It marks time in ways humans cannot fully comprehend."
-  },
-  es: {
-    "nav-house":"La Casa","nav-spaces":"Los Espacios","nav-forest":"El Bosque","nav-places":"Bariloche","nav-rates":"Tarifas","cta-btn":"Reservar",
-    "eyebrow-house":"La Casa",
-    "spaces-title":"Los\nEspacios","spaces-sub":"Cada habitación da al bosque y a la vista. Vidrio en dos lados. La montaña siempre está presente.",
-    "amenities-title":"Qué\ninclye.",
-    "am1-name":"Camas king","am1-desc":"Colchones premium, ropa de cama completa, ambos dormitorios",
-    "am2-name":"Pisos calefaccionados","am2-desc":"Losa radiante en toda la planta baja",
-    "am3-name":"Starlink","am3-desc":"Internet satelital de alta velocidad — trabajá desde el bosque",
-    "am4-name":"Cocina completa","am4-desc":"Equipada para estadías largas — horno, heladera, utensilios",
-    "am5-name":"Estufa a leña","am5-desc":"Estufa de hierro fundido. El fuego hace la habitación.",
-    "am6-name":"Vistas al lago","am6-desc":"Nahuel Huapi y Cerro López desde cada nivel",
-    "am7-name":"Espacio de trabajo","am7-desc":"Escritorio dedicado arriba con balcón en 4to piso",
-    "am8-name":"Decks privados","am8-desc":"El dormitorio de abajo tiene su propio deck al bosque",
-    "forest-eyebrow":"El Bosque","forest-title":"Especies\n<span>Patagónicas</span>\nnativas.","forest-sub":"Posta Bariloche está dentro de uno de los últimos bosques nativos intactos de la cordillera andino-patagónica.",
-    "ety-label":"Etimología",
-    "ety-1":"El nombre apareció por primera vez en 1520, registrado por Antonio Pigafetta, el estudioso italiano que navegó con Magallanes en la primera circunnavegación de la Tierra. Cerca del Estrecho que hoy lleva el nombre de Magallanes, la expedición encontró al pueblo indígena Tehuelche — conocido por su estatura y por las grandes botas de piel de guanaco que usaban contra el frío.",
-    "ety-2":"Pigafetta los llamó <em>patagones</em> — del español <em>pata</em>, pie, y posiblemente del gigante ficticio Pathagon que aparecía en el romance popular <em>Primaléon</em> (1512). La palabra llevaba el peso completo de la mitología europea: gigantes al borde del mundo, donde el mapa terminaba y la imaginación tomaba el control.",
-    "ety-3":"Las tradiciones mapuche tienen una comprensión diferente. Para ellos es simplemente <em>Wallmapu</em> — el territorio que rodea — la tierra que siempre estuvo ahí, mucho antes de necesitar un nombre inventado por quienes llegaban por mar.",
-    "places-title":"Alrededor\nde Bariloche.","places-sub":"La península te pone a minutos de algunos de los rincones más extraordinarios del distrito de los lagos patagónicos.",
-    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Circuito Chico, Llao Llao","p1-desc":"Uno de los mayores bosques de arrayán del mundo, a diez minutos de Posta Bariloche. Troncos retorcidos color canela sobre un suelo musgoso que inspiró el Bambi de Disney. O tomá el ferry desde Puerto Llao Llao — a diez minutos — hasta la Isla Victoria para una experiencia de bosque primario completamente inmersiva.",
-    "p2-name":"Golf Llao Llao","p2-sub":"10 min · Lago Moreno","p2-desc":"Dieciocho hoyos entre dos lagos con el Cerro López y el Cerro Catedral de fondo. Uno de los campos de golf más pintorescos de Sudamérica.",
-    "p3-name":"Cerro Campanario","p3-sub":"20 min · Aerosilla","p3-desc":"Reconocida entre las mejores vistas del mundo. Desde la cima: ambiente alpino, strudel de manzana, y un panorama sobre cinco lagos.",
-    "p4-name":"Playa sin Viento","p4-sub":"10 min · Lago Nahuel Huapi","p4-desc":"Una playa protegida en el lago. Agua glacial increíblemente clara. Alquiler de kayaks en el lugar.",
-    "p5-name":"Cerro Catedral","p5-sub":"30 min · Ski · Senderismo","p5-desc":"El mayor centro de ski de Sudamérica — 120 km de pistas, temporada junio–octubre. En verano: trekking y mountain bike.",
-    "p6-name":"Pesca con mosca","p6-sub":"Lagos · Ríos · Con guía","p6-desc":"Los ríos y lagos de la Patagonia son legendarios entre los pescadores con mosca. Truchas marrones y arco iris en aguas cristalinas.",
-    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurante","p8-sub":"A minutos de la península","p8-desc":"A minutos de Posta Bariloche, Ánima trae cocina patagónica refinada a la ruta del lago. Fuego de leña, productos locales, vinos naturales.",
-    "p9-name":"Cerro López","p9-sub":"10 min · Senderismo","p9-desc":"La montaña que ves desde cada ventana. El sendero empieza a diez minutos en auto. Excursiones de día completo hasta el refugio a 1.650 m.",
-    "rates-title":"Tarifas.","rate1-label":"Temporada baja","rate1-detail":"Meses de hombro — primavera y otoño. El bosque está más tranquilo.",
-    "rate2-label":"Temporada alta","rate2-detail":"Verano (enero) y temporada de ski (julio–agosto). Catedral a 30 min.",
-    "rate3-label":"Limpieza","rate3-detail":"Un cargo único por reserva, sin importar la duración.",
-    "per-night":"por noche","per-stay":"por estadía","rate-note":"Tarifas en USD · Mínimo 2 noches · Cargo de limpieza único · Tarifas sujetas a cambio",
-    "cta-title":"Reservá\ntus fechas.","cta-sub":"Escribinos para consultar disponibilidad. Respondemos en 24 horas.",
-    "tree1":"El árbol dominante del bosque andino-patagónico y el que rodea Posta Bariloche por todos lados. El coihue es un haya austral — perenne, longevo, alcanza 40 metros. Su nombre proviene del mapudungun <em>koihue</em>: simplemente, el árbol.",
-    "tree2":"Un árbol pequeño del sotobosque — en claros y márgenes de arroyos donde llega más luz. En verano florece en racimos crema-blancos; en otoño sus hojas serradas se vuelven doradas. El radal es una presencia silenciosa.",
-    "tree3":"La lenga es el árbol que tiñe la Patagonia de rojo. Un haya austral caducifolia que trepa más alto que cualquier otro árbol andino — hasta el límite del bosque — y cada otoño transforma montañas enteras en fuego.",
-    "tree4":"Uno de los sobrevivientes más antiguos de la Patagonia — árboles individuales pueden vivir más de 1.500 años. Crece en laderas rocosas, su madera aromática largamente valorada por los artesanos mapuche.",
-    "spec-loc":"Ubicación","spec-bed":"Dormitorios","spec-bed-val":"2 · King · En suite","spec-bath":"Baños","spec-heat":"Calefacción","spec-heat-val":"Losa radiante · estufa a leña","spec-glass":"Frente de vidrio","spec-glass-val":"Dos lados · piso a techo","spec-net":"Internet","spec-work":"Escritorio","spec-work-val":"Arriba · balcón 4to piso","spec-views":"Vistas","spec-min":"Estadía mín.","spec-min-val":"2 noches",
-    "stat-bed":"Dormitorios","stat-bath":"Baños","stat-beds":"Camas king","stat-park":"Parque Nacional"
-  },
-  de: {
-    "nav-house":"Das Haus","nav-spaces":"Die Räume","nav-forest":"Der Wald","nav-places":"Bariloche","nav-rates":"Preise","cta-btn":"Buchen",
-    "eyebrow-house":"Das Haus",
-    "spaces-title":"Die\nRäume","spaces-sub":"Jedes Zimmer zeigt auf den Wald und die Aussicht. Glas auf zwei Seiten. Der Berg ist immer präsent.",
-    "amenities-title":"Was\ninklusive.",
-    "am1-name":"King-Betten","am1-desc":"Premiummatratzen, vollständige Bettwäsche, beide Schlafzimmer",
-    "am2-name":"Fußbodenheizung","am2-desc":"Strahlungsheizung im gesamten Erdgeschoss",
-    "am3-name":"Starlink","am3-desc":"Schnelles Satelliteninternet — arbeiten aus dem Wald",
-    "am4-name":"Vollküche","am4-desc":"Vollständig ausgestattet — Ofen, Kühlschrank, Kochgeschirr",
-    "am5-name":"Holzofen","am5-desc":"Gusseiserner Ofen. Das Feuer macht den Raum.",
-    "am6-name":"Seeblick","am6-desc":"Nahuel Huapi und Cerro López von jeder Ebene",
-    "am7-name":"Arbeitsplatz","am7-desc":"Schreibtisch oben mit Balkon im 4. Stock",
-    "am8-name":"Private Terrassen","am8-desc":"Das untere Zimmer öffnet zur eigenen Waldterrasse",
-    "forest-eyebrow":"Der Wald","forest-title":"Einheimische\n<span>patagonische</span>\nArten.","forest-sub":"Posta Bariloche steht in einem der letzten intakten nativen Wälder der andinen Patagoniens.",
-    "ety-label":"Etymologie",
-    "ety-1":"Der Name erschien erstmals 1520 in einer Aufzeichnung von Antonio Pigafetta, dem italienischen Gelehrten, der mit Magellan auf der ersten Weltumsegelung segelte. In der Nähe der Meerenge, die heute Magellans Namen trägt, begegnete die Expedition dem indigenen Volk der Tehuelche.",
-    "ety-2":"Pigafetta nannte sie <em>patagones</em> — vom spanischen <em>pata</em>, Fuß, und möglicherweise vom fiktiven Riesen Pathagon aus dem populären Roman <em>Primaléon</em> (1512).",
-    "ety-3":"Die Mapuche-Traditionen haben ein anderes Verständnis. Für sie ist es einfach <em>Wallmapu</em> — das umgebende Territorium — die Erde, die schon immer da war, lange bevor sie einen Namen brauchte.",
-    "places-title":"Rund um\nBariloche.","places-sub":"Die Halbinsel bringt Sie in wenigen Minuten zu einigen der außergewöhnlichsten Ecken des patagonischen Seengebiets.",
-    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Circuito Chico, Llao Llao","p1-desc":"Einer der größten Arrayán-Myrtenwälder der Welt, zehn Minuten von Posta Bariloche entfernt. Oder nehmen Sie die Fähre von Puerto Llao Llao — zehn Minuten entfernt — zur Isla Victoria für ein vollständig immersives Urwalderlebnis.",
-    "p2-name":"Golf Llao Llao","p2-sub":"10 min · Lago Moreno","p2-desc":"Achtzehn Löcher zwischen zwei Seen mit Cerro López und Cerro Catedral als Kulisse. Einer der landschaftlich reizvollsten Golfplätze Südamerikas.",
-    "p3-name":"Cerro Campanario","p3-sub":"20 min · Sessellift","p3-desc":"Eine der besten Aussichten der Welt. Oben: alpines Flair, Apfelstrudel und ein Panorama über fünf Seen.",
-    "p4-name":"Playa sin Viento","p4-sub":"10 min · Lago Nahuel Huapi","p4-desc":"Ein geschützter Strand am See. Gletscherklares Wasser. Kajakverleih vor Ort.",
-    "p5-name":"Cerro Catedral","p5-sub":"30 min · Ski · Wandern","p5-desc":"Größtes Skigebiet Südamerikas — 120 km Pisten, Saison Juni–Oktober. Im Sommer: Wandern und Mountainbiken.",
-    "p6-name":"Fliegenfischen","p6-sub":"Seen · Flüsse · Mit Guide","p6-desc":"Patagoniens Flüsse und Seen sind legendär unter Fliegenfischern. Wilde Bach- und Regenbogenforellen in kristallklarem Wasser.",
-    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurant","p8-sub":"Nahe der Halbinsel","p8-desc":"Minuten von Posta Bariloche entfernt bringt Ánima raffinierte patagonische Küche an die Seestraße. Holzfeuer, lokale Produkte, Naturweine.",
-    "p9-name":"Cerro López","p9-sub":"10 min · Wandern","p9-desc":"Der Berg, den Sie aus jedem Fenster sehen. Tageswanderungen bis zur Hütte auf 1.650 m mit Blick über das gesamte Seengebiet.",
-    "rates-title":"Preise.","rate1-label":"Nebensaison","rate1-detail":"Schultermonaten — Frühling und Herbst. Der Wald ist am ruhigsten.",
-    "rate2-label":"Hochsaison","rate2-detail":"Sommer (Januar) und Ski-Saison (Juli–August). Catedral 30 Min.",
-    "rate3-label":"Reinigung","rate3-detail":"Eine Pauschalgebühr pro Buchung, unabhängig von der Dauer.",
-    "per-night":"pro Nacht","per-stay":"pro Aufenthalt","rate-note":"Alle Preise USD · Mindestaufenthalt 2 Nächte · Reinigungsgebühr einmalig · Preise können sich ändern",
-    "cta-title":"Reservieren\nSie jetzt.","cta-sub":"Schreiben Sie uns zur Verfügbarkeit. Wir antworten innerhalb von 24 Stunden.",
-    "tree1":"Der dominierende Baum des andinen Waldes, der Posta Bariloche von allen Seiten umgibt. Coihue ist eine Südbuche — immergrün, langlebig, bis 40 Meter hoch.",
-    "tree2":"Ein kleiner Baum des Waldunterwuchses in Lichtungen und Bachrändern. Im Sommer blüht er creme-weiß; im Herbst werden seine Blätter warm-golden.",
-    "tree3":"Die Lenga ist der Baum, der Patagonien rot färbt. Im Herbst verwandelt sie ganze Bergseiten in Feuer. Von Nahem bescheiden; aus der Ferne spektakulär.",
-    "tree4":"Einer der ältesten Überlebenden Patagoniens — über 1.500 Jahre alt. Sein aromatisches Holz war bei den Mapuche für Kanus und Häuser geschätzt.",
-    "spec-loc":"Lage","spec-bed":"Schlafzimmer","spec-bed-val":"2 · King · En suite","spec-bath":"Badezimmer","spec-heat":"Heizung","spec-heat-val":"Fußbodenheizung · Holzofen","spec-glass":"Glasfront","spec-glass-val":"Zwei Seiten · Bodentiefe Fenster","spec-net":"Internet","spec-work":"Arbeitsplatz","spec-work-val":"Oben · Balkon 4. OG","spec-views":"Aussicht","spec-min":"Mindestaufenthalt","spec-min-val":"2 Nächte",
-    "stat-bed":"Schlafzimmer","stat-bath":"Badezimmer","stat-beds":"King-Betten","stat-park":"Nationalpark"
-  },
-  fr: {
-    "nav-house":"La Maison","nav-spaces":"Les Espaces","nav-forest":"La Forêt","nav-places":"Bariloche","nav-rates":"Tarifs","cta-btn":"Réserver",
-    "eyebrow-house":"La Maison",
-    "spaces-title":"Les\nEspaces","spaces-sub":"Chaque pièce fait face à la forêt et à la vue. Verre sur deux côtés. La montagne est toujours présente.",
-    "amenities-title":"Ce qui est\ncompris.",
-    "am1-name":"Lits king","am1-desc":"Matelas premium, linge complet, les deux chambres",
-    "am2-name":"Planchers chauffants","am2-desc":"Chauffage radiant sur tout le rez-de-chaussée",
-    "am3-name":"Starlink","am3-desc":"Internet satellite haut débit — travaillez depuis la forêt",
-    "am4-name":"Cuisine complète","am4-desc":"Entièrement équipée — four, réfrigérateur, ustensiles",
-    "am5-name":"Poêle à bois","am5-desc":"Poêle en fonte. Le feu fait la pièce.",
-    "am6-name":"Vue sur le lac","am6-desc":"Nahuel Huapi et Cerro López depuis chaque niveau",
-    "am7-name":"Espace de travail","am7-desc":"Bureau dédié à l'étage avec balcon au 4ème",
-    "am8-name":"Terrasses privées","am8-desc":"La chambre du bas ouvre sur sa propre terrasse forêt",
-    "forest-eyebrow":"La Forêt","forest-title":"Espèces\n<span>patagoniennes</span>\nnatives.","forest-sub":"Posta Bariloche se trouve dans l'une des dernières forêts natives intactes de la cordillère andine-patagone.",
-    "ety-label":"Étymologie",
-    "ety-1":"Le nom est apparu pour la première fois en 1520, consigné par Antonio Pigafetta, l'érudit italien qui navigua avec Magellan lors du premier tour du monde. Près du Détroit qui porte aujourd'hui son nom, l'expédition rencontra le peuple indigène Tehuelche.",
-    "ety-2":"Pigafetta les appela <em>patagones</em> — de l'espagnol <em>pata</em>, pied, et peut-être du géant fictif Pathagon qui apparaissait dans le roman populaire <em>Primaléon</em> (1512).",
-    "ety-3":"Les traditions mapuche offrent une compréhension différente. Pour eux, c'est simplement <em>Wallmapu</em> — le territoire environnant — la terre qui a toujours été là, bien avant qu'elle ait besoin d'un nom.",
-    "places-title":"Autour de\nBariloche.","places-sub":"La péninsule vous place à quelques minutes de certains des coins les plus extraordinaires du district des lacs patagoniens.",
-    "p1-name":"Bosque de Arrayán","p1-sub":"10 min · Circuito Chico, Llao Llao","p1-desc":"L'une des plus grandes forêts de myrte arrayán du monde, à dix minutes de Posta Bariloche. Ou prenez le ferry depuis Puerto Llao Llao — à dix minutes — jusqu'à l'Isla Victoria pour une expérience forestière ancienne et totalement immersive.",
-    "p2-name":"Golf Llao Llao","p2-sub":"10 min · Lago Moreno","p2-desc":"Dix-huit trous entre deux lacs avec le Cerro López et le Cerro Catedral en toile de fond. L'un des golfs les plus pittoresques d'Amérique du Sud.",
-    "p3-name":"Cerro Campanario","p3-sub":"20 min · Télésièges","p3-desc":"L'une des meilleures vues du monde. Au sommet : ambiance alpine vintage, strudel aux pommes et panorama sur cinq lacs.",
-    "p4-name":"Playa sin Viento","p4-sub":"10 min · Lago Nahuel Huapi","p4-desc":"Une plage abritée sur le lac. Eau glaciaire d'une clarté impossible. Location de kayaks sur place.",
-    "p5-name":"Cerro Catedral","p5-sub":"30 min · Ski · Randonnée","p5-desc":"La plus grande station de ski d'Amérique du Sud — 120 km de pistes, saison juin–octobre. En été : randonnée et VTT.",
-    "p6-name":"Pêche à la mouche","p6-sub":"Lacs · Rivières · Guidé","p6-desc":"Les rivières et lacs de Patagonie sont légendaires parmi les pêcheurs à la mouche. Truites sauvages dans des eaux cristallines.",
-    "p7-name":"Solís · Cocina","p8-name":"Ánima · Restaurant","p8-sub":"Juste hors de la péninsule","p8-desc":"À quelques minutes de Posta Bariloche, Ánima apporte une cuisine patagone raffinée sur la route du lac. Feu de bois, produits locaux, vins nature.",
-    "p9-name":"Cerro López","p9-sub":"10 min · Randonnée","p9-desc":"La montagne que vous voyez depuis chaque fenêtre. Des randonnées d'une journée jusqu'au refuge à 1 650 m avec des vues sur tout le district des lacs.",
-    "rates-title":"Tarifs.","rate1-label":"Basse saison","rate1-detail":"Mois de transition — printemps et automne. La forêt est la plus calme.",
-    "rate2-label":"Haute saison","rate2-detail":"Été (janvier) et saison ski (juillet–août). Catedral à 30 min.",
-    "rate3-label":"Nettoyage","rate3-detail":"Un forfait par réservation, quelle que soit la durée.",
-    "per-night":"par nuit","per-stay":"par séjour","rate-note":"Tous les tarifs en USD · Minimum 2 nuits · Frais de nettoyage unique · Tarifs susceptibles de changer",
-    "cta-title":"Réservez\nvos dates.","cta-sub":"Écrivez-nous pour vérifier les disponibilités. Nous répondons sous 24 heures.",
-    "tree1":"L'arbre dominant de la forêt andine-patagone qui entoure Posta Bariloche de tous côtés. Le coihue est un hêtre austral — toujours vert, longévif, atteignant 40 mètres.",
-    "tree2":"Un petit arbre du sous-bois — dans les clairières où la lumière atteint le sol. En été il fleurit en crème-blanc ; en automne ses feuilles dentelées deviennent or.",
-    "tree3":"La lenga est l'arbre qui teint la Patagonie en rouge. Chaque automne elle transforme des flancs de montagne entiers en feu. De près modeste ; de loin spectaculaire.",
-    "tree4":"L'un des plus anciens survivants de Patagonie — jusqu'à 1 500 ans. Son bois aromatique était prisé par les artisans mapuche pour les pirogues et les maisons.",
-    "spec-loc":"Emplacement","spec-bed":"Chambres","spec-bed-val":"2 · King · En suite","spec-bath":"Salles de bain","spec-heat":"Chauffage","spec-heat-val":"Plancher radiant · poêle à bois","spec-glass":"Façade vitrée","spec-glass-val":"Deux côtés · sol au plafond","spec-net":"Internet","spec-work":"Espace travail","spec-work-val":"Étage · balcon 4ème","spec-views":"Vues","spec-min":"Séjour min.","spec-min-val":"2 nuits",
-    "stat-bed":"Chambres","stat-bath":"Salles de bain","stat-beds":"Lits king","stat-park":"Parc National"
+/* ═══ FABLEPOSTA ENGINE ═══ */
+(function () {
+  'use strict';
+  gsap.registerPlugin(ScrollTrigger);
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── Smooth scroll (Lenis) ── */
+  let lenis = null, scrollVel = 0;
+  if (!reduced && window.Lenis) {
+    lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+    lenis.on('scroll', (e) => { scrollVel = e.velocity || 0; ScrollTrigger.update(); });
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
   }
-};
 
-// ── CONTACT LINKS (mailto / WhatsApp preloaded message) ──
-const contactMessages = {
-  en: "Hello! I'm interested in booking Posta Bariloche",
-  es: "¡Hola! Me interesa reservar Posta Bariloche"
-};
-const contactSubjects = {
-  en: "Posta Bariloche — Reservation Inquiry",
-  es: "Posta Bariloche — Consulta de Reserva"
-};
-const WA_NUMBER = "543518749830";
-const CONTACT_EMAIL = "postabariloche56@gmail.com";
+  /* ── Marquee content ── */
+  (function buildMarquee() {
+    const txt = 'A black tower in the coihue forest <b>—</b> Nahuel Huapi National Park <b>—</b> 41°06′S 71°23′W <b>—</b> Heated floors · Starlink · Wood stove <b>—</b> ';
+    const track = document.querySelector('#marquee .track');
+    track.innerHTML = ('<span>' + txt + '</span>').repeat(6);
+  })();
 
-function updateContactLinks(lang) {
-  const msg = contactMessages[lang] || contactMessages.en;
-  const subject = contactSubjects[lang] || contactSubjects.en;
-  const mailHref = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(msg)}`;
-  const waHref = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
-  document.querySelectorAll('.contact-mail').forEach(a => a.href = mailHref);
-  document.querySelectorAll('.contact-wa').forEach(a => a.href = waHref);
-}
+  /* ── Word splitter (per-word masked reveals, keeps <em> styling) ── */
+  function splitWords(el) {
+    // wrap every word, in place, preserving element structure (em/span colors)
+    const textNodes = [];
+    (function collect(node) {
+      node.childNodes.forEach((ch) => {
+        if (ch.nodeType === 3) { if (ch.textContent.trim()) textNodes.push(ch); }
+        else collect(ch);
+      });
+    })(el);
+    textNodes.forEach((tn) => {
+      const frag = document.createDocumentFragment();
+      tn.textContent.split(/(\s+)/).forEach((tok) => {
+        if (!tok) return;
+        if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(' ')); return; }
+        const mask = document.createElement('span'); mask.className = 'wm';
+        const w = document.createElement('span'); w.className = 'w';
+        w.textContent = tok;
+        mask.appendChild(w);
+        frag.appendChild(mask);
+      });
+      tn.parentNode.replaceChild(frag, tn);
+    });
+    // assign line index by mask offsetTop for line-by-line stagger
+    const ws = Array.from(el.querySelectorAll('.w'));
+    let top = null, line = -1;
+    ws.forEach((w) => {
+      const t = w.parentNode.offsetTop;
+      if (t !== top) { top = t; line++; }
+      w.dataset.line = line;
+    });
+    return ws;
+  }
 
-function setLang(lang) {
-  // Update active button
-  document.querySelectorAll('.lang-btn').forEach(b => {
-    b.classList.toggle('active', b.textContent.trim().toLowerCase() === lang);
+  /* ── Preloader ── */
+  const loader = document.getElementById('loader');
+  const count = document.getElementById('loader-count');
+  const bar = document.getElementById('loader-bar');
+  const heroLines = document.querySelectorAll('#hero-title .line > span');
+  gsap.set(heroLines, { yPercent: 115 });
+  gsap.set('#hero-meta .label', { y: 24, opacity: 0 });
+  gsap.set('#hero-rule', { scaleX: 0 });
+
+  function intro() {
+    const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+    tl.to(loader, { yPercent: -100, duration: 1, ease: 'expo.inOut' })
+      .set(loader, { display: 'none' })
+      .to('#hero-img .img-cover', { scaleY: 0, duration: 1.4, ease: 'expo.inOut' }, '-=0.55')
+      .to(heroLines, { yPercent: 0, duration: 1.3, stagger: 0.12 }, '-=1.2')
+      .to('#hero-rule', { scaleX: 1, duration: 1.1, ease: 'expo.inOut' }, '-=0.9')
+      .to('#hero-meta .label', { y: 0, opacity: 1, duration: 0.9, stagger: 0.07 }, '-=0.8');
+  }
+
+  const loadState = { v: 0 };
+  const loadTween = gsap.to(loadState, {
+    v: 100, duration: reduced ? 0.1 : 2.1, ease: 'power2.inOut',
+    onUpdate() {
+      const n = Math.round(loadState.v);
+      count.textContent = String(n).padStart(3, '0');
+      bar.style.transform = 'scaleX(' + n / 100 + ')';
+    },
+    onComplete: intro
   });
 
-  // Update data-lang spans/divs
-  document.querySelectorAll('[data-lang]').forEach(el => {
-    el.style.display = (el.getAttribute('data-lang') === lang) ? (el.tagName === 'SPAN' ? 'inline' : 'block') : 'none';
+  /* ── Marquee motion ── */
+  if (!reduced) {
+    const track = document.querySelector('#marquee .track');
+    const half = () => track.scrollWidth / 2;
+    gsap.to(track, { x: () => -half(), duration: 40, ease: 'none', repeat: -1 });
+  }
+
+  /* ── Split headlines on scroll ── */
+  window.addEventListener('load', () => {
+    document.querySelectorAll('[data-split]').forEach((el) => {
+      const ws = splitWords(el);
+      gsap.set(ws, { yPercent: 115 });
+      ScrollTrigger.create({
+        trigger: el, start: 'top 85%', once: true,
+        onEnter: () => gsap.to(ws, {
+          yPercent: 0, duration: 1.25, ease: 'expo.out',
+          stagger: (i, t) => (+t.dataset.line) * 0.12 + i * 0.012
+        })
+      });
+    });
+    ScrollTrigger.refresh();
   });
 
-  // Update data-i18n elements
-  const t = translations[lang] || translations.en;
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (t[key] !== undefined) {
-      el.innerHTML = t[key].replace(/\n/g, '<br>');
+  /* ── Generic reveals ── */
+  document.querySelectorAll('[data-reveal]').forEach((el) => {
+    if (el.closest('#hero')) return;
+    gsap.set(el, { y: 36, opacity: 0 });
+    ScrollTrigger.create({
+      trigger: el, start: 'top 88%', once: true,
+      onEnter: () => gsap.to(el, { y: 0, opacity: 1, duration: 1, ease: 'expo.out' })
+    });
+  });
+
+  /* ── Counters ── */
+  document.querySelectorAll('[data-count]').forEach((el) => {
+    const end = parseFloat(el.dataset.count);
+    const obj = { v: 0 };
+    ScrollTrigger.create({
+      trigger: el, start: 'top 88%', once: true,
+      onEnter: () => gsap.to(obj, {
+        v: end, duration: 1.8, ease: 'expo.out',
+        onUpdate: () => { el.textContent = Math.round(obj.v).toLocaleString('en-US'); }
+      })
+    });
+  });
+
+  /* ── Horizontal spaces ── */
+  const track = document.querySelector('#spaces .h-track');
+  const pinWrap = document.querySelector('#spaces .pin-wrap');
+  function hDist() { return Math.max(0, track.scrollWidth - window.innerWidth); }
+  gsap.to(track, {
+    x: () => -hDist(),
+    ease: 'none',
+    scrollTrigger: {
+      trigger: pinWrap, pin: true, scrub: 1,
+      start: 'top top',
+      end: () => '+=' + hDist(),
+      invalidateOnRefresh: true
     }
   });
 
-  document.documentElement.lang = lang;
-  updateContactLinks(lang);
-}
+  /* ── Canopy word parallax ── */
+  gsap.fromTo('#canopy .canopy-word', { yPercent: 18 }, {
+    yPercent: -18, ease: 'none',
+    scrollTrigger: { trigger: '#canopy', start: 'top bottom', end: 'bottom top', scrub: true }
+  });
 
-// Set initial contact links to match default language (EN)
-updateContactLinks('en');
+  /* ── Around: expandable descriptions (accordion) ── */
+  (function aroundAccordion() {
+    const items = document.querySelectorAll('#around .aitem');
+    items.forEach((item) => {
+      const row = item.querySelector('.arow');
+      const link = item.querySelector('.aa[href]');
+      if (link) link.addEventListener('click', (e) => e.stopPropagation());
+      row.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        items.forEach((i) => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  })();
 
-// Mobile menu close
-document.addEventListener('click', function(e) {
-  const mob = document.querySelector('.mob');
-  const ham = document.querySelector('.hamburger');
-  if (mob && mob.classList.contains('open') && !mob.contains(e.target) && !ham.contains(e.target)) {
-    mob.classList.remove('open');
-  }
-});
+  /* ── Around: floating preview ── */
+  (function preview() {
+    const box = document.getElementById('preview');
+    const rows = document.querySelectorAll('#around .arow');
+    const imgs = {};
+    rows.forEach((r) => {
+      const src = r.dataset.img;
+      if (!imgs[src]) {
+        const im = document.createElement('img');
+        im.src = src; im.alt = '';
+        box.appendChild(im); imgs[src] = im;
+      }
+    });
+    let tx = 0, ty = 0, active = false;
+    const xTo = gsap.quickTo(box, 'x', { duration: 0.5, ease: 'power3' });
+    const yTo = gsap.quickTo(box, 'y', { duration: 0.5, ease: 'power3' });
+    function hide(immediate) {
+      active = false;
+      gsap.killTweensOf(box);
+      if (immediate) gsap.set(box, { opacity: 0, scale: 0.9 });
+      else gsap.to(box, { opacity: 0, scale: 0.9, duration: 0.25, ease: 'expo.out' });
+    }
+    window.addEventListener('mousemove', (e) => {
+      tx = e.clientX + 28; ty = e.clientY - 100;
+      if (active) { xTo(tx); yTo(ty); }
+    });
+    rows.forEach((r) => {
+      r.addEventListener('mouseenter', () => {
+        active = true;
+        Object.values(imgs).forEach((i) => i.classList.remove('on'));
+        imgs[r.dataset.img].classList.add('on');
+        gsap.set(box, { x: tx, y: ty });
+        gsap.to(box, { opacity: 1, scale: 1, duration: 0.45, ease: 'expo.out' });
+      });
+      r.addEventListener('mouseleave', () => hide(false));
+    });
+    // force-hide (no animation) whenever the Around section scrolls out of view,
+    // so it can't get stranded over other sections — but doesn't interfere with hover
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        entries.forEach((en) => { if (!en.isIntersecting) hide(true); });
+      }).observe(document.getElementById('around'));
+    }
+  })();
+
+  /* ── Book CTA reveal ── */
+  (function bookReveal() {
+    const spans = document.querySelectorAll('#book-cta .o-hide > span');
+    gsap.set(spans, { yPercent: 110 });
+    ScrollTrigger.create({
+      trigger: '#book-cta', start: 'top 85%', once: true,
+      onEnter: () => gsap.to(spans, { yPercent: 0, duration: 1.3, ease: 'expo.out', stagger: 0.12 })
+    });
+  })();
+
+  /* ── Anchor nav with Lenis ── */
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(target, { offset: 0, duration: 1.6 });
+      else target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  /* ═══════════════════════════════════════════
+     THREE.JS — WebGL image distortion layer
+     Planes synced to [data-gl] DOM elements.
+     Scroll velocity → wave + RGB shift.
+     Hover → radial ripple.
+     Falls back to plain <img> if anything fails.
+     ═══════════════════════════════════════════ */
+  (function glLayer() {
+    if (reduced || !window.THREE) return;
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gl'), alpha: true, antialias: true });
+    } catch (e) { return; }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const scene = new THREE.Scene();
+    let W = window.innerWidth, H = window.innerHeight;
+    const camera = new THREE.OrthographicCamera(0, W, 0, -H, -1000, 1000);
+    renderer.setSize(W, H);
+
+    const vert = `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }`;
+    const frag = `
+      precision highp float;
+      uniform sampler2D uTex;
+      uniform vec2 uPlaneRes;
+      uniform vec2 uImageRes;
+      uniform vec2 uMouse;
+      uniform float uHover;
+      uniform float uVelo;
+      uniform float uTime;
+      varying vec2 vUv;
+      const float PI = 3.141592653589793;
+
+      vec2 coverUv(vec2 uv) {
+        float rs = uPlaneRes.x / uPlaneRes.y;
+        float ri = uImageRes.x / uImageRes.y;
+        vec2 newSize = rs < ri
+          ? vec2(uImageRes.x * uPlaneRes.y / uImageRes.y, uPlaneRes.y)
+          : vec2(uPlaneRes.x, uImageRes.y * uPlaneRes.x / uImageRes.x);
+        vec2 offset = (rs < ri
+          ? vec2((newSize.x - uPlaneRes.x) / 2.0, 0.0)
+          : vec2(0.0, (newSize.y - uPlaneRes.y) / 2.0)) / newSize;
+        return uv * uPlaneRes / newSize + offset;
+      }
+
+      void main() {
+        vec2 uv = vUv;
+
+        // scroll-velocity wave distortion
+        float wave = sin(uv.y * PI);
+        float v = clamp(uVelo, -0.5, 0.5);
+        uv.x += v * 0.045 * wave * sin(uv.y * PI * 2.0 + uTime * 0.6);
+        uv.y += v * 0.018 * wave;
+
+        // hover ripple
+        float aspect = uPlaneRes.x / uPlaneRes.y;
+        vec2 mUv = vec2(uv.x * aspect, uv.y);
+        vec2 mM  = vec2(uMouse.x * aspect, uMouse.y);
+        float d = distance(mUv, mM);
+        float ripple = sin(d * 22.0 - uTime * 4.0) * 0.014 * uHover * smoothstep(0.55, 0.0, d);
+        uv += normalize(mUv - mM + 0.0001) * ripple;
+
+        vec2 cuv = coverUv(uv);
+
+        // velocity RGB shift
+        float shift = v * 0.010 * wave + uHover * 0.004;
+        float r = texture2D(uTex, cuv + vec2(shift, 0.0)).r;
+        float g = texture2D(uTex, cuv).g;
+        float b = texture2D(uTex, cuv - vec2(shift, 0.0)).b;
+
+        gl_FragColor = vec4(r, g, b, 1.0);
+      }`;
+
+    const loaderTex = new THREE.TextureLoader();
+    loaderTex.crossOrigin = '';
+    const items = [];
+    const geo = new THREE.PlaneBufferGeometry(1, 1, 1, 1);
+
+    document.querySelectorAll('[data-gl]').forEach((wrap) => {
+      const img = wrap.querySelector('img');
+      if (!img) return;
+      loaderTex.load(img.src, (tex) => {
+        tex.minFilter = THREE.LinearFilter;
+        tex.generateMipmaps = false;
+        const mat = new THREE.ShaderMaterial({
+          vertexShader: vert,
+          fragmentShader: frag,
+          uniforms: {
+            uTex:      { value: tex },
+            uPlaneRes: { value: new THREE.Vector2(1, 1) },
+            uImageRes: { value: new THREE.Vector2(tex.image.width, tex.image.height) },
+            uMouse:    { value: new THREE.Vector2(0.5, 0.5) },
+            uHover:    { value: 0 },
+            uVelo:     { value: 0 },
+            uTime:     { value: 0 }
+          }
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        scene.add(mesh);
+        items.push({ wrap, img, mesh, mat });
+        img.style.opacity = '0';           // GL takes over; img remains for SEO/fallback
+
+        wrap.addEventListener('mousemove', (e) => {
+          const r = wrap.getBoundingClientRect();
+          mat.uniforms.uMouse.value.set(
+            (e.clientX - r.left) / r.width,
+            1 - (e.clientY - r.top) / r.height
+          );
+        });
+        wrap.addEventListener('mouseenter', () => gsap.to(mat.uniforms.uHover, { value: 1, duration: 0.6, ease: 'power2.out' }));
+        wrap.addEventListener('mouseleave', () => gsap.to(mat.uniforms.uHover, { value: 0, duration: 0.8, ease: 'power2.out' }));
+      },
+      undefined,
+      () => { img.style.opacity = '1'; }   // texture failed → keep plain img
+      );
+    });
+
+    let smoothVel = 0, t0 = performance.now();
+    function render(now) {
+      const t = (now - t0) / 1000;
+      scrollVel *= 0.9; // decay between lenis events (prevents distortion sticking)
+      const target = Math.max(-0.5, Math.min(0.5, scrollVel * 0.016));
+      smoothVel += (target - smoothVel) * 0.1;
+      items.forEach((it) => {
+        const r = it.wrap.getBoundingClientRect();
+        // cull offscreen
+        const vis = r.bottom > -100 && r.top < H + 100 && r.right > -100 && r.left < W + 100;
+        it.mesh.visible = vis;
+        if (!vis) return;
+        it.mesh.scale.set(r.width, r.height, 1);
+        it.mesh.position.set(r.left + r.width / 2, -(r.top + r.height / 2), 0);
+        it.mat.uniforms.uPlaneRes.value.set(r.width, r.height);
+        it.mat.uniforms.uVelo.value = smoothVel;
+        it.mat.uniforms.uTime.value = t;
+      });
+      renderer.render(scene, camera);
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+    window.addEventListener('resize', () => {
+      W = window.innerWidth; H = window.innerHeight;
+      camera.right = W; camera.bottom = -H;
+      camera.updateProjectionMatrix();
+      renderer.setSize(W, H);
+    });
+  })();
+
+})();
 </script>
 </body>
 </html>
