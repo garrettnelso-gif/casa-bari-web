@@ -190,6 +190,10 @@ section.block { position: relative; z-index: 3; padding: clamp(90px, 12vw, 180px
 .house-cols p strong { color: var(--ink); font-weight: 600; }
 @media (max-width: 900px) {
   .house-cols { grid-template-columns: 1fr; gap: 8px; }
+  .house-cols .col-a,
+  .house-cols .col-b,
+  .house-cols .col-c { grid-column: 1 / -1; }
+  .house-cols .col-a { margin-bottom: 12px; }
 }
 
 /* stats */
